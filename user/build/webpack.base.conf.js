@@ -35,7 +35,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      '@': resolve('src')
     }
   },
   module: {
@@ -75,6 +75,22 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
+      // },
+      // {
+      //   test: /\.css$/,
+      //   loader: [
+      //     'style-loader',
+      //     'css-loader'
+      //   ]
+      // },
+      // {
+      //   test: /\.styl$/,
+      //   loader: [
+      //     'style-loader',
+      //     'css-loader?minimize=true',
+      //     'stylus-loader'
+      //   ]
+      // }
     ]
   },
   node: {
