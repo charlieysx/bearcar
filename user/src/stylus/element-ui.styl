@@ -1,0 +1,169 @@
+// .el-icon-star-on
+//   color: #0fa6ff
+//   background-image: linear-gradient(to right, #39cfff, #0fa6ff)
+//   -webkit-background-clip: text
+//   -webkit-text-fill-color: transparent
+.el-rate__text
+  font-size: 14px
+  margin-left: 10px
+.el-form-item__error
+  font-size: 12px
+//   &:after
+//     display: inline-block
+//     position: absolute
+//     left: 0
+//     content: '!'
+//     height: 15px
+//     width: 15px
+//     border-radius: 50%
+//     background-color: red
+//     color: #fff
+//     font-size: 15px
+//     text-align: center
+//     line-height: 15px
+.el-form-item__error
+  &.el-zoom-in-top-enter-active, &.el-zoom-in-top-leave-active
+    transition: opacity .5s
+    opacity: 1
+  &.el-zoom-in-top-enter, &.el-zoom-in-top-leave-to
+    opacity: 0
+
+.el-pagination
+  padding: 0
+  .btn-prev, .btn-next
+    height: 30px
+    width: 30px
+    margin-right: 10px
+    border: 1px solid #e5e5e5
+    border-radius: 5px
+  .el-pager
+    > li
+      height: 30px
+      margin-right: 10px
+      border: none
+      border-radius: 5px
+      font-size: 14px
+      color: #a5a5a5
+      border: 1px solid #e5e5e5
+    .active
+      background: #24b9ff
+      color: #ffffff
+      border: none
+  .el-icon-arrow-left, .el-icon-arrow-right
+    font-size: 14px
+    color: #a5a5a5
+
+.el-pagination
+  .el-select
+    .el-input
+      input
+        height: 30px
+        border-radius: 5px
+        font-size: 14px
+        color: $color-dark-grey
+.el-select
+  .el-tag
+    line-height: 23px !important
+.el-pagination__jump
+  font-size: 14px !important
+  .el-pagination__editor
+    height: 30px
+    border-radius: 5px
+    font-size: 14px
+    color: $color-dark-grey
+
+// 覆盖表单样式
+.el-input
+  &.is-disabled
+    .el-input__inner
+      border: none
+      background: $color-bg-grey
+.el-input__inner
+  border: 1px solid #e5e5e5
+  height: 40px
+  background: none
+  border-radius: 5px
+  font-size: 16px
+  &::placeholder
+    color: #cccccc
+    font-size: 14px
+  &:focus
+    border: 1px solid #24b9ff
+.el-form-item
+  margin-bottom: 24px
+.el-button
+  width: 100%
+  height: 40px
+  font-size: 16px
+  border-radius: 5px
+  border: none
+  background: #24b9ff
+  &.is-disabled
+    border: none
+    background: #e5e5e5
+    color: #ffffff
+    &:hover
+      background: #e5e5e5
+      color: #ffffff
+.el-checkbox__input
+  .is-checked
+    background: #24b9ff
+    background: -prefix-linear-zgradient(to right, #39cfff, #0fa6ff)
+    background: linear-gradient(to right, #39cfff, #0fa6ff)
+// .el-checkbox__inner
+//   &:after
+//     box-sizing: content-box
+//     content: ""
+//     /* border-left: 0; */
+//     /* border-top: 0; */
+//     height: 6px
+//     left: 4px
+//     border-radius: 50%
+//     background: #ffffff
+//     position: absolute
+//     top: 4px
+//     width: 6px
+//     transition: transform .05s
+//     -ms-transform-origin: center
+//     transform-origin: center
+.el-checkbox__label
+  color: $color-dark-grey
+
+.el-radio__inner
+  vertical-align: top
+  &:after
+    width: 8px
+    height: 8px
+.el-radio__input
+  &.is-checked
+    .el-radio__inner
+      border: none
+      background: #0fa6ff
+      background: -prefix-linear-zgradient(to right, #39cfff, #0fa6ff)
+      background: linear-gradient(to right, #39cfff, #0fa6ff)
+.el-radio__label
+  font-size: 16px
+  padding-left: 10px
+  vertical-align: top
+
+.el-form-item__label
+  font-size: 16px
+  padding-right: 20px
+  color: #333333
+
+.el-textarea__inner
+  font-size: 14px
+  color: #333333
+  padding: 10px 10px 30px 10px
+  border: 1px solid #e5e5e5
+  border-radius: 4px
+  &::placeholder
+    color: #cccccc
+.el-slider__button-wrapper
+  z-index: 1
+
+.small-radio-text
+  .el-radio__label
+    font-size: 14px
+    padding-left: 10px
+    vertical-align: middle
