@@ -19,41 +19,10 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            stylus: 'vue-style-loader!css-loader!stylus-loader'
-          },
-          postcss: {
-            plugins: [
-              require('autoprefixer')()
-            ],
-            options: {
-              browsers: ['> 0.1% in CN']
-            }
-          }
-        }
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.styl$/,
-        use: [
-          'style-loader',
-          'css-loader?minimize=true',
-          'stylus-loader'
-        ],
-        exclude: /node_modules/
-      }
-    ]
+    rules: utils.styleLoaders({
+      sourceMap: config.dev.cssSourceMap,
+      usePostCSS: true
+    })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
