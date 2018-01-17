@@ -1,14 +1,10 @@
 <template>
-<div>
-  <div id="header">
-  <!-- <el-card class="box-card"> -->
+  <div id="header" v-if="showHeader">
     <div>{{result}}</div>
     <div>{{isLogin}}</div>
     <el-button type="primary" @click="open">{{msg}}</el-button>
     <el-button type="primary" @click="submit">登录</el-button>
-  <!-- </el-card> -->
   </div>
-</div>
 </template>
 
 <script>
@@ -18,6 +14,7 @@ import {
 } from 'vuex'
 
 export default {
+  name: 'header',
   data () {
     return {
       msg: '啦啦',
@@ -27,7 +24,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isLogin'
+      'isLogin',
+      'showHeader'
     ])
   },
   methods: {
@@ -56,6 +54,7 @@ export default {
   }
 }
 </script>
+
 <style lang="stylus" scoped>
   @import '~STYLUS/mixin.styl'
   @import '~STYLUS/color.styl'

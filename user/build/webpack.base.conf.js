@@ -39,7 +39,7 @@ module.exports = {
       'IMAGES': resolve('src/assets/images'),
       'VIEWS': resolve('src/views'),
       'STYLUS': resolve('src/stylus'),
-      'BASE': resolve('src/base'),
+      'COMMON': resolve('src/common'),
       'API': resolve('src/api'),
       'UTIL': resolve('src/util'),
       'STORE': resolve('src/store')

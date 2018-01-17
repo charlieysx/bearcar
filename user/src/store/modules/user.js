@@ -1,4 +1,23 @@
 import api from 'API/index'
+import {
+  SET_LOGIN_STATUS
+} from '../mutation-types'
+
+const state = {
+  isLogin: false
+}
+
+const getters = {
+  isLogin (state) {
+    return state.isLogin
+  }
+}
+
+const mutations = {
+  [SET_LOGIN_STATUS] (state, data) {
+    state.isLogin = data
+  }
+}
 
 const actions = {
   /**
@@ -11,6 +30,7 @@ const actions = {
   login (store, params) {
     return api.login(params)
       .then((response) => {
+        store.commit(SET_LOGIN_STATUS, true)
         return Promise.resolve(response.data)
       })
       .catch(({response}) => {
@@ -20,5 +40,8 @@ const actions = {
 }
 
 export default {
-  actions
+  state,
+  mutations,
+  actions,
+  getters
 }

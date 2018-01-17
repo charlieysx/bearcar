@@ -1,0 +1,2 @@
+export const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS'
+export const SET_SHOW_HEADER = 'SET_SHOW_HEADER'
