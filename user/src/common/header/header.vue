@@ -1,5 +1,5 @@
 <template>
-  <div id="header" v-if="showHeader">
+  <div id="header-body" v-if="showHeader">
     <div>{{result}}</div>
     <div>{{isLogin}}</div>
     <el-button type="primary" @click="open">{{msg}}</el-button>
@@ -14,7 +14,7 @@ import {
 } from 'vuex'
 
 export default {
-  name: 'header',
+  name: 'page-header',
   data () {
     return {
       msg: '啦啦',
@@ -58,7 +58,8 @@ export default {
 <style lang="stylus" scoped>
   @import '~STYLUS/mixin.styl'
   @import '~STYLUS/color.styl'
-  #header
+  #header-body
+    text-align: center
     width: 100%
     position: fixed
     top: 0

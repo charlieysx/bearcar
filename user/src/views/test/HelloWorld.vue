@@ -1,13 +1,11 @@
 <template>
 <div>
-  <div id="header">
-  <!-- <el-card class="box-card"> -->
+  <!-- <div id="header">
     <div>{{result}}</div>
     <div>{{isLogin}}</div>
     <el-button type="primary" @click="open">{{msg}}</el-button>
     <el-button type="primary" @click="submit">登录</el-button>
-  <!-- </el-card> -->
-  </div>
+  </div> -->
 </div>
 </template>
 

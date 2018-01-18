@@ -79,22 +79,22 @@ exports.styleLoaders = function (options) {
     })
   }
 
-  output.push({
-    test: /\.css$/,
-    use: [
-      'style-loader',
-      'css-loader'
-    ]
-  })
+  // output.push({
+  //   test: /\.css$/,
+  //   use: [
+  //     'style-loader',
+  //     'css-loader'
+  //   ]
+  // })
 
-  output.push({
-    test: /\.styl$/,
-    use: [
-      'style-loader',
-      'css-loader?minimize=true',
-      'stylus-loader'
-    ]
-  })
+  // output.push({
+  //   test: /\.styl$/,
+  //   use: [
+  //     'style-loader',
+  //     'css-loader?minimize=true',
+  //     'stylus-loader'
+  //   ]
+  // })
 
   return output
 }

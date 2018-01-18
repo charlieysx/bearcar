@@ -18,14 +18,11 @@ export default {
 }
 </script>
 
-<style lang="stylus" src="STYLUS/main.styl"></style>
+ <style lang="stylus" src="STYLUS/main.styl"></style>
 
 <style lang="stylus">
   #appindex
     padding-top: 70px
-    // display: flex
-    // flex-direction: column
-    // min-height: 100%
     .nav-wrap
       position: fixed
       right: 6px
