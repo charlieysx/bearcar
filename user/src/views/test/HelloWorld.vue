@@ -1,11 +1,11 @@
 <template>
 <div>
-  <!-- <div id="header">
+  <div id="header">
     <div>{{result}}</div>
     <div>{{isLogin}}</div>
     <el-button type="primary" @click="open">{{msg}}</el-button>
     <el-button type="primary" @click="submit">登录</el-button>
-  </div> -->
+  </div>
 </div>
 </template>
 
@@ -59,13 +59,10 @@ export default {
   @import '~STYLUS/color.styl'
   #header
     width: 100%
-    position: fixed
     top: 0
     left: 0
     right: 0
     padding: 10px
-    background: $color-white
+    text-align: center
     user-select: none
-    z-index: 10
-    box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
 </style>

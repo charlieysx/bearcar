@@ -62,6 +62,7 @@ export default {
     text-align: center
     width: 100%
     position: fixed
+    max-height 100px
     top: 0
     left: 0
     right: 0

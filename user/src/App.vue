@@ -22,14 +22,11 @@ export default {
 
 <style lang="stylus">
   #appindex
-    padding-top: 70px
-    .nav-wrap
-      position: fixed
-      right: 6px
-      bottom: 120px
+    padding-top: 90px
     .viewWrap
       // flex: 1
-      min-height: calc(100vh - 110px)
+      background-color: #33000011
+      min-height: calc(110vh - 110px)
       min-width: 1170px
   .fade-enter-active, .fade-leave-active
     transition: opacity .3s
