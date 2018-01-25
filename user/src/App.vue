@@ -22,9 +22,8 @@ export default {
 
 <style lang="stylus">
   #appindex
-    padding-top: 90px
+    // padding-top: 65px
     .viewWrap
-      // flex: 1
       background-color: #33000011
       min-height: calc(110vh - 110px)
       min-width: 1170px

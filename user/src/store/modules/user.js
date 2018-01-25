@@ -34,7 +34,7 @@ const actions = {
         return Promise.resolve(response.data)
       })
       .catch(({response}) => {
-        return Promise.reject(response.data)
+        return Promise.reject(response)
       })
   }
 }
