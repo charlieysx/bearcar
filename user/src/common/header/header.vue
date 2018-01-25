@@ -4,7 +4,7 @@
       <div class="header-wrap" :style="style">
         <a class="header-logo"></a>
         <div class="header-city" @mouseover="showCityPickerF" @mouseout="hideCityPickerF">
-          <div class="city-name">{{currentCity.name}}</div>
+          <div class="city-name">{{currentCity.cityName}}</div>
           <i class="el-icon-arrow-down"></i>
           <city-picker
             class="city-picker"
@@ -24,8 +24,12 @@
 <script>
 import {
   mapActions,
-  mapGetters
+  mapGetters,
+  mapMutations
 } from 'vuex'
+import {
+  SET_CURRENT_CITY
+} from 'STORE/mutation-types'
 import clickoutside from 'UTIL/clickoutside.js'
 import cityPicker from 'COMMON/cityPicker/cityPicker'
 
@@ -46,251 +50,40 @@ export default {
       style: {
         left: '0px'
       },
-      currentCity: {
-        id: '0',
-        name: '全国'
-      },
       hotCities: [
         {
-          id: '0',
-          name: '全国'
+          cityId: '-1',
+          cityName: '全国'
         },
         {
-          id: '1',
-          name: '北京'
+          cityId: '1',
+          cityName: '北京'
         },
         {
-          id: '2',
-          name: '上海'
+          cityId: '2',
+          cityName: '上海'
         },
         {
-          id: '3',
-          name: '广州'
+          cityId: '3',
+          cityName: '广州'
         },
         {
-          id: '4',
-          name: '深圳'
+          cityId: '4',
+          cityName: '深圳'
         },
         {
-          id: '5',
-          name: '成都'
+          cityId: '5',
+          cityName: '成都'
         },
         {
-          id: '6',
-          name: '杭州'
+          cityId: '6',
+          cityName: '杭州'
         }
-      ],
-      allCities: {
-        'A': [
-          {
-            id: '7',
-            name: '阿勒泰'
-          },
-          {
-            id: '8',
-            name: '阿坝藏族'
-          },
-          {
-            id: '9',
-            name: '阿拉善盟'
-          },
-          {
-            id: '10',
-            name: '阿里'
-          },
-          {
-            id: '11',
-            name: '鞍山'
-          }
-        ],
-        'B': [
-          {
-            id: '12',
-            name: '白城'
-          },
-          {
-            id: '13',
-            name: '白山'
-          },
-          {
-            id: '14',
-            name: '白银'
-          },
-          {
-            id: '15',
-            name: '百色'
-          },
-          {
-            id: '16',
-            name: '蚌埠'
-          }
-        ],
-        'C': [
-          {
-            id: '17',
-            name: '崇左'
-          },
-          {
-            id: '18',
-            name: '常州'
-          },
-          {
-            id: '19',
-            name: '常德'
-          },
-          {
-            id: '20',
-            name: '成都'
-          },
-          {
-            id: '21',
-            name: '承德'
-          },
-          {
-            id: '22',
-            name: '昌吉回族'
-          },
-          {
-            id: '23',
-            name: '昌都'
-          },
-          {
-            id: '24',
-            name: '朝阳'
-          },
-          {
-            id: '25',
-            name: '楚雄彝族'
-          },
-          {
-            id: '26',
-            name: '池州'
-          },
-          {
-            id: '27',
-            name: '沧州'
-          },
-          {
-            id: '28',
-            name: '滁州'
-          },
-          {
-            id: '29',
-            name: '潮州'
-          },
-          {
-            id: '30',
-            name: '赤峰'
-          },
-          {
-            id: '31',
-            name: '郴州'
-          },
-          {
-            id: '32',
-            name: '重庆'
-          },
-          {
-            id: '33',
-            name: '长春'
-          },
-          {
-            id: '34',
-            name: '长沙'
-          },
-          {
-            id: '35',
-            name: '长治'
-          }
-        ],
-        'Z': [
-          {
-            id: '36',
-            name: '中卫'
-          },
-          {
-            id: '37',
-            name: '中山'
-          },
-          {
-            id: '38',
-            name: '周口'
-          },
-          {
-            id: '39',
-            name: '张家口'
-          },
-          {
-            id: '40',
-            name: '张家界'
-          },
-          {
-            id: '41',
-            name: '张掖'
-          },
-          {
-            id: '42',
-            name: '昭通'
-          },
-          {
-            id: '43',
-            name: '枣庄'
-          },
-          {
-            id: '44',
-            name: '株洲'
-          },
-          {
-            id: '45',
-            name: '淄博'
-          },
-          {
-            id: '46',
-            name: '湛江'
-          },
-          {
-            id: '47',
-            name: '漳州'
-          },
-          {
-            id: '48',
-            name: '珠海'
-          },
-          {
-            id: '49',
-            name: '肇庆'
-          },
-          {
-            id: '50',
-            name: '自贡'
-          },
-          {
-            id: '51',
-            name: '舟山'
-          },
-          {
-            id: '52',
-            name: '资阳'
-          },
-          {
-            id: '53',
-            name: '遵义'
-          },
-          {
-            id: '54',
-            name: '郑州'
-          },
-          {
-            id: '55',
-            name: '镇江'
-          },
-          {
-            id: '56',
-            name: '驻马店'
-          }
-        ]
-      }
+      ]
     }
+  },
+  created () {
+    this.getCitySort()
   },
   mounted () {
     window.addEventListener('scroll', this.fixTopBarScroll)
@@ -301,7 +94,9 @@ export default {
   computed: {
     ...mapGetters([
       'isLogin',
-      'showHeader'
+      'showHeader',
+      'allCities',
+      'currentCity'
     ])
   },
   methods: {
@@ -312,14 +107,8 @@ export default {
       this.showCityPicker = false
     },
     cityClick (city) {
-      this.currentCity = city
+      this.changeCity(city)
       this.hideCityPickerF()
-    },
-    open () {
-      this.$message({
-        message: this.isLogin,
-        type: 'success'
-      })
     },
     submit () {
       let loginFormParams = {
@@ -339,8 +128,12 @@ export default {
       this.style.left = `-${scrollLeft}px`
     },
     ...mapActions([
-      'login'
-    ])
+      'login',
+      'getCitySort'
+    ]),
+    ...mapMutations({
+      'changeCity': SET_CURRENT_CITY
+    })
   }
 }
 </script>
@@ -361,7 +154,7 @@ export default {
     .header-wrap
       position: relative
       height 70px
-      width: 1170px
+      width: 1370px
       margin: 0 auto
       .header-logo
         display: inline-block

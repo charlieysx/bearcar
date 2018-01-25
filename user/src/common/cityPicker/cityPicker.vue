@@ -5,7 +5,7 @@
       <div class="row hot-city-wrap">
         <div class="tag">热门城市：</div>
         <div class="hot-city">
-          <span v-for="city in hotCities" :key="city.id" :class="{ current: city.id === currentCity.id }" @click="selectCity(city)">{{ city.name }}</span>
+          <span v-for="city in hotCities" :key="city.cityId" :class="{ current: city.cityId === currentCity.cityId }" @click="selectCity(city)">{{ city.cityName }}</span>
         </div>
       </div>
       <!-- 全部城市-->
@@ -14,7 +14,7 @@
           <li class="clearfix" v-for="(group, key) in allCities" :key="key">
             <div class="letter">{{ key }}</div>
             <div class="cities clearfix">
-              <span v-for="city in group" :key="city.id" :class="{ current: city.id === currentCity.id }" @click="selectCity(city)">{{ city.name }}</span>
+              <span v-for="city in group" :key="city.cityId" :class="{ current: city.cityId === currentCity.cityId }" @click="selectCity(city)">{{ city.cityName }}</span>
             </div>
           </li>
         </ul>
@@ -45,7 +45,7 @@ export default {
   cursor: default
 .city-inner
   background: $color-white
-  width: 640px
+  width: 800px
 
 // 热门城市
 .hot-city-wrap
@@ -56,7 +56,7 @@ export default {
   .tag
     color: $color-dark-blue
   .hot-city
-    width: 530px
+    width: 690px
     color: $color-dark-grey
     > span
       margin: 0 14px
@@ -90,7 +90,7 @@ export default {
       text-align: center
       margin-right: 40px
     .cities
-      width: 530px
+      width: 690px
       span
         color: $color-dark-grey
         margin-right: 10px

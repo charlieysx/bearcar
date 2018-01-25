@@ -2,7 +2,7 @@ import axios from 'axios'
 import Qs from 'qs'
 
 /* eslint-disable */
-const API_ROOT = 'http://codebear.cn/bearcarproject/index.php/admin'
+const API_ROOT = 'http://codebear.cn/bearcarproject/index.php'
 
 
 /* eslint-enable */
@@ -31,6 +31,12 @@ export default {
    * 用户登录
    */
   login (params) {
-    return axios.post('login', Qs.stringify(params))
+    return axios.post('admin/login', Qs.stringify(params))
+  },
+  /**
+   * 获取按字母排序的城市
+   */
+  getCitySort () {
+    return axios.get('common/get_city_sort')
   }
 }
