@@ -22,13 +22,8 @@ export default {
 
 <style lang="stylus">
   #appindex
-    // padding-top: 65px
     .viewWrap
       background-color: #33000011
       min-height: calc(110vh - 110px)
       min-width: 1170px
-  .fade-enter-active, .fade-leave-active
-    transition: opacity .3s
-  .fade-enter, .fade-leave-to
-    opacity: 0
 </style>

@@ -59,9 +59,15 @@ import {
   mapGetters,
   mapMutations
 } from 'vuex'
+
 import {
-  SET_CURRENT_CITY
+  SET_CURRENT_CITY,
+  SET_LOGIN_STATUS,
+  SET_USER_INFO
 } from 'STORE/mutation-types'
+
+import { cachedUserInfo, removeAccessToken } from 'API/cacheService'
+
 import clickoutside from 'UTIL/clickoutside.js'
 import cityPicker from 'COMMON/cityPicker/cityPicker'
 import tabView from 'COMMON/tabView/tabView'
@@ -140,10 +146,13 @@ export default {
       //
     },
     toLogin () {
-      //
+      this.$router.push({ name: 'hello' })
     },
     signOut () {
-      //
+      removeAccessToken()
+      cachedUserInfo.delete()
+      this.$store.commit(SET_LOGIN_STATUS, false)
+      this.$store.commit(SET_USER_INFO, {})
     },
     fixTopBarScroll () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft

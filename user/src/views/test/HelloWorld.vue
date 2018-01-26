@@ -1,9 +1,6 @@
 <template>
 <div>
   <div id="header">
-    <div>{{result}}</div>
-    <div>{{isLogin}}</div>
-    <el-button type="primary" @click="open">{{msg}}</el-button>
     <el-button type="primary" @click="submit">登录</el-button>
   </div>
 </div>
@@ -18,9 +15,6 @@ import {
 export default {
   data () {
     return {
-      msg: '啦啦',
-      result: '空',
-      text: '0'
     }
   },
   computed: {
@@ -29,12 +23,6 @@ export default {
     ])
   },
   methods: {
-    open () {
-      this.$message({
-        message: this.isLogin,
-        type: 'success'
-      })
-    },
     submit () {
       let loginFormParams = {
         userName: '13000000000',
@@ -42,10 +30,7 @@ export default {
       }
       this.login(loginFormParams)
         .then((info) => {
-          this.result = info
-        })
-        .catch((err) => {
-          this.result = err
+          this.$router.push({ name: 'home' })
         })
     },
     ...mapActions([
