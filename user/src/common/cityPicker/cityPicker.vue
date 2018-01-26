@@ -51,6 +51,7 @@ export default {
 .hot-city-wrap
   border-bottom: 1px solid $color-border
   padding: 15px
+  padding-bottom: 0px
   > div
     float: left
   .tag
@@ -61,6 +62,7 @@ export default {
     > span
       margin: 0 14px
       float: left
+      padding-bottom: 15px
       cursor: pointer
       &:last-child
         margin-right: 0

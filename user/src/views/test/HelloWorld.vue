@@ -37,8 +37,8 @@ export default {
     },
     submit () {
       let loginFormParams = {
-        userName: 'admin',
-        password: '123456'
+        userName: '13000000000',
+        password: '1234567'
       }
       this.login(loginFormParams)
         .then((info) => {

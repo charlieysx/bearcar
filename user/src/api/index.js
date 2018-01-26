@@ -31,12 +31,18 @@ export default {
    * 用户登录
    */
   login (params) {
-    return axios.post('admin/login', Qs.stringify(params))
+    return axios.post('user/login', Qs.stringify(params))
   },
   /**
    * 获取按字母排序的城市
    */
   getCitySort () {
     return axios.get('common/get_city_sort')
+  },
+  /**
+   * 获取按字母排序的城市
+   */
+  getHotCity () {
+    return axios.get('common/get_hot_city')
   }
 }

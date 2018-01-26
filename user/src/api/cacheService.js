@@ -8,6 +8,7 @@ const ssCache = new Cache({storage: 'sessionStorage'})
 
 const KEYS = {
   token: 'ak',
+  userInfo: 'userInfo',
   currentCity: 'currentCity'
 }
 
@@ -53,4 +54,5 @@ export function removeAccessToken () {
   lsCache.delete(KEYS.token)
 }
 
+export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 0)
 export const cachedCurrentCity = new CommonStorage(KEYS.currentCity, 0)

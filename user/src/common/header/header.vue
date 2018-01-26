@@ -15,6 +15,38 @@
             @city-click="cityClick">
           </city-picker>
         </div>
+        <tab-view 
+          class="header-tab"
+          :tabs="tabs"
+          :activeTab="activeTab"
+          @tab-click="tabClick">
+        </tab-view>
+        <div class="header-right-wrap">
+          <div class="header-login">
+            <div class="header-user" v-if="!isLogin">
+              <span class="header-user-registered" @click="toRegister">注册</span>
+              /
+              <span class="header-user-login" @click="toLogin">登录</span>
+            </div>
+            <div class="header-user" v-else>
+              <span class="header-avatar">
+                <img src="~IMAGES/icon_user.png" alt="">
+                <span>{{ userInfo.userName }}</span>
+                <!-- 用户信息下拉 -->
+                <div class="user-info">
+                  <ul class="user-info-ul">
+                    <li class="info-content info-border">
+                      <span class="icon-page"></span>
+                      <span class="info-content-text">我的车</span>
+                    </li>
+                    <li class="info-out" @click="signOut">退出账号</li>
+                  </ul>
+                </div>
+                <!-- 用户信息下拉结束 -->
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div id="header-space"></div>
@@ -32,6 +64,7 @@ import {
 } from 'STORE/mutation-types'
 import clickoutside from 'UTIL/clickoutside.js'
 import cityPicker from 'COMMON/cityPicker/cityPicker'
+import tabView from 'COMMON/tabView/tabView'
 
 export default {
   name: 'page-header',
@@ -39,7 +72,8 @@ export default {
     clickoutside
   },
   components: {
-    cityPicker
+    cityPicker,
+    tabView
   },
   data () {
     return {
@@ -50,42 +84,29 @@ export default {
       style: {
         left: '0px'
       },
-      hotCities: [
+      tabs: [
         {
-          cityId: '-1',
-          cityName: '全国'
+          id: 0,
+          name: '首页'
         },
         {
-          cityId: '1',
-          cityName: '北京'
+          id: 1,
+          name: '我要买车'
         },
         {
-          cityId: '2',
-          cityName: '上海'
-        },
-        {
-          cityId: '3',
-          cityName: '广州'
-        },
-        {
-          cityId: '4',
-          cityName: '深圳'
-        },
-        {
-          cityId: '5',
-          cityName: '成都'
-        },
-        {
-          cityId: '6',
-          cityName: '杭州'
+          id: 2,
+          name: '我要卖车'
         }
-      ]
+      ],
+      activeTab: {}
     }
   },
   created () {
+    this.getHotCity()
     this.getCitySort()
   },
   mounted () {
+    this.activeTab = this.tabs[0]
     window.addEventListener('scroll', this.fixTopBarScroll)
   },
   beforeDestroy () {
@@ -96,7 +117,9 @@ export default {
       'isLogin',
       'showHeader',
       'allCities',
-      'currentCity'
+      'hotCities',
+      'currentCity',
+      'userInfo'
     ])
   },
   methods: {
@@ -110,26 +133,25 @@ export default {
       this.changeCity(city)
       this.hideCityPickerF()
     },
-    submit () {
-      let loginFormParams = {
-        userName: 'admin',
-        password: '123456'
-      }
-      this.login(loginFormParams)
-        .then((info) => {
-          this.result = info
-        })
-        .catch((err) => {
-          this.result = err
-        })
+    tabClick (tab) {
+      this.activeTab = tab
+    },
+    toRegister () {
+      //
+    },
+    toLogin () {
+      //
+    },
+    signOut () {
+      //
     },
     fixTopBarScroll () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
       this.style.left = `-${scrollLeft}px`
     },
     ...mapActions([
-      'login',
-      'getCitySort'
+      'getCitySort',
+      'getHotCity'
     ]),
     ...mapMutations({
       'changeCity': SET_CURRENT_CITY
@@ -154,7 +176,7 @@ export default {
     .header-wrap
       position: relative
       height 70px
-      width: 1370px
+      width: 1170px
       margin: 0 auto
       .header-logo
         display: inline-block
@@ -177,6 +199,101 @@ export default {
           color: $color-blue
         .city-name
           display: inline-block
+      .header-tab
+        display: inline-block
+        padding: 14px 0
+        vertical-align: top
+        margin-left: 240px
+      .header-right-wrap
+        float: right
+        .header-user
+          display: inline-block
+          vertical-align: top
+          height: 70px
+          line-height: 70px
+          margin-right: 30px
+          color: $color-mid-grey
+          font-size: 16px
+          cursor: pointer
+          .header-user-registered
+            &:hover
+              color: $color-orange
+          .header-user-login
+            &:hover
+              color: $color-blue
+        .header-avatar
+          display: inline-block
+          position: relative
+          &:hover
+            .user-info
+              display: block
+          > img
+            vertical-align: middle
+            width: 38px
+            height: 38px
+            border-radius: 50%
+            border: 1px solid $color-border
+          .user-info
+            position: absolute
+            top: 70px
+            left: 50%
+            width: 160px
+            transform: translateX(-50%)
+            background: $color-white
+            box-shadow: 1px 1px 10px 1px #d4efff
+            z-index: 10
+            font-size: 16px
+            cursor: default
+            display: none
+            &:before
+              position: absolute
+              content: ' '
+              left: 50%
+              top: 0px
+              width: 20px
+              height: 10px
+              background: $color-bg-grey
+              transform: translateX(-50%)
+              z-index: 9
+            &:after
+              position: absolute
+              left: 50%
+              top: -5px
+              content: ' '
+              width: 10px
+              height: 10px
+              box-shadow: 1px 1px 10px 1px #d4efff
+              transform: translateX(-50%) rotate(45deg)
+              background: $color-white
+            .info-out
+              background: $color-bg-grey
+              color: $color-light-grey
+              font-size: 16px
+              height: 50px
+              line-height: 50px
+              text-align: center
+              cursor: pointer
+            .info-content
+              padding: 0 20px
+              display: flex
+              justify-content: flex-start
+              align-items: center
+              height: 50px
+              cursor: pointer
+            .info-content-text
+              margin-left: 10px
+              height: @height
+              color: $color-dark-grey
+              &:hover
+                color: $color-blue
+            .icon-page
+              display: inline-block
+              height: 20px
+              width: 20px
+              background: url('~IMAGES/icon_car.png') no-repeat
+              background-size: cover
+            .info-border
+              border-bottom: 1px solid $color-border
   #header-space
     width: 100%
     height: 70px

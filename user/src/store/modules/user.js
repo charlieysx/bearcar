@@ -1,21 +1,35 @@
 import api from 'API/index'
 import {
-  SET_LOGIN_STATUS
+  SET_LOGIN_STATUS,
+  SET_USER_INFO
 } from '../mutation-types'
 
+import {
+  saveAccessToken,
+  getAccessToken,
+  cachedUserInfo
+} from 'API/cacheService'
+
 const state = {
-  isLogin: false
+  isLogin: getAccessToken() ? true : false, // eslint-disable-line
+  userInfo: cachedUserInfo.load() || {}
 }
 
 const getters = {
   isLogin (state) {
     return state.isLogin
+  },
+  userInfo (state) {
+    return state.userInfo
   }
 }
 
 const mutations = {
   [SET_LOGIN_STATUS] (state, data) {
     state.isLogin = data
+  },
+  [SET_USER_INFO] (state, data) {
+    state.userInfo = data
   }
 }
 
@@ -30,7 +44,10 @@ const actions = {
   login (store, params) {
     return api.login(params)
       .then((response) => {
+        saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
+        cachedUserInfo.save(response.data.data)
         store.commit(SET_LOGIN_STATUS, true)
+        store.commit(SET_USER_INFO, response.data.data)
         return Promise.resolve(response.data)
       })
       .catch(({response}) => {
