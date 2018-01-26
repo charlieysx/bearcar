@@ -5,13 +5,14 @@ import {
   SET_CURRENT_CITY
 } from '../mutation-types'
 
+import {
+  cachedCurrentCity
+} from 'API/cacheService'
+
 const state = {
   showHeader: true,
   allCities: [],
-  currentCity: {
-    cityId: -1,
-    cityName: '全国'
-  }
+  currentCity: cachedCurrentCity.load() || { cityId: '-1', cityName: '全国' }
 }
 
 const getters = {
@@ -35,6 +36,7 @@ const mutations = {
   },
   [SET_CURRENT_CITY] (state, data) {
     state.currentCity = data
+    cachedCurrentCity.save(data)
   }
 }
 
