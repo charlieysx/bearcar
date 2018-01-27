@@ -36,11 +36,10 @@
 #tab-view
   font-size: 16px
   cursor: default
-  background: $color-white
   height: 100%
   color: $color-dark-grey
   .tab
-    margin: 12px 24px
+    margin: 12px 20px
     display: inline-block
     .tabName
       > span

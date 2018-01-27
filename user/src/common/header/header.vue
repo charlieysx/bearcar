@@ -83,9 +83,6 @@ export default {
   },
   data () {
     return {
-      msg: '啦啦',
-      result: '空',
-      text: '0',
       showCityPicker: false,
       style: {
         left: '0px'
@@ -102,6 +99,14 @@ export default {
         {
           id: 2,
           name: '我要卖车'
+        },
+        {
+          id: 3,
+          name: '车辆评估'
+        },
+        {
+          id: 4,
+          name: '资讯'
         }
       ],
       activeTab: {}
@@ -241,7 +246,6 @@ export default {
             width: 38px
             height: 38px
             border-radius: 50%
-            border: 1px solid $color-border
           .user-info
             position: absolute
             top: 70px
@@ -309,4 +313,5 @@ export default {
   .city-picker
     position: absolute
     top: 60px
+    z-index: 100
 </style>

@@ -26,10 +26,10 @@
         v-show="showArrow"
         @mouseenter="stop" 
         @mouseleave="start">
-        <div class="arrow-left" @click="change(bannerPosition-1)">
+        <div class="arrow-left" @click="change(bannerPosition - 1)">
             <i class="el-icon-arrow-left"></i>
         </div>
-        <div class="arrow-right" @click="change(bannerPosition+1)">
+        <div class="arrow-right" @click="change(bannerPosition + 1)">
             <i class="el-icon-arrow-right"></i>
         </div>
       </div>
@@ -60,11 +60,7 @@ export default {
       this.$emit('banner-show', banner)
     },
     autoPlay () {
-      this.bannerPosition++
-      if (this.bannerPosition > this.banners.length - 1) {
-        this.bannerPosition = 0
-      }
-      this.bannerShow(this.banners[this.bannerPosition])
+      this.change(this.bannerPosition + 1)
     },
     start () {
       this.timer = setInterval(() => {
@@ -83,6 +79,7 @@ export default {
         position = 0
       }
       this.bannerPosition = position
+      this.bannerShow(this.banners[this.bannerPosition])
     },
     inView () {
       this.showArrow = true
@@ -97,6 +94,7 @@ export default {
 @import "~STYLUS/color.styl"
 #banner-view
   cursor: pointer
+  height: 416px
   .banner
     > img
       width: auto
@@ -106,7 +104,7 @@ export default {
       transform: translateX(-50%)
   .points
     position: absolute
-    z-index: 10
+    z-index: 0
     top: 390px
     width: 100%
     margin: 0 auto
@@ -135,12 +133,12 @@ export default {
     height: 50px
     top: 150px
     position: relative
-    z-index: 10
     color: $color-grey
     font-size: 28px
     .arrow-left
       display: inline-block
       display: flex
+      display: -webkit-flex
       width: 50px
       height: 50px
       border-radius: 50%
@@ -154,6 +152,7 @@ export default {
     .arrow-right
       display: inline-block
       display: flex
+      display: -webkit-flex
       width: 50px
       height: 50px
       border-radius: 50%
