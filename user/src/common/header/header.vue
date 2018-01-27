@@ -148,10 +148,10 @@ export default {
       this.activeTab = tab
     },
     toRegister () {
-      //
+      this.setLoginMaskStatus({ show: true, view: 'register' })
     },
     toLogin () {
-      this.$router.push({ name: 'hello' })
+      this.setLoginMaskStatus({ show: true, view: 'login' })
     },
     signOut () {
       removeAccessToken()
@@ -165,7 +165,8 @@ export default {
     },
     ...mapActions([
       'getCitySort',
-      'getHotCity'
+      'getHotCity',
+      'setLoginMaskStatus'
     ]),
     ...mapMutations({
       'changeCity': SET_CURRENT_CITY

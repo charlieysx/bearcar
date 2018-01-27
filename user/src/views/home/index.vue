@@ -179,19 +179,14 @@ export default {
       return this.inputBorder ? '' : 'borderLight'
     },
     buyCar () {
-      alert('buy')
     },
     sellCar () {
-      alert('sell')
     },
     searchCar (car) {
-      alert(car.text)
     },
     searchPrice (price) {
-      alert(price.text)
     },
     freeEstimate () {
-      alert('免费估价')
     }
   },
   components: {

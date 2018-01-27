@@ -7,10 +7,12 @@ import router from './router'
 import './ElementUI'
 import store from './store/index'
 import { sync } from 'vuex-router-sync'
+import validator from 'UTIL/validator'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
+Vue.use(validator)
 
 sync(store, router)
 

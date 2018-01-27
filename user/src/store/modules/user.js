@@ -1,7 +1,8 @@
 import api from 'API/index'
 import {
   SET_LOGIN_STATUS,
-  SET_USER_INFO
+  SET_USER_INFO,
+  SET_LOGIN_MASK_STATUS
 } from '../mutation-types'
 
 import {
@@ -48,6 +49,30 @@ const actions = {
         cachedUserInfo.save(response.data.data)
         store.commit(SET_LOGIN_STATUS, true)
         store.commit(SET_USER_INFO, response.data.data)
+        // 关闭登录mask
+        store.commit(SET_LOGIN_MASK_STATUS, false)
+        return Promise.resolve(response.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 用户注册
+   * @param store
+   * @param {String} userName 手机号码
+   * @param {String} password 密码
+   * @return {Promise}
+   */
+  register (store, params) {
+    return api.register(params)
+      .then((response) => {
+        saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
+        cachedUserInfo.save(response.data.data)
+        store.commit(SET_LOGIN_STATUS, true)
+        store.commit(SET_USER_INFO, response.data.data)
+        // 关闭登录mask
+        store.commit(SET_LOGIN_MASK_STATUS, false)
         return Promise.resolve(response.data)
       })
       .catch(({response}) => {

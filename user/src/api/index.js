@@ -34,6 +34,12 @@ export default {
     return axios.post('user/login', Qs.stringify(params))
   },
   /**
+  * 用户登录
+  */
+  register (params) {
+    return axios.post('user/register', Qs.stringify(params))
+  },
+  /**
    * 获取按字母排序的城市
    */
   getCitySort () {
@@ -46,3 +52,6 @@ export default {
     return axios.get('common/get_hot_city')
   }
 }
+
+// 图片验证码链接
+export const captchaUrl = `https://api-upc.kdjz.com/v1/captcha`
