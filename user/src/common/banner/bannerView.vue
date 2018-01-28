@@ -3,13 +3,13 @@
     @mouseenter="inView" 
     @mouseleave="outView">
     <transition-group name="fade">
-        <div class="banner" 
-        v-for="(banner, index) in banners" 
-        :key="index" 
-        v-show="index === bannerPosition" 
-        @click="clickBanner(banner)">
-            <img :src="banner.imgUrl" alt="">
-        </div>
+        <li class="banner" 
+          v-for="(banner, index) in banners" 
+          :key="index" 
+          v-show="index === bannerPosition" 
+          @click="clickBanner(banner)"
+          :style="{backgroundImage: 'url(' + banner.imgUrl + ')'}">
+        </li>
     </transition-group>
     <div class="points"
       @mouseenter="stop" 
@@ -96,12 +96,14 @@ export default {
   cursor: pointer
   height: 416px
   .banner
-    > img
-      width: auto
-      height: 416px
-      left: 50%
-      position: absolute
-      transform: translateX(-50%)
+    width: 100%
+    height: 416px
+    left: 50%
+    position: absolute
+    transform: translateX(-50%)
+    background-repeat: no-repeat
+    background-position: top
+    background-size: auto 100%
   .points
     position: absolute
     z-index: 0

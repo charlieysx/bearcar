@@ -4,6 +4,7 @@
     <div class="viewWrap">
       <router-view></router-view>
     </div>
+    <page-footer></page-footer>
     <div class="nav-wrap">
       <float-nav></float-nav>
     </div>
@@ -15,6 +16,7 @@
 
 <script>
 import pageHeader from 'COMMON/header/header'
+import pageFooter from 'COMMON/footer/footer'
 import floatNav from 'COMMON/floatNav/floatNav'
 import authLayout from 'VIEWS/auth/layout'
 
@@ -26,6 +28,7 @@ export default {
   name: 'app',
   components: {
     pageHeader,
+    pageFooter,
     floatNav,
     authLayout
   },
