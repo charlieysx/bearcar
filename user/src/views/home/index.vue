@@ -106,6 +106,38 @@
       <!-- 买卖流程 -->
       <buy-sell-step-view class="buy-sell-step">
       </buy-sell-step-view>
+      <div id="car_list_box">
+        <tab-view
+          :tabs="carTabList"
+          :activeTab="activeCarTab"
+          @tab-click="clickCarTab">
+        </tab-view>
+        <ul class="car_list_wrap">
+          <li class="car-list" v-for="item in newCarList" :key="item.id">
+            <img :src="item.carImg" alt="">
+            <div class="car-info">
+              <p class="car-name">{{item.carName}}</p>
+              <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
+              <p class="car-info-price">
+                {{item.price}}
+                <span>万</span>
+              </p>
+            </div>
+          </li>
+        </ul>
+        <div class="car_more">
+          <span>更多{{activeCarTab.name}}</span>
+          <i class="ic_more_car"></i>
+        </div>
+      </div>
+      <div id="content-footer-buy-sell">
+        <div class="buy-sell-left">
+          <i class="icon_bg"></i>
+          <span>免费咨询电话：020-12345678</span>
+        </div>
+        <li class="color-blue" @click="sellCar">我要买车</li>
+        <li class="color-green" @click="freeEstimate">我要卖车</li>
+      </div>
     </div>
   </div>
 </template>
@@ -113,6 +145,7 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import bannerView from 'COMMON/banner/bannerView'
 import buySellStepView from 'COMMON/buySellStep/buySellStepView'
+import tabView from 'COMMON/tabView/tabView'
 
 export default {
   name: 'home',
@@ -236,6 +269,131 @@ export default {
           title: '冬季挡风玻璃起雾、结冰怎么破？老司机教你处理小妙招！',
           time: '2018-1-27'
         }
+      ],
+      carTabList: [
+        {
+          id: 0,
+          name: '最新上架'
+        },
+        {
+          id: 1,
+          name: '准新车'
+        },
+        {
+          id: 2,
+          name: '练手车'
+        }
+      ],
+      activeCarTab: {},
+      newCarList: [
+        {
+          id: 0,
+          carName: '大众捷达 2015款 1.6L 手动时尚型',
+          year: '2015年',
+          mileage: '1.4万公里',
+          place: '哈尔滨',
+          price: '5.46',
+          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
+        },
+        {
+          id: 1,
+          carName: '别克凯越 2013款 1.5L 自动经典型',
+          year: '2014年',
+          mileage: '3.4万公里',
+          place: '大连',
+          price: '5.13',
+          carImg: 'https://image1.guazistatic.com/qn180129113256f5bf1b87ff1677d04c16b8a9fd5c2216.jpg?imageView2/1/w/287/h/192/q/88'
+        },
+        {
+          id: 2,
+          carName: '本田锋范经典 2014款 风尚 1.5L 手动精英版',
+          year: '2015年',
+          mileage: '2.3万公里',
+          place: '昆明',
+          price: '6.20',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/39/03d8925ef2f2478153f64eac8efec106.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 3,
+          carName: '丰田卡罗拉 2013款 特装版 1.6L 自动至酷型GL',
+          year: '2013年',
+          mileage: '4.4万公里',
+          place: '曲靖',
+          price: '8.00',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 4,
+          carName: '别克GL8 2014款 3.0L GT豪华商务豪雅版',
+          year: '2015年',
+          mileage: '3.4万公里',
+          place: '呼和浩特',
+          price: '27.70',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/38/758204d8085be3b30c0114abfddefb82.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 5,
+          carName: '雪佛兰迈锐宝 2013款 2.0L 自动豪华版',
+          year: '2013年',
+          mileage: '5.0万公里',
+          place: '大连',
+          price: '9.38',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3328539214f793b76b288d71ae2b2da3.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 6,
+          carName: '开瑞优胜 2010款 1.0L基本型',
+          year: '2010年',
+          mileage: '6.6万公里',
+          place: '泸州',
+          price: '0.80',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/38/60ebe74b3ff36875a0719abfb954a3fe.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 7,
+          carName: '大众迈腾 2018款 330TSI DSG 豪华型',
+          year: '2018年',
+          mileage: '0.1万公里',
+          place: '汕头',
+          price: '23.00',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/39/d4db7f310badfdd892264bbd533ddd9d.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 8,
+          carName: '凯迪拉克ATS-L 2014款 25T 舒适型',
+          year: '2015年',
+          mileage: '5.9万公里',
+          place: '洛阳',
+          price: '17.30',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/38/8ac0527f50de490ecec298ddf3faece4.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 9,
+          carName: '标致3008 2015款 2.0L 手动经典版',
+          year: '2015年',
+          mileage: '4.0万公里',
+          place: '石家庄',
+          price: '10.00',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/38/6d056ae1311079c3002b7e43065519ab.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 10,
+          carName: '大众速腾 2010款 1.4TSI 自动豪华型',
+          year: '2010年',
+          mileage: '7.5万公里',
+          place: '盐城',
+          price: '5.80',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/38/19907410cc26baf7da4ed6af0c1e7bb2.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        },
+        {
+          id: 11,
+          carName: '宝骏730 2014款 1.5L 手动舒适型 7座',
+          year: '2015年',
+          mileage: '3.6万公里',
+          place: '上海',
+          price: '5.50',
+          carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        }
       ]
     }
   },
@@ -250,6 +408,9 @@ export default {
   watch: {
     currentCity (val) {
     }
+  },
+  mounted () {
+    this.activeCarTab = this.carTabList[0]
   },
   methods: {
     ...mapActions([
@@ -274,16 +435,21 @@ export default {
     searchPrice (price) {
     },
     freeEstimate () {
+    },
+    clickCarTab (tab) {
+      this.activeCarTab = tab
     }
   },
   components: {
     bannerView,
-    buySellStepView
+    buySellStepView,
+    tabView
   }
 }
 </script>
 <style lang="stylus" scoped>
 @import '~STYLUS/color.styl'
+@import '~STYLUS/mixin.styl'
 #index
   .banner-view
     position: relative
@@ -300,7 +466,7 @@ export default {
       height: 200px
       margin: 0 auto
       background: $color-white
-      box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
+      box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
       font-size: 0px
       padding: 20px
       padding-left: 30px
@@ -465,7 +631,7 @@ export default {
             width: 250px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
       #car-box-right
         width: 498px
         height: 100%
@@ -518,6 +684,119 @@ export default {
     .buy-sell-step
       position: relative
       margin-bottom: 30px
-      
+    #content-footer-buy-sell
+      position: relative
+      width: 100%
+      height: 120px
+      background: $color-white
+      display: flex
+      display: -webkit-flex
+      align-items: center
+      flex-direction: row
+      justify-content: center
+      > li
+        width: 179px
+        color: $color-white
+        display: flex
+        display: -webkit-flex
+        align-items: center
+        justify-content: center
+        font-size: 16px
+        line-height: 64px
+        font-weight: bold
+        border-radius: 5px
+        margin: 0 5px
+        &:hover
+          cursor: pointer
+      .color-blue
+        background: #24b9ffe8
+        &:hover
+          background: #24b9ff
+      .color-green
+        background: #8bc434
+        &:hover
+          background: #85b931
+      .buy-sell-left
+        margin-right: 20px
+        width: 382px
+        color: #858d96
+        font-weight: bold
+        font-size: 14px
+        text-align: center
+        .icon_bg
+          display: block
+          width: 382px
+          height: 30px
+          margin-bottom: 9px
+          background-image: url('~IMAGES/icon_guazi.png')
+          background-position: 0 -170px
+    #car_list_box
+      position: relative
+      width: 100%
+      display: flex
+      display: -webkit-flex
+      align-items: center
+      justify-content: center
+      flex-direction: column
+      .car_list_wrap
+        width: 1170px
+        display: flex
+        justify-content: space-between
+        flex-wrap: wrap
+        margin-top: 16px
+        .car-list
+          width: 280.5px
+          height: 314px
+          margin-bottom: 16px
+          &:hover
+            cursor: pointer
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
+          > img
+            width: 100%
+            height: 190px
+            margin-top: 3px
+          .car-info
+            width: 100%
+            height: 121px
+            padding: 20px
+            background: $color-white
+            .car-name
+              font-size: 16px
+              color: $color-black
+              single-text-ellipsis()
+            .car-info-p
+              font-size: 14px
+              color: #a5abb2
+              margin: 12px 0
+              > em
+                padding: 0 6px
+                color: #d2d2d2
+                font-style: normal
+            .car-info-price
+              font-size: 20px
+              color: #ff0000cc
+              > span
+                font-size: 14px
+      .car_more
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
+        align-items: center
+        justify-content: center
+        color: #495056
+        margin-bottom: 30px
+        margin-top: 10px
+        &:hover
+          cursor: pointer
+          color: $color-blue
+        > span
+          font-size: 14px
+          margin-right: 5px
+        .ic_more_car
+          display: block
+          width: 17px
+          height: 17px
+          background-image: url('~IMAGES/ic_more_car_arrow.png')
+          background-size: 17px
 </style>
 

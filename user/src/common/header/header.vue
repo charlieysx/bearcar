@@ -186,7 +186,7 @@ export default {
     right: 0
     background: $color-white
     user-select: none
-    z-index: 10
+    z-index: 20
     box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
     .header-wrap
       position: relative

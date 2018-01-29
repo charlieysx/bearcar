@@ -11,14 +11,14 @@
           :style="{backgroundImage: 'url(' + banner.imgUrl + ')'}">
         </li>
     </transition-group>
-    <div class="points"
-      @mouseenter="stop" 
-      @mouseleave="start">
+    <div class="points">
       <span
         v-for="(banner, index) in banners" 
         :key="index" 
         :class="{ active: index === bannerPosition }"
-        v-on:click="change(index)">
+        v-on:click="change(index)"
+        @mouseenter="stop" 
+        @mouseleave="start">
       </span>
     </div>
     <transition name="fade">
@@ -119,7 +119,7 @@ export default {
   .points
     position: absolute
     z-index: 0
-    top: 390px
+    top: 320px
     width: 100%
     margin: 0 auto
     text-align: center
