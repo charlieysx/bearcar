@@ -28,7 +28,6 @@
 <style lang="stylus" scoped>
   @import '~STYLUS/color.styl'
   #footer
-    flex: 0 0 110px
     background: #053556
     .footer-wrap
       position: relative

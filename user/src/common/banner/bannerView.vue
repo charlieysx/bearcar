@@ -23,13 +23,17 @@
     </div>
     <transition name="fade">
       <div class="arrow" 
-        v-show="showArrow"
-        @mouseenter="stop" 
-        @mouseleave="start">
-        <div class="arrow-left" @click="change(bannerPosition - 1)">
+        v-show="showArrow">
+        <div class="arrow-left" 
+          @click="change(bannerPosition - 1)"
+          @mouseenter="stop" 
+          @mouseleave="start">
             <i class="el-icon-arrow-left"></i>
         </div>
-        <div class="arrow-right" @click="change(bannerPosition + 1)">
+        <div class="arrow-right" 
+          @click="change(bannerPosition + 1)"
+          @mouseenter="stop" 
+          @mouseleave="start">
             <i class="el-icon-arrow-right"></i>
         </div>
       </div>
@@ -39,12 +43,21 @@
 
 <script>
 export default {
-  props: ['banners'],
+  props: ['banners', 'pageVisibility'],
   data () {
     return {
       bannerPosition: 0,
       timer: '',
       showArrow: false
+    }
+  },
+  watch: {
+    pageVisibility (val) {
+      if (val) {
+        this.start()
+      } else {
+        this.stop()
+      }
     }
   },
   created () {
@@ -63,6 +76,7 @@ export default {
       this.change(this.bannerPosition + 1)
     },
     start () {
+      clearInterval(this.timer)
       this.timer = setInterval(() => {
         this.autoPlay()
       }, 3000)
@@ -98,9 +112,7 @@ export default {
   .banner
     width: 100%
     height: 416px
-    left: 50%
     position: absolute
-    transform: translateX(-50%)
     background-repeat: no-repeat
     background-position: top
     background-size: auto 100%

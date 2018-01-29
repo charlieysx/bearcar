@@ -2,7 +2,8 @@
   <div id="index">
     <banner-view
       class="banner-view"
-      :banners="banners">
+      :banners="banners"
+      :pageVisibility="pageVisibility">
     </banner-view>
     <div id="home-content">
       <!-- 选择box -->
@@ -76,7 +77,7 @@
             <img src="~IMAGES/car2.png" alt="">
             <div>
               <li class="li-color-black">入门首选</li>
-              <li class="li-color-red">5-7万品质而手车</li>
+              <li class="li-color-red">5-7万品质二手车</li>
             </div>
           </div>
           <div id="box-middle">
@@ -240,7 +241,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentCity'
+      'currentCity',
+      'pageVisibility'
     ])
   },
   created () {
@@ -283,6 +285,8 @@ export default {
 <style lang="stylus" scoped>
 @import '~STYLUS/color.styl'
 #index
+  .banner-view
+    position: relative
   #home-content
     margin-top: -65px
     position: relative

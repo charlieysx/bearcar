@@ -193,6 +193,8 @@ export default {
       height 70px
       width: 1170px
       margin: 0 auto
+      padding-left: 3px
+      padding-right: 3px
       .header-logo
         display: inline-block
         margin: 23px 0
@@ -226,7 +228,7 @@ export default {
           vertical-align: top
           height: 70px
           line-height: 70px
-          margin-right: 30px
+          // margin-right: 30px
           color: $color-mid-grey
           font-size: 16px
           cursor: pointer

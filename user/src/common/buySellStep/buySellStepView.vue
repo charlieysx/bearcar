@@ -41,6 +41,7 @@
 <script>
 export default {
   name: 'buySellStepView',
+  props: ['pageVisibility'],
   data () {
     return {
       position: 0,
@@ -116,10 +117,19 @@ export default {
       stepList: {}
     }
   },
+  watch: {
+    pageVisibility (val) {
+      if (val) {
+        this.start()
+      } else {
+        this.stop()
+      }
+    }
+  },
   created () {
     this.$nextTick(() => {
-      this.start()
       this.stepList = this.buyStepList
+      this.start()
     })
   },
   methods: {
@@ -127,9 +137,10 @@ export default {
       this.autoChange(this.position + 1)
     },
     start () {
+      clearInterval(this.timer)
       this.timer = setInterval(() => {
         this.autoPlay()
-      }, 4000)
+      }, 2000)
     },
     stop () {
       clearInterval(this.timer)
@@ -173,7 +184,7 @@ export default {
   height: 400px
   .content
     .img-mask
-      width: auto
+      width: 100%
       height: 400px
       position: absolute
       background-repeat: no-repeat

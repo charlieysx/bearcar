@@ -4,7 +4,8 @@ import {
   GET_ALL_CITIES,
   GET_HOT_CITIES,
   SET_LOGIN_MASK_STATUS,
-  SET_CURRENT_CITY
+  SET_CURRENT_CITY,
+  SET_PAGE_VISIBILITY
 } from '../mutation-types'
 
 import {
@@ -17,7 +18,8 @@ const state = {
   hotCities: [],
   loginMaskShow: false,
   loginView: 'login',
-  currentCity: cachedCurrentCity.load() || { cityId: '-1', cityName: '全国' }
+  currentCity: cachedCurrentCity.load() || { cityId: '-1', cityName: '全国' },
+  pageVisibility: false
 }
 
 const getters = {
@@ -38,6 +40,9 @@ const getters = {
   },
   loginView (state) {
     return state.loginView
+  },
+  pageVisibility (state) {
+    return state.pageVisibility
   }
 }
 
@@ -58,6 +63,9 @@ const mutations = {
   [SET_LOGIN_MASK_STATUS] (state, data) {
     state.loginMaskShow = data.show
     state.loginView = data.view
+  },
+  [SET_PAGE_VISIBILITY] (state, data) {
+    state.pageVisibility = data
   }
 }
 
