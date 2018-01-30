@@ -1,16 +1,26 @@
 <template>
   <div id="appindex">
+    <!-- header -->
     <page-header></page-header>
+    <!-- header 结束 -->
+    <!-- content -->
     <div class="viewWrap">
       <router-view></router-view>
     </div>
+    <!-- content 结束 -->
+    <!-- footer -->
     <page-footer></page-footer>
+    <!-- footer 结束 -->
+    <!-- 返回顶部 -->
     <div class="nav-wrap">
       <float-nav></float-nav>
     </div>
+    <!-- 返回顶部 结束 -->
+    <!-- 登录注册 -->
     <transition name="fade">
       <auth-layout v-show="loginMaskShow"></auth-layout>
     </transition>
+    <!-- 登录注册 结束 -->
   </div>
 </template>
 

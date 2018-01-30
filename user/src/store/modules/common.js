@@ -5,7 +5,8 @@ import {
   GET_HOT_CITIES,
   SET_LOGIN_MASK_STATUS,
   SET_CURRENT_CITY,
-  SET_PAGE_VISIBILITY
+  SET_PAGE_VISIBILITY,
+  SET_HEADER_ACTIVE_TAB
 } from '../mutation-types'
 
 import {
@@ -19,7 +20,8 @@ const state = {
   loginMaskShow: false,
   loginView: 'login',
   currentCity: cachedCurrentCity.load() || { cityId: '-1', cityName: '全国' },
-  pageVisibility: false
+  pageVisibility: false,
+  headerActiveTab: 0
 }
 
 const getters = {
@@ -43,6 +45,9 @@ const getters = {
   },
   pageVisibility (state) {
     return state.pageVisibility
+  },
+  headerActiveTab (state) {
+    return state.headerActiveTab
   }
 }
 
@@ -66,6 +71,9 @@ const mutations = {
   },
   [SET_PAGE_VISIBILITY] (state, data) {
     state.pageVisibility = data
+  },
+  [SET_HEADER_ACTIVE_TAB] (state, data) {
+    state.headerActiveTab = data
   }
 }
 

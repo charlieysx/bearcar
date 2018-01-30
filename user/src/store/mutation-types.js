@@ -1,5 +1,6 @@
 // header
 export const SET_SHOW_HEADER = 'SET_SHOW_HEADER'
+export const SET_HEADER_ACTIVE_TAB = 'SET_HEADER_ACTIVE_TAB'
 
 // login、userInfo
 export const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS'

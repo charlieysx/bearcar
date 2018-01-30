@@ -2,7 +2,10 @@
   <div id="header-main" v-if="showHeader">
     <div id="header-body">
       <div class="header-wrap" :style="style">
-        <a class="header-logo"></a>
+        <!-- logo -->
+        <a class="header-logo" :href="homeLink"></a>
+        <!-- logo 结束 -->
+        <!-- 选择城市 -->
         <div class="header-city" @mouseover="showCityPickerF" @mouseout="hideCityPickerF">
           <div class="city-name">{{currentCity.cityName}}</div>
           <i class="el-icon-arrow-down"></i>
@@ -15,12 +18,16 @@
             @city-click="cityClick">
           </city-picker>
         </div>
+        <!-- 选择城市 结束 -->
+        <!-- tab -->
         <tab-view 
           class="header-tab"
           :tabs="tabs"
           :activeTab="activeTab"
           @tab-click="tabClick">
         </tab-view>
+        <!-- tab 结束 -->
+        <!-- 登录注册信息 -->
         <div class="header-right-wrap">
           <div class="header-login">
             <div class="header-user" v-if="!isLogin">
@@ -47,9 +54,12 @@
             </div>
           </div>
         </div>
+        <!-- 登录注册信息 结束 -->
       </div>
     </div>
+    <!-- 空白 占位用 -->
     <div id="header-space"></div>
+    <!-- 空白 占位用 结束 -->
   </div>
 </template>
 
@@ -83,6 +93,7 @@ export default {
   },
   data () {
     return {
+      homeLink: `${window.location.origin}/`,
       showCityPicker: false,
       style: {
         left: '0px'
@@ -130,8 +141,14 @@ export default {
       'allCities',
       'hotCities',
       'currentCity',
-      'userInfo'
+      'userInfo',
+      'headerActiveTab'
     ])
+  },
+  watch: {
+    headerActiveTab (pos) {
+      this.activeTab = this.tabs[pos]
+    }
   },
   methods: {
     showCityPickerF () {
@@ -146,6 +163,20 @@ export default {
     },
     tabClick (tab) {
       this.activeTab = tab
+      switch (tab.id) {
+        case 0:
+          this.toIndex()
+          break
+        case 1:
+          this.toBuyCar()
+          break
+        case 2:
+          break
+        case 3:
+          break
+        case 4:
+          break
+      }
     },
     toRegister () {
       this.setLoginMaskStatus({ show: true, view: 'register' })
@@ -158,6 +189,12 @@ export default {
       cachedUserInfo.delete()
       this.$store.commit(SET_LOGIN_STATUS, false)
       this.$store.commit(SET_USER_INFO, {})
+    },
+    toIndex () {
+      this.$router.push({ name: 'home' })
+    },
+    toBuyCar () {
+      this.$router.push({ name: 'searchCar' })
     },
     fixTopBarScroll () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft

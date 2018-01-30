@@ -1,19 +1,23 @@
 <template>
   <div id="index">
+    <!-- banner -->
     <banner-view
       class="banner-view"
       :banners="banners"
       :pageVisibility="pageVisibility">
     </banner-view>
+    <!-- banner 结束 -->
     <div id="home-content">
-      <!-- 选择box -->
+      <!-- 买卖车box -->
       <div id="show-box">
+        <!-- 买车 -->
         <div id="box-left">
           <div id="box-content-top">
             <span @click="buyCar">
               我要买车
               <i class="el-icon-arrow-right"></i>
             </span>
+            <!-- 搜索 -->
             <div class="header-search">
               <div class="header-search-wrap" :class="{'borderLight': inputBorder}">
                 <input 
@@ -27,8 +31,10 @@
                 <i @click="toSearch('click')" class="el-icon-search"></i>
               </div>
             </div>
+            <!-- 搜索 结束 -->
           </div>
           <div id="box-content-bottom">
+            <!-- 汽车品牌 -->
             <div class="car-class">
               <span
                 v-for="car in carClassList"
@@ -37,6 +43,8 @@
                 {{ car.text }}
               </span>
             </div>
+            <!-- 汽车品牌 结束 -->
+            <!-- 汽车价格 -->
             <div class="car-price">
               <span
                 v-for="price in carPriceList"
@@ -45,8 +53,11 @@
                 {{ price.text }}
               </span>
             </div>
+            <!-- 汽车价格 结束 -->
           </div>
         </div>
+        <!-- 买车 结束 -->
+        <!-- 卖车 -->
         <div id="box-right">
           <div id="box-content-top">
             <span @click="sellCar">
@@ -64,9 +75,12 @@
             <li class="color-green" @click="freeEstimate">免费估价</li>
           </div>
         </div>
+        <!-- 买车 结束 -->
       </div>
+      <!-- 买卖车box 结束 -->
       <!-- 资讯 -->
       <div id="car-box">
+        <!-- 推荐 -->
         <div id="car-box-left">
           <img src="~IMAGES/car1.png" alt="">
           <li class="li-color-black">选你所爱</li>
@@ -88,6 +102,8 @@
             </div>
           </div>
         </div>
+        <!-- 推荐 结束 -->
+        <!-- 资讯 -->
         <div id="car-box-right">
           <div id="box-right-top">
             <span>资讯</span>
@@ -102,19 +118,27 @@
             </li>
           </div>
         </div>
+        <!-- 资讯 结束 -->
       </div>
+      <!-- 资讯 结束 -->
       <!-- 买卖流程 -->
       <buy-sell-step-view class="buy-sell-step">
       </buy-sell-step-view>
+      <!-- 买卖流程 结束 -->
+      <!-- 最新上架等二手车列表 -->
       <div id="car_list_box">
+        <!-- tab -->
         <tab-view
           :tabs="carTabList"
           :activeTab="activeCarTab"
           @tab-click="clickCarTab">
         </tab-view>
+        <!-- tab 结束 -->
         <ul class="car_list_wrap">
           <li class="car-list" v-for="item in newCarList" :key="item.id">
-            <img :src="item.carImg" alt="">
+            <div class="car-img">
+              <img :src="item.carImg" alt="">
+            </div>
             <div class="car-info">
               <p class="car-name">{{item.carName}}</p>
               <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
@@ -130,15 +154,16 @@
           <i class="ic_more_car"></i>
         </div>
       </div>
+      <!-- 最新上架等二手车列表 结束 -->
       <div id="content-footer-buy-sell">
         <div class="buy-sell-left">
           <i class="icon_bg"></i>
           <span>免费咨询电话：020-12345678</span>
         </div>
-        <li class="color-blue" @click="sellCar">我要买车</li>
-        <li class="color-green" @click="freeEstimate">我要卖车</li>
+        <li class="color-blue" @click="buyCar">我要买车</li>
+        <li class="color-green" @click="sellCar">我要卖车</li>
       </div>
-    </div>
+    </div>      
   </div>
 </template>
 <script>
@@ -146,6 +171,9 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import bannerView from 'COMMON/banner/bannerView'
 import buySellStepView from 'COMMON/buySellStep/buySellStepView'
 import tabView from 'COMMON/tabView/tabView'
+import {
+  SET_HEADER_ACTIVE_TAB
+} from 'STORE/mutation-types'
 
 export default {
   name: 'home',
@@ -404,6 +432,7 @@ export default {
     ])
   },
   created () {
+    this.$store.commit(SET_HEADER_ACTIVE_TAB, 0)
   },
   watch: {
     currentCity (val) {
@@ -421,18 +450,33 @@ export default {
       if (type === 'keyup' && !this.inputBorder) {
         return false
       }
+      if (this.searchValue.length === 0) {
+        return false
+      }
+      this.$router.push({
+        name: 'searchCar'
+      })
       this.searchValue = ''
     },
     borderLight () {
       return this.inputBorder ? '' : 'borderLight'
     },
     buyCar () {
+      this.$router.push({
+        name: 'searchCar'
+      })
     },
     sellCar () {
     },
     searchCar (car) {
+      this.$router.push({
+        name: 'searchCar'
+      })
     },
     searchPrice (price) {
+      this.$router.push({
+        name: 'searchCar'
+      })
     },
     freeEstimate () {
     },
@@ -751,10 +795,15 @@ export default {
           &:hover
             cursor: pointer
             box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
-          > img
+          .car-img
             width: 100%
             height: 190px
             margin-top: 3px
+            background-image: url('~IMAGES/car_default.png')
+            background-size: 100% 190px
+            > img
+              width: 100%
+              height: 190px
           .car-info
             width: 100%
             height: 121px

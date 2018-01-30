@@ -47,7 +47,8 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return ExtractTextPlugin.extract({
         use: loaders,
-        fallback: 'vue-style-loader'
+        fallback: 'vue-style-loader',
+        publicPath: '../../'
       })
     } else {
       return ['vue-style-loader'].concat(loaders)
@@ -78,23 +79,6 @@ exports.styleLoaders = function (options) {
       use: loader
     })
   }
-
-  // output.push({
-  //   test: /\.css$/,
-  //   use: [
-  //     'style-loader',
-  //     'css-loader'
-  //   ]
-  // })
-
-  // output.push({
-  //   test: /\.styl$/,
-  //   use: [
-  //     'style-loader',
-  //     'css-loader?minimize=true',
-  //     'stylus-loader'
-  //   ]
-  // })
 
   return output
 }

@@ -18,6 +18,11 @@
         innerActiveTab: {}
       }
     },
+    watch: {
+      activeTab (tab) {
+        this.innerActiveTab = tab
+      }
+    },
     mounted () {
       this.innerActiveTab = this.tabs[0]
     },
