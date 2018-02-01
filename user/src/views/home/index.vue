@@ -37,10 +37,10 @@
             <!-- 汽车品牌 -->
             <div class="car-class">
               <span
-                v-for="car in carClassList"
-                :key="car.id"
-                @click="searchCar(car)">
-                {{ car.text }}
+                v-for="brand in innerHotBrands"
+                :key="brand.brandId"
+                @click="searchCar(brand)">
+                {{ brand.brandName }}
               </span>
             </div>
             <!-- 汽车品牌 结束 -->
@@ -226,36 +226,6 @@ export default {
           text: '20万以上'
         }
       ],
-      carClassList: [
-        {
-          id: 0,
-          text: '大众'
-        },
-        {
-          id: 1,
-          text: '福特'
-        },
-        {
-          id: 2,
-          text: '别克'
-        },
-        {
-          id: 3,
-          text: '现代'
-        },
-        {
-          id: 4,
-          text: '雪佛兰'
-        },
-        {
-          id: 5,
-          text: '丰田'
-        },
-        {
-          id: -1,
-          text: '...更多'
-        }
-      ],
       carInfoList: [
         {
           id: 0,
@@ -422,20 +392,32 @@ export default {
           price: '5.50',
           carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
         }
-      ]
+      ],
+      innerHotBrands: []
     }
   },
   computed: {
     ...mapGetters([
       'currentCity',
-      'pageVisibility'
+      'pageVisibility',
+      'hotBrands'
     ])
   },
   created () {
+    this.getHotBrand(6)
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 0)
   },
   watch: {
     currentCity (val) {
+    },
+    hotBrands (list) {
+      if (list.length > 0) {
+        this.innerHotBrands = list
+        this.innerHotBrands[list.length] = {
+          brandId: -1,
+          brandName: '...更多'
+        }
+      }
     }
   },
   mounted () {
@@ -443,6 +425,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getHotBrand'
     ]),
     ...mapMutations({
     }),

@@ -2,7 +2,7 @@ import axios from 'axios'
 import Qs from 'qs'
 
 /* eslint-disable */
-const API_ROOT = 'http://codebear.cn/bearcarproject/index.php'
+const API_ROOT = 'http://bearcarapi.codebear.cn/index.php'
 
 
 /* eslint-enable */
@@ -46,12 +46,35 @@ export default {
     return axios.get('common/get_city_sort')
   },
   /**
-   * 获取按字母排序的城市
+   * 获取热门的城市
    */
   getHotCity () {
     return axios.get('common/get_hot_city')
+  },
+  /**
+   * 获取按字母排序的车品牌
+   */
+  getCarBrandSort () {
+    return axios.get('car/get_brand_sort')
+  },
+  /**
+   * 获取热门车品牌
+   */
+  getHotBrand (count) {
+    return axios.get('car/get_hot_brand', {
+      params: {
+        count: count
+      }
+    })
+  },
+  /**
+   * 获取热门车系列
+   */
+  getHotSeries (count) {
+    return axios.get('car/get_hot_series', {
+      params: {
+        count: count
+      }
+    })
   }
 }
-
-// 图片验证码链接
-export const captchaUrl = `https://api-upc.kdjz.com/v1/captcha`

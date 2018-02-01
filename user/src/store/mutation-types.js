@@ -14,3 +14,8 @@ export const SET_CURRENT_CITY = 'SET_CURRENT_CITY'
 
 // page visibility
 export const SET_PAGE_VISIBILITY = 'SET_PAGE_VISIBILITY'
+
+// car
+export const GET_ALL_SORT_BRAND = 'GET_ALL_SORT_BRAND'
+export const GET_HOT_BRAND = 'GET_HOT_BRAND'
+export const GET_HOT_SERIES = 'GET_HOT_SERIES'
