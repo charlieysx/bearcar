@@ -13,10 +13,5 @@ export default [
     path: '/searchCar/:keyword',
     name: 'searchCarByKeyword',
     component: searchCar
-  },
-  {
-    path: '/searchCar/:keyword/:value',
-    name: 'searchCarByKV',
-    component: searchCar
   }
 ]

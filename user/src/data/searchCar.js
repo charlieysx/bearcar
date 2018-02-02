@@ -3,6 +3,7 @@ export const moreSelectList = [
     type: 'car-age',
     title: '车龄',
     tag: 'ca',
+    mark: true,
     list: [
       {
         id: '0',
@@ -35,6 +36,7 @@ export const moreSelectList = [
     type: 'car-speed-box',
     title: '变速箱',
     tag: 'csb',
+    mark: true,
     list: [
       {
         id: '0',
@@ -55,6 +57,7 @@ export const moreSelectList = [
     type: 'car-model',
     title: '车型',
     tag: 'cm',
+    mark: true,
     list: [
       {
         id: '0',
@@ -91,6 +94,7 @@ export const moreSelectList = [
     type: 'car-mileage',
     title: '里程',
     tag: 'cmi',
+    mark: true,
     list: [
       {
         id: '0',
@@ -127,6 +131,7 @@ export const moreSelectList = [
     type: 'car-displacement',
     title: '排量',
     tag: 'cd',
+    mark: true,
     list: [
       {
         id: '0',
@@ -163,6 +168,7 @@ export const moreSelectList = [
     type: 'car-emission-standards',
     title: '排放标准',
     tag: 'ces',
+    mark: true,
     list: [
       {
         id: '0',
@@ -191,6 +197,7 @@ export const moreSelectList = [
     type: 'car-seating',
     title: '座位数',
     tag: 'cs',
+    mark: true,
     list: [
       {
         id: '0',
@@ -223,38 +230,7 @@ export const moreSelectList = [
     type: 'car-fuel-type',
     title: '燃油类型',
     tag: 'cft',
-    list: [
-      {
-        id: '0',
-        value: '不限',
-        realValue: '燃油类型'
-      },
-      {
-        id: '1',
-        value: '汽油'
-      },
-      {
-        id: '2',
-        value: '柴油'
-      },
-      {
-        id: '3',
-        value: '电动'
-      },
-      {
-        id: '4',
-        value: '油电混合'
-      },
-      {
-        id: '5',
-        value: '其他'
-      }
-    ]
-  },
-  {
-    type: 'car-fuel-type',
-    title: '燃油类型',
-    tag: 'cft',
+    mark: true,
     list: [
       {
         id: '0',
@@ -287,6 +263,7 @@ export const moreSelectList = [
     type: 'car-driving-type',
     title: '驱动类型',
     tag: 'cdt',
+    mark: true,
     list: [
       {
         id: '0',
@@ -307,6 +284,7 @@ export const moreSelectList = [
     type: 'car-country',
     title: '国别',
     tag: 'cc',
+    mark: true,
     list: [
       {
         id: '0',
@@ -347,6 +325,7 @@ export const moreSelectList = [
     type: 'car-configuration',
     title: '亮点配置',
     tag: 'cco',
+    mark: true,
     list: [
       {
         id: '0',
@@ -389,6 +368,114 @@ export const moreSelectList = [
   }
 ]
 
+export const filterCriteriaList = {
+  sv: {
+    type: 'search-value',
+    title: '搜索内容',
+    tag: 'sv',
+    value: ''
+  },
+  br: {
+    type: 'car-brand',
+    title: '品牌',
+    tag: 'br',
+    value: '',
+    item: ''
+  },
+  se: {
+    type: 'car-series',
+    title: '车系',
+    tag: 'se',
+    value: '',
+    item: ''
+  },
+  pi: {
+    type: 'car-price',
+    title: '价格',
+    tag: 'pi',
+    value: '',
+    item: ''
+  },
+  ca: {
+    type: 'car-age',
+    title: '车龄',
+    tag: 'ca',
+    value: '',
+    item: ''
+  },
+  csb: {
+    type: 'car-speed-box',
+    title: '变速箱',
+    tag: 'csb',
+    value: '',
+    item: ''
+  },
+  cm: {
+    type: 'car-model',
+    title: '车型',
+    tag: 'cm',
+    value: '',
+    item: ''
+  },
+  cmi: {
+    type: 'car-mileage',
+    title: '里程',
+    tag: 'cmi',
+    value: '',
+    item: ''
+  },
+  cd: {
+    type: 'car-displacement',
+    title: '排量',
+    tag: 'cd',
+    value: '',
+    item: ''
+  },
+  ces: {
+    type: 'car-emission-standards',
+    title: '排放标准',
+    tag: 'ces',
+    value: '',
+    item: ''
+  },
+  cs: {
+    type: 'car-seating',
+    title: '座位数',
+    tag: 'cs',
+    value: '',
+    item: ''
+  },
+  cft: {
+    type: 'car-fuel-type',
+    title: '燃油类型',
+    tag: 'cft',
+    value: '',
+    item: ''
+  },
+  cdt: {
+    type: 'car-driving-type',
+    title: '驱动类型',
+    tag: 'cdt',
+    value: '',
+    item: ''
+  },
+  cc: {
+    type: 'car-country',
+    title: '国别',
+    tag: 'cc',
+    value: '',
+    item: ''
+  },
+  cco: {
+    type: 'car-configuration',
+    title: '亮点配置',
+    tag: 'cco',
+    value: '',
+    item: ''
+  }
+}
+
 export default {
-  moreSelectList
+  moreSelectList,
+  filterCriteriaList
 }

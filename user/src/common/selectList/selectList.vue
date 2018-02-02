@@ -28,7 +28,7 @@
 
 export default {
   name: 'selectList',
-  props: ['selectModel'],
+  props: ['selectModel', 'mark'],
   data () {
     return {
       borderLight: true,
@@ -42,11 +42,13 @@ export default {
     this.borderLight = false
   },
   watch: {
+    mark (value) {
+      this.selectItemData = this.selectModel.list[0]
+    }
   },
   methods: {
     showList () {
       this.borderLight = true
-      console.log(this.width)
     },
     hideList () {
       this.borderLight = false
@@ -78,7 +80,7 @@ export default {
         min-width: 84px
         padding: 5px
         background: $color-white
-        border: 1px solid $color-mid-grey
+        border: 1px solid #e6e6e6
         display: flex
         display: -webkit-flex
         flex-direction: row

@@ -15,12 +15,13 @@
     </div>
     <div class="search-list" :style="{'display': inputBorder ? 'block' : 'none'}">
         <div 
-            v-for="(car, index) in searchCarList"
+            v-for="(item, index) in searchCarList"
             :key="index"
             class="search-car-item"
             :class="{ itemActive : searchCarListPos === index }"
-            @click="toSearch()">
-            {{ car.text }}
+            v-if="index < 8"
+            @mousedown="clickItem(item)">
+            {{ item.brandName }}
         </div>
     </div>
   </div>
@@ -30,37 +31,12 @@
 
 export default {
   name: 'searchCarInput',
+  props: ['searchCarList'],
   data () {
     return {
       inputBorder: false,
       searchValue: '',
-      searchCarListPos: -1,
-      searchCarList: [
-        {
-          id: 0,
-          text: '大众'
-        },
-        {
-          id: 1,
-          text: '福特'
-        },
-        {
-          id: 2,
-          text: '别克'
-        },
-        {
-          id: 3,
-          text: '现代'
-        },
-        {
-          id: 4,
-          text: '雪佛兰'
-        },
-        {
-          id: 5,
-          text: '丰田'
-        }
-      ]
+      searchCarListPos: -1
     }
   },
   watch: {
@@ -70,7 +46,7 @@ export default {
       }
     },
     searchValue (value) {
-      console.log(value)
+      this.searchCarListPos = -1
     }
   },
   methods: {
@@ -78,10 +54,18 @@ export default {
       if (type === 'keyup' && !this.inputBorder) {
         return false
       }
+      if (this.searchCarListPos >= 0) {
+        this.$emit('search-item', this.searchCarList[this.searchCarListPos])
+        this.inputBorder = false
+        this.searchValue = ''
+        return false
+      }
       if (this.searchValue.length === 0) {
         return false
       }
       this.$emit('search', this.searchValue)
+      this.inputBorder = false
+      this.searchValue = ''
     },
     borderLight () {
       return this.inputBorder ? '' : 'borderLight'
@@ -101,7 +85,10 @@ export default {
           }
           break
       }
-      this.searchValue = this.searchCarList[this.searchCarListPos].text
+    },
+    clickItem (item) {
+      this.$emit('search-item', item)
+      this.searchValue = ''
     }
   }
 }
@@ -144,7 +131,7 @@ export default {
         border: 1px solid $color-blue !important
         background: $color-white !important
         z-index: 10
-        font-size: 16px
+        font-size: 14px
         cursor: default
         display: none
         display: flex
@@ -154,12 +141,16 @@ export default {
         .search-car-item
             width: 100%
             single-text-ellipsis()
-            padding: 10px
+            padding: 6px 10px
+            &:first-child
+              padding-top: 10px
+            &:last-child
+              padding-bottom: 10px
             &.itemActive
             &:hover
-                cursor: pointer
-                background: #f5f5f7
-                color: $color-blue
+              cursor: pointer
+              background: #f5f5f7
+              color: $color-blue
 
 
 </style>

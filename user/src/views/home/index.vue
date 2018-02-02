@@ -134,7 +134,7 @@
           @tab-click="clickCarTab">
         </tab-view>
         <!-- tab 结束 -->
-        <ul class="car_list_wrap">
+        <ul class="car-list-wrap">
           <li class="car-list" v-for="item in newCarList" :key="item.id">
             <div class="car-img">
               <img :src="item.carImg" alt="">
@@ -149,7 +149,7 @@
             </div>
           </li>
         </ul>
-        <div class="car_more">
+        <div class="car_more" @click="clickMoreCar(activeCarTab.name)">
           <span>更多{{activeCarTab.name}}</span>
           <i class="ic_more_car"></i>
         </div>
@@ -465,6 +465,11 @@ export default {
     },
     clickCarTab (tab) {
       this.activeCarTab = tab
+    },
+    clickMoreCar (name) {
+      this.$router.push({
+        name: 'searchCar'
+      })
     }
   },
   components: {
@@ -637,7 +642,7 @@ export default {
           margin-bottom: 30px
         &:hover
           cursor: pointer
-          box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
+          box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .2)
       #car-box-middle
         width: 440px
         height: 100%
@@ -658,7 +663,7 @@ export default {
             width: 250px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
       #car-box-right
         width: 498px
         height: 100%
@@ -765,7 +770,7 @@ export default {
       align-items: center
       justify-content: center
       flex-direction: column
-      .car_list_wrap
+      .car-list-wrap
         width: 1170px
         display: flex
         justify-content: space-between
@@ -777,7 +782,7 @@ export default {
           margin-bottom: 16px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
           .car-img
             width: 100%
             height: 190px
