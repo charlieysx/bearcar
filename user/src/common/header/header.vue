@@ -147,7 +147,7 @@ export default {
   },
   watch: {
     headerActiveTab (pos) {
-      this.activeTab = this.tabs[pos]
+      this.activeTab = (pos === -1 ? {} : this.tabs[pos])
     }
   },
   methods: {

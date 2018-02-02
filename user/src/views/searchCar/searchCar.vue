@@ -7,7 +7,8 @@
             <search-car-input 
               @search="toSearch" 
               @search-item="inputSearchItem"
-              :searchCarList="innerHotBrands"></search-car-input>
+              :searchCarList="innerHotBrands">
+            </search-car-input>
         </div>
         <!-- 面包屑，搜索框 结束 -->
         <!-- 车源筛选 -->
@@ -44,7 +45,7 @@
                           <span 
                             v-for="(brand, index) in group" 
                             :key="index"
-                            @click="selectBrand(brand)">
+                            @click="selectBrand(brand),moreBrandOpen = false">
                             {{ brand.brandName }}
                           </span>
                         </div>
@@ -226,7 +227,7 @@
         <!-- 搜索结果 -->
         <div id="car-result-list">
           <ul class="car-list-wrap" v-show="searchResultList.length > 0">
-            <li class="car-list" v-for="(item, index) in searchResultList" :key="index">
+            <li class="car-list" v-for="(item, index) in searchResultList" :key="index" @click="toCarInfo(item)">
               <div class="car-img">
                 <img :src="item.carImg" alt="">
               </div>
@@ -281,7 +282,7 @@ export default {
         },
         {
           text: '全国二手车',
-          to: {path: '/d'}
+          to: {path: '/searchCar'}
         }
       ],
       currentBrand: { brandId: -1, brandName: '不限' },
@@ -975,6 +976,14 @@ export default {
     },
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
+    },
+    toCarInfo (item) {
+      this.$router.push({
+        name: 'car',
+        params: {
+          carId: item.id
+        }
+      })
     }
   }
 }
@@ -998,218 +1007,152 @@ export default {
       justify-content: space-between
       .bread-crumb
         margin: 0 0
-  #filter-wrap
-    background: #fafafa
-    border: 1px solid #e6e6e6
-    border-bottom: none
-    font-size: 14px
-    li
-      border-bottom 1px solid #e6e6e6
-      .more
+    #filter-wrap
+      background: #fafafa
+      border: 1px solid #e6e6e6
+      border-bottom: none
+      font-size: 14px
+      li
+        border-bottom 1px solid #e6e6e6
+        .more
+          width: 70px
+          height: 100%
+          color: $color-black
+          padding: 14px 0px
+          text-align: center
+          i
+            color: #999999
+          &:hover
+            cursor: pointer
+            color: $color-blue
+      .float-left
+        float: left
+      .filter-name
         width: 70px
         height: 100%
-        color: $color-black
-        padding: 14px 0px
+        padding: 19px 0px
+        background: #fafafa
         text-align: center
-        i
-          color: #999999
-        &:hover
-          cursor: pointer
-          color: $color-blue
-    .float-left
-      float: left
-    .filter-name
-      width: 70px
-      height: 100%
-      padding: 19px 0px
-      background: #fafafa
-      text-align: center
-    .filter-left
-      background: $color-white
-      width: 1098px
-      padding-top: 5px
-      padding-bottom: 5px
-      .filter-show
-        display: flex
-        display: -webkit-flex
-        flex-direction: row
-        justify-content: space-between
-        .filter-item
-          width: 1018px
-          padding-left: 10px
-          .select-list
-            color: $color-dark-grey
-            margin-top: 8px
-            margin-left: 8px
-            margin-bottom: 8px
-            margin-right: 4px
-            cursor: pointer
-            float: left
-            &:first-child
-              margin-left: 8px
-          > span
-            color: $color-dark-grey
-            margin: 10px
-            margin-left: 10px
-            margin-right: 0px
-            padding: 4px 5px
-            cursor: pointer
-            float: left
-            &:hover
-              color: $color-blue
-            &.current
-              color: $color-white
-              background: $color-blue
-          .price-input
-            color: $color-dark-grey
-            margin: 10px
-            margin-left: 30px
-            margin-right: 2px
-            cursor: pointer
-            float: left
-            display: flex
-            display: -webkit-flex
-            flex-direction: row
-            align-items: center
-            .input-border
-              border: 1px solid #e6e6e6
-              padding: 1px 2px
-              margin: 0px 4px
-              input
-                width: 40px
-                border: none
-                text-align: right
-            button
-              width: 50px
-              padding: 2px 2px
-              border: 1px solid $color-blue
-              background: $color-white
-              color: $color-blue
-              margin-left: 4px
-              &:hover
-                cursor: pointer
-                background: $color-blue
-                color: $color-white
-      .more-brand
-        width: 100%
-        border-top 1px solid #e6e6e6
-        display: none
-        &.show-more
+      .filter-left
+        background: $color-white
+        width: 1098px
+        padding-top: 5px
+        padding-bottom: 5px
+        .filter-show
           display: flex
           display: -webkit-flex
           flex-direction: row
           justify-content: space-between
-        .more-brand-wrap
-          .more-brand-list
-            font-size: 14px
-            li
-              padding: 10px
-              padding-bottom: 0px
-              border-bottom: none
-              &:hover
-                background: $color-bg-grey
-                .letter
-                  background: $color-dark-blue
-                  color: $color-white
-            div
+          .filter-item
+            width: 1018px
+            padding-left: 10px
+            .select-list
+              color: $color-dark-grey
+              margin-top: 8px
+              margin-left: 8px
+              margin-bottom: 8px
+              margin-right: 4px
+              cursor: pointer
               float: left
-            .letter
-              width: 20px
-              height: @width
-              line-height: @height
-              color: $color-blue
-              border: 1px solid $color-border
-              border-radius: 4px
-              text-align: center
-              margin-right: 20px
-            .brand-list
-              width: 300px
-              span
-                color: $color-dark-grey
-                margin-right: 4px
-                padding: 4px 4px
-                cursor: pointer
-                float:left
-                &:hover,
-                &.current
-                  color: $color-blue
-  #filter-result
-    font-size: 14px
-    background: $color-white
-    width: 100%
-    padding: 15px 5px
-    > span
-      color: #888888
-    .filter-criteria
-      display: flex
-      display: -webkit-flex
-      flex-direction: row
-      color: #888888
-      margin-bottom: 5px
-      > span
-        margin-top: 5px
-      > p
-        color: $color-black
-        margin: 0px 15px
-        cursor: pointer
-        height: 15px
-        margin-top: 5px
-        &:hover
-          color: $color-blue
-      .filter-criteria-item
-        margin-left: 4px
-        max-width: 960px
-        .criteria-item
-          float: left
-          padding: 5px
-          margin-left: 10px
-          margin-bottom: 10px
-          border: 1px solid #e6e6e6
-          cursor: pointer
-          &:hover
-            border: 1px solid $color-blue
-            i
-              color: $color-blue
-          .criteria-title
-            color: $color-dark-grey
-          .criteria-value
-            color: $color-blue
-  #car-order
-    font-size: 14px
-    color: $color-dark-grey
-    border-bottom: 1px solid #e6e6e6
-    padding: 10px
-    text-align: right
-    > span
-      cursor: pointer
-      padding: 5px
-      &:hover,
-      &.active
-        color: $color-blue
-    > em
-      color: #d2d2d2
-      font-style: normal
-  #car-empty
-    width: 100%
-    display: flex
-    display: -webkit-flex
-    align-content: center
-    flex-direction: column
-    text-align: center
-    padding: 100px 0px
-    > img
-      width: 400px
-      height: 150px
-      margin: 0 auto
-    > p
-      margin: 20px
-    #filter-result-e
+              &:first-child
+                margin-left: 8px
+            > span
+              color: $color-dark-grey
+              margin: 10px
+              margin-left: 10px
+              margin-right: 0px
+              padding: 4px 5px
+              cursor: pointer
+              float: left
+              &:hover
+                color: $color-blue
+              &.current
+                color: $color-white
+                background: $color-blue
+            .price-input
+              color: $color-dark-grey
+              margin: 10px
+              margin-left: 30px
+              margin-right: 2px
+              cursor: pointer
+              float: left
+              display: flex
+              display: -webkit-flex
+              flex-direction: row
+              align-items: center
+              .input-border
+                border: 1px solid #e6e6e6
+                padding: 1px 2px
+                margin: 0px 4px
+                input
+                  width: 40px
+                  border: none
+                  text-align: right
+              button
+                width: 50px
+                padding: 2px 2px
+                border: 1px solid $color-blue
+                background: $color-white
+                color: $color-blue
+                margin-left: 4px
+                &:hover
+                  cursor: pointer
+                  background: $color-blue
+                  color: $color-white
+        .more-brand
+          width: 100%
+          border-top 1px solid #e6e6e6
+          display: none
+          &.show-more
+            display: flex
+            display: -webkit-flex
+            flex-direction: row
+            justify-content: space-between
+          .more-brand-wrap
+            .more-brand-list
+              font-size: 14px
+              li
+                padding: 10px
+                padding-bottom: 0px
+                border-bottom: none
+                &:hover
+                  background: $color-bg-grey
+                  .letter
+                    background: $color-dark-blue
+                    color: $color-white
+              div
+                float: left
+              .letter
+                width: 20px
+                height: @width
+                line-height: @height
+                color: $color-blue
+                border: 1px solid $color-border
+                border-radius: 4px
+                text-align: center
+                margin-right: 20px
+              .brand-list
+                width: 300px
+                span
+                  color: $color-dark-grey
+                  margin-right: 4px
+                  padding: 4px 4px
+                  cursor: pointer
+                  float:left
+                  &:hover,
+                  &.current
+                    color: $color-blue
+    #filter-result
       font-size: 14px
       background: $color-white
+      width: 100%
       padding: 15px 5px
       > span
         color: #888888
-      .filter-criteria-e
+      .filter-criteria
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
         color: #888888
         margin-bottom: 5px
         > span
@@ -1222,15 +1165,11 @@ export default {
           margin-top: 5px
           &:hover
             color: $color-blue
-        .filter-criteria-item-e
-          display: flex
-          display: -webkit-flex
-          flex-direction: row
-          justify-content: center
-          flex-wrap: wrap
-          padding-left: 200px
-          padding-right: 200px
-          .criteria-item-e
+        .filter-criteria-item
+          margin-left: 4px
+          max-width: 960px
+          .criteria-item
+            float: left
             padding: 5px
             margin-left: 10px
             margin-bottom: 10px
@@ -1240,61 +1179,131 @@ export default {
               border: 1px solid $color-blue
               i
                 color: $color-blue
-            .criteria-title-e
+            .criteria-title
               color: $color-dark-grey
-            .criteria-value-e
+            .criteria-value
               color: $color-blue
-  #car-result-list
-    .car-list-wrap
-      width: 1170px
+    #car-order
+      font-size: 14px
+      color: $color-dark-grey
+      border-bottom: 1px solid #e6e6e6
+      padding: 10px
+      text-align: right
+      > span
+        cursor: pointer
+        padding: 5px
+        &:hover,
+        &.active
+          color: $color-blue
+      > em
+        color: #d2d2d2
+        font-style: normal
+    #car-empty
+      width: 100%
       display: flex
-      justify-content: space-between
-      flex-wrap: wrap
-      margin-top: 16px
-      .car-list
-        width: 280.5px
-        height: 314px
-        padding: 8px
-        margin-bottom: 16px
-        &:hover
-          cursor: pointer
-          box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
-        .car-img
-          width: 100%
-          height: 174px
-          margin-top: 3px
-          background-image: url('~IMAGES/car_default.png')
-          background-size: 100% 174px
-          > img
+      display: -webkit-flex
+      align-content: center
+      flex-direction: column
+      text-align: center
+      padding: 100px 0px
+      > img
+        width: 400px
+        height: 150px
+        margin: 0 auto
+      > p
+        margin: 20px
+      #filter-result-e
+        font-size: 14px
+        background: $color-white
+        padding: 15px 5px
+        > span
+          color: #888888
+        .filter-criteria-e
+          color: #888888
+          margin-bottom: 5px
+          > span
+            margin-top: 5px
+          > p
+            color: $color-black
+            margin: 0px 15px
+            cursor: pointer
+            height: 15px
+            margin-top: 5px
+            &:hover
+              color: $color-blue
+          .filter-criteria-item-e
+            display: flex
+            display: -webkit-flex
+            flex-direction: row
+            justify-content: center
+            flex-wrap: wrap
+            padding-left: 200px
+            padding-right: 200px
+            .criteria-item-e
+              padding: 5px
+              margin-left: 10px
+              margin-bottom: 10px
+              border: 1px solid #e6e6e6
+              cursor: pointer
+              &:hover
+                border: 1px solid $color-blue
+                i
+                  color: $color-blue
+              .criteria-title-e
+                color: $color-dark-grey
+              .criteria-value-e
+                color: $color-blue
+    #car-result-list
+      .car-list-wrap
+        width: 1170px
+        display: flex
+        justify-content: space-between
+        flex-wrap: wrap
+        margin-top: 16px
+        .car-list
+          width: 280.5px
+          height: 314px
+          padding: 8px
+          margin-bottom: 16px
+          &:hover
+            cursor: pointer
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
+          .car-img
             width: 100%
             height: 174px
-        .car-info
-          width: 100%
-          height: 121px
-          padding: 20px 5px
-          background: $color-white
-          .car-name
-            font-size: 16px
-            color: $color-black
-            single-text-ellipsis()
-          .car-info-p
-            font-size: 14px
-            color: #a5abb2
-            margin: 12px 0
-            > em
-              padding: 0 6px
-              color: #d2d2d2
-              font-style: normal
-          .car-info-price
-            font-size: 20px
-            color: #ff0000cc
-            > span
+            margin-top: 3px
+            background-image: url('~IMAGES/car_default.png')
+            background-size: 100% 174px
+            > img
+              width: 100%
+              height: 174px
+          .car-info
+            width: 100%
+            height: 121px
+            padding: 20px 5px
+            background: $color-white
+            .car-name
+              font-size: 16px
+              color: $color-black
+              single-text-ellipsis()
+            .car-info-p
               font-size: 14px
-  .search-page
-    width: 100%
-    padding-bottom: 40px
-    display: flex
-    display: -webkit-flex
-    flex-direction: row
-    justify-content: center
+              color: #a5abb2
+              margin: 12px 0
+              > em
+                padding: 0 6px
+                color: #d2d2d2
+                font-style: normal
+            .car-info-price
+              font-size: 20px
+              color: #ff0000cc
+              > span
+                font-size: 14px
+    .search-page
+      width: 100%
+      padding-bottom: 40px
+      display: flex
+      display: -webkit-flex
+      flex-direction: row
+      justify-content: center
 </style>

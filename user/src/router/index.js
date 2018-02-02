@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import helloWorld from './modules/helloWorld'
 import home from './modules/home'
 import searchCar from './modules/searchCar'
+import car from './modules/car'
 
 import NProgress from 'nprogress'
 
@@ -13,12 +13,13 @@ NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
 Vue.use(VueRouter)
 
 const routes = [
-  ...helloWorld,
   ...home,
-  ...searchCar
+  ...searchCar,
+  ...car
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {

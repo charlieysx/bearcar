@@ -135,7 +135,7 @@
         </tab-view>
         <!-- tab 结束 -->
         <ul class="car-list-wrap">
-          <li class="car-list" v-for="item in newCarList" :key="item.id">
+          <li class="car-list" v-for="item in newCarList" :key="item.id" @click="toCarInfo(item)">
             <div class="car-img">
               <img :src="item.carImg" alt="">
             </div>
@@ -469,6 +469,14 @@ export default {
     clickMoreCar (name) {
       this.$router.push({
         name: 'searchCar'
+      })
+    },
+    toCarInfo (item) {
+      this.$router.push({
+        name: 'car',
+        params: {
+          carId: item.id
+        }
       })
     }
   },
