@@ -206,6 +206,12 @@
           <div class="config-tip">以上基本信息为车辆初评时录入，实际情况以看车时为准</div>
         </div>
         <!-- 基本信息 结束 -->
+        <!-- 车辆图片 -->
+        <div id="car-image">
+          <p>车辆图片</p>
+          <car-image v-for="(imageData, index) in carImage" :key="index" :data="imageData"></car-image>
+        </div>
+        <!-- 车辆图片 结束 -->
     </div>
   </div>
 </template>
@@ -216,6 +222,7 @@ import breadCrumb from 'COMMON/breadCrumb/breadCrumb'
 import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
 import imagePreviewList from 'COMMON/imagePreviewList/imagePreviewList'
 import configList from 'COMMON/configList/configList'
+import carImage from 'COMMON/carImage/carImage'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -259,7 +266,6 @@ export default {
           value: '2L'
         }
       },
-      imageData: [],
       assessmentList: [
         {
           title: '事故排查检测',
@@ -518,7 +524,7 @@ export default {
             },
             {
               name: '助力类型',
-              value: '助力类型'
+              value: '机械液压助力'
             },
             {
               name: '前悬挂类型',
@@ -677,6 +683,113 @@ export default {
             }
           ]
         }
+      ],
+      carImage: [
+        {
+          title: '车辆外观',
+          imgList: [
+            {
+              url: 'https://image1.guazistatic.com/qn1711301305487aa7df3106a288f3dcbeabf4d3e07288.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301305508b0775e94c0db3ab0cb2157339b4ae3a.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130130552d1617866399f257eaac9098a65bb7b61.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130130554b9a61081728a96691111ed67c6fd7d3b.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301305554cc2b394c6951261e8d941c01289a92b.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301305564c3b495f18bf450db5e27f2e2e2ccd31.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130130558c0d5f1e4829e430251549f43e3099c9a.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn17113012333349b56b56f287d7f3907559a9fe0bc732.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn17113012333389780cd60395273ca8d468293585584e.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333ecb5e44f9b20a2d4d85a8ded96347b2b.jpg?imageView2/1/w/1200/h/800/q/88'
+            }
+          ]
+        },
+        {
+          title: '中控内饰',
+          imgList: [
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233336723441c733bac299dd0019c03a88dec.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233331dc02051c289d9949726f0cba929c528.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333767ba7e7ec1d5894ad20795b8cbe840b.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333d57495713dba5bd52b4c76fcab937542.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233332853ecce69cc3e3bad1aadb4d1e9e955.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333456fe49cd9b0ef8570670835114f9df9.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn17113012333381f98f2e3da23d10555cc24246e9ef86.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333947df8ac390fe9c21f3331fd6e54596f.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333a39fbe31215c1a96a0376aa64bbc8bb2.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333caef633d69f4e4c07c1ebafefdafd00d.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233334bf9bd71cb926cfbb64f4b8b7ee45374.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn17113012333381dd6f1e0e51fc136e0546f1fb32282d.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233332dbd8670514a13ed8ee6571595c110eb.jpg?imageView2/1/w/1200/h/800/q/88'
+            }
+          ]
+        },
+        {
+          title: '发动机、底盘',
+          imgList: [
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333989f6980b641625cfa755c448640f2a7.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233330c87616efb382b3dea24cfa6db1731be.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn1711301233336256d29d13ed0f60b3772c58c30fc7f7.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333a2a1e23ff92f5f98363c49269e278b61.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333cea4d651ffa1160b1502f131c9666419.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333dafcaa1e974c448392ab0bd6e087db0c.jpg?imageView2/1/w/1200/h/800/q/88'
+            },
+            {
+              url: 'https://image1.guazistatic.com/qn171130123333eecda72f7b7dc11656ea83a5f476dbfa.jpg?imageView2/1/w/1200/h/800/q/88'
+            }
+          ]
+        }
       ]
     }
   },
@@ -684,7 +797,8 @@ export default {
     breadCrumb,
     searchCarInput,
     imagePreviewList,
-    configList
+    configList,
+    carImage
   },
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
@@ -1079,6 +1193,16 @@ export default {
         color: #49505699
         padding: 20px
         margin-top: 20px
+    #car-image
+      width: 100%
+      > p
+        width: 100%
+        height: 47px
+        line-height: 47px
+        font-size: 22px
+        color: #495056
+        font-weight: 700
+        border-bottom: 1px solid #dee2e6
                 
 .icon
   background-image: url('~IMAGES/icon_detail.png')
