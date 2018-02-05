@@ -14,7 +14,8 @@
         <!-- 二手车基础信息 -->
         <div id="car-base-info">
             <div class="car-base-image">
-                <img src="https://image1.guazistatic.com/qn180121173829c50906dc12f7d6c816300f4a1e0cbae1.jpg?imageView2/1/w/1200/h/800/q/88" alt="">
+                <image-preview-list>
+                </image-preview-list>
             </div>
             <div class="car-info">
                 <p>长安悦翔V3 2015款 1.4L 手动美满型 国V</p>
@@ -123,6 +124,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import breadCrumb from 'COMMON/breadCrumb/breadCrumb'
 import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
+import imagePreviewList from 'COMMON/imagePreviewList/imagePreviewList'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -165,12 +167,14 @@ export default {
           title: '排量',
           value: '2L'
         }
-      }
+      },
+      imageData: []
     }
   },
   components: {
     breadCrumb,
-    searchCarInput
+    searchCarInput,
+    imagePreviewList
   },
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
@@ -231,15 +235,11 @@ export default {
       display: flex
       display: -webkit-flex
       flex-direction: row
-      .car-base-image
-        width: 585px
-        height: 500px
-        text-align: center
-        > img
-          width: 585px
+      justify-content: space-between
       .car-info
         width: 585px
         padding: 10px 10px
+        padding-right: 0px
         > p
           padding: 10px 15px
           font-size: 24px
@@ -250,6 +250,7 @@ export default {
           display: -webkit-flex
           flex-direction: row
           padding: 15px
+          margin-left: 10px
           > li
             width: 142px
             text-align: center
@@ -275,6 +276,7 @@ export default {
           margin: 10px 15px
           padding: 12px
           background: #f6f6f6
+          margin-right: 0px
           .car-sell-price
             padding: 12px 0px
             &:first-child

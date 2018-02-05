@@ -8,11 +8,15 @@ import './ElementUI'
 import store from './store/index'
 import { sync } from 'vuex-router-sync'
 import validator from 'UTIL/validator'
+import 'swiper/dist/css/swiper.css'
+
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
 Vue.use(validator)
+Vue.use(VueAwesomeSwiper)
 
 sync(store, router)
 

@@ -81,20 +81,20 @@
       <!-- 资讯 -->
       <div id="car-box">
         <!-- 推荐 -->
-        <div id="car-box-left">
+        <div id="car-box-left" @click="searchBox(0)">
           <img src="~IMAGES/car1.png" alt="">
           <li class="li-color-black">选你所爱</li>
           <li class="li-color-red">3年内准新车</li>
         </div>
         <div id="car-box-middle">
-          <div id="box-middle">
+          <div id="box-middle" @click="searchBox(1)">
             <img src="~IMAGES/car2.png" alt="">
             <div>
               <li class="li-color-black">入门首选</li>
-              <li class="li-color-red">5-7万品质二手车</li>
+              <li class="li-color-red">6-9万品质二手车</li>
             </div>
           </div>
-          <div id="box-middle">
+          <div id="box-middle" @click="searchBox(2)">
             <img src="~IMAGES/car3.png" alt="">
             <div>
               <li class="li-color-black">车美价优</li>
@@ -478,6 +478,11 @@ export default {
           carId: item.id
         }
       })
+    },
+    searchBox (index) {
+      this.$router.push({
+        name: 'searchCar'
+      })
     }
   },
   components: {
@@ -650,7 +655,7 @@ export default {
           margin-bottom: 30px
         &:hover
           cursor: pointer
-          box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .2)
+          box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
       #car-box-middle
         width: 440px
         height: 100%
@@ -671,7 +676,7 @@ export default {
             width: 250px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
       #car-box-right
         width: 498px
         height: 100%
@@ -790,7 +795,7 @@ export default {
           margin-bottom: 16px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
           .car-img
             width: 100%
             height: 190px

@@ -192,38 +192,6 @@
           </span>
         </div>
         <!-- 结果排序 结束 -->
-        <!-- 搜索不到 -->
-        <div id="car-empty" v-show="searchResultList.length === 0">
-            <img src="~IMAGES/car_empty.png"  alt="">
-            <p>
-              抱歉，暂时没有符合条件的车
-            </p>
-            <p>
-              减少筛选条件试试
-            </p>
-            <div id="filter-result-e">
-              <!-- 筛选条件 -->
-              <div class="filter-criteria-e" v-if="filterCount > 0">
-                <div class="filter-criteria-item-e">
-                    <div class="criteria-item-e"
-                        v-for="(criteria, index) in filterCriteriaList" 
-                        :key="index"
-                        @click="closeCriteria(criteria)"
-                        v-if="criteria.value">
-                        <span class="criteria-title-e" v-if="criteria.item || criteria.tag === 'pi'">
-                          {{ criteria.title }} :
-                        </span>
-                        <span class="criteria-value-e">
-                          {{ criteria.value }}
-                        </span>
-                        <i class="el-icon-close"></i>
-                    </div>
-                </div>
-              </div>
-              <!-- 筛选条件 结束 -->
-            </div>
-        </div>
-        <!-- 搜索不到 结束 -->
         <!-- 搜索结果 -->
         <div id="car-result-list">
           <ul class="car-list-wrap" v-show="searchResultList.length > 0">
@@ -253,6 +221,38 @@
           </div>
           <!-- 分页 结束 -->
         </div>
+        <!-- 搜索不到 -->
+        <div id="car-empty" v-show="searchResultList.length === 0">
+            <img src="~IMAGES/car_empty.png"  alt="">
+            <p>
+              没有您想要的车?
+            </p>
+            <p>
+              减少筛选条件试试
+            </p>
+            <div id="filter-result-e">
+              <!-- 筛选条件 -->
+              <div class="filter-criteria-e" v-if="filterCount > 0">
+                <div class="filter-criteria-item-e">
+                    <div class="criteria-item-e"
+                        v-for="(criteria, index) in filterCriteriaList" 
+                        :key="index"
+                        @click="closeCriteria(criteria)"
+                        v-if="criteria.value">
+                        <span class="criteria-title-e" v-if="criteria.item || criteria.tag === 'pi'">
+                          {{ criteria.title }} :
+                        </span>
+                        <span class="criteria-value-e">
+                          {{ criteria.value }}
+                        </span>
+                        <i class="el-icon-close"></i>
+                    </div>
+                </div>
+              </div>
+              <!-- 筛选条件 结束 -->
+            </div>
+        </div>
+        <!-- 搜索不到 结束 -->
         <!-- 搜索结果 结束 -->
       </div>
   </div>
@@ -304,26 +304,22 @@ export default {
         },
         {
           priceId: 1,
-          priceName: '3-5万'
+          priceName: '3-6万'
         },
         {
           priceId: 2,
-          priceName: '5-7万'
+          priceName: '6-9万'
         },
         {
           priceId: 3,
-          priceName: '7-9万'
-        },
-        {
-          priceId: 4,
           priceName: '9-12万'
         },
         {
-          priceId: 5,
+          priceId: 4,
           priceName: '12-16万'
         },
         {
-          priceId: 6,
+          priceId: 5,
           priceName: '16-20万'
         },
         {
@@ -1267,7 +1263,7 @@ export default {
           margin-bottom: 16px
           &:hover
             cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .2)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
           .car-img
             width: 100%
             height: 174px
