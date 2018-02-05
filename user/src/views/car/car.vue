@@ -116,6 +116,66 @@
             </div>
         </div>
         <!-- 二手车基础信息 结束 -->
+        <!-- 二手车专项检测 -->
+        <div id="car-special-test">
+          <!-- 专业检测 -->
+          <div class="car-special-box">
+            <span class="icon icon-left-top"></span>
+            <span class="icon icon-right-top"></span>
+            <span class="icon icon-left-bottom"></span>
+            <span class="icon icon-right-bottom"></span>
+            <div class="test-title">
+              <span class="icon icon-certification"></span>
+              <div class="test-box">
+                <p>259项专业检测</p>
+                小熊要求二手车源必须达到以下标准
+              </div>
+              <ul class="three-type">
+                <li>
+                  <span class="icon icon-save"></span>
+                  无重大事故
+                </li>
+                <li>
+                  <span class="icon icon-fire"></span>
+                  无火烧事故
+                </li>
+                <li>
+                  <span class="icon icon-water"></span>
+                  无泡水事故
+                </li>
+              </ul>
+            </div>
+            <!-- 专业检测 结束 -->
+            <!-- 评估师 -->
+            <div class="car-appraiser">
+              <span class="icon icon-appraiser"></span>
+              <div class="assessment-result">
+                高级车辆评估师
+                <p>个人一手私家车， 全车原厂漆，少量刮蹭划痕，车况良好无事故，后备箱盖变形，前保险杠轻微破损，内饰保养干净整洁，车内电器设备正常，发动机变速箱工况正常</p>
+              </div>
+            </div>
+            <!-- 评估师 结束 -->
+            <!-- 评估项 -->
+            <div class="car-assessment-item">
+              <div class="assessment-item" v-for="(assesment, index) in assessmentList" :key="index">
+                <p> {{ assesment.title }}</p>
+                <ul>
+                  <li v-for="(item, index) in assesment.item" :key="index">
+                    <span class="assement-item-name"> {{ item.name }}</span>
+                    <span class="assement-item-count"> {{ item.count }}项</span>
+                    <i :class="[item.exception ? 'el-icon-warning' : 'el-icon-check']"></i>
+                    <span class="assement-exception-count" v-if="item.exception"> {{ item.exception }}项异常</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- 评估项 结束 -->
+            <div class="time-tip">
+              ※以上为2018年01月21日车况，交易以复检结果为准
+            </div>
+          </div>
+        </div>
+        <!-- 二手车专项检测 结束 -->
     </div>
   </div>
 </template>
@@ -168,7 +228,119 @@ export default {
           value: '2L'
         }
       },
-      imageData: []
+      imageData: [],
+      assessmentList: [
+        {
+          title: '事故排查检测',
+          item: [
+            {
+              name: '排除重大事故',
+              count: 20,
+              exception: 10
+            },
+            {
+              name: '排除泡水火烧',
+              count: 9,
+              exception: 0
+            }
+          ]
+        },
+        {
+          title: '轻微碰撞',
+          item: [
+            {
+              name: '轻微碰撞',
+              count: 14,
+              exception: 0
+            },
+            {
+              name: '易损耗部件',
+              count: 18,
+              exception: 0
+            }
+          ]
+        },
+        {
+          title: '常用功能检测',
+          item: [
+            {
+              name: '安全系统',
+              count: 15,
+              exception: 1
+            },
+            {
+              name: '外部配置',
+              count: 22,
+              exception: 0
+            },
+            {
+              name: '内部配置',
+              count: 14,
+              exception: 0
+            },
+            {
+              name: '灯光系统',
+              count: 15,
+              exception: 0
+            },
+            {
+              name: '高科技配置',
+              count: 5,
+              exception: 0
+            },
+            {
+              name: '随车工具',
+              count: 5,
+              exception: 0
+            }
+          ]
+        },
+        {
+          title: '启动驾驶检测',
+          item: [
+            {
+              name: '仪表台指示灯',
+              count: 6,
+              exception: 0
+            },
+            {
+              name: '发动机状态',
+              count: 5,
+              exception: 1
+            },
+            {
+              name: '变速箱及转向',
+              count: 3,
+              exception: 0
+            }
+          ]
+        },
+        {
+          title: '外观内饰检测',
+          item: [
+            {
+              name: '缺陷项检测',
+              count: 67,
+              exception: 0
+            },
+            {
+              name: '漆面修复检测',
+              count: 21,
+              exception: 0
+            },
+            {
+              name: '钣金修复检测',
+              count: 21,
+              exception: 0
+            },
+            {
+              name: '外观件更换检测',
+              count: 21,
+              exception: 0
+            }
+          ]
+        }
+      ]
     }
   },
   components: {
@@ -365,7 +537,157 @@ export default {
           margin: 0px 15px
           padding: 12px
           font-size: 14px
-
+    #car-special-test
+      width: 100%
+      height: 580px
+      border: 1px solid #dee2e6
+      padding: 14px
+      margin: 16px 0px
+      .car-special-box
+        position: relative
+        width: 100%
+        height: 100%
+        border: 5px solid #dee2e6
+        background-image: url('~IMAGES/bg_line.png')
+        background-repeat: resize none
+        background-position: 0 0
+        .time-tip
+          width: 100%
+          position: absolute
+          bottom: 20px
+          color: #a5abb2
+          font-size: 14px
+          text-align: center
+        .icon-left-top
+          background-position: -131px -437px
+          width: 55px
+          height: 55px
+          left: 6px
+          top: 6px
+          position: absolute
+        .icon-right-top
+          background-position: -198px -437px
+          width: 55px
+          height: 55px
+          right: 6px
+          top: 6px
+          position: absolute
+        .icon-left-bottom
+          background-position: -267px -437px
+          width: 55px
+          height: 55px
+          left: 6px
+          bottom: 6px
+          position: absolute
+        .icon-right-bottom
+          background-position: -330px -437px
+          width: 55px
+          height: 55px
+          right: 6px
+          bottom: 6px
+          position: absolute
+        .test-title
+          display: flex
+          display: -webkit-flex
+          flex-direction: row
+          align-items: center
+          margin: 0 0 0 49px
+          padding: 51px 0 30px 46px
+          border-bottom: 1px dashed #dee2e6
+          .icon-certification
+            background-position: 0 -351px
+            width: 84px
+            height: 88px
+          .test-box
+            width: 342px
+            font-size: 16px
+            margin-left: 18px
+            color: #7a838d
+            line-height: 32px
+            > p
+              color: #495056
+              font-size: 30px
+          .three-type
+            > li
+              width: 188px
+              font-size: 16px
+              color: #666666
+              line-height: 48px
+              float: left
+              .icon-save,
+              .icon-fire,
+              .icon-water
+                width: 48px
+                height: 48px
+                vertical-align: middle
+                margin-right: 8px
+        .car-appraiser
+          display: flex
+          display: -webkit-flex
+          flex-direction: row
+          margin: 0 10px 0 49px
+          padding: 20px 0
+          .icon-appraiser
+            width: 76px
+            height: 76px
+            border-radius: 38px
+            margin: 0 24px 0 12px
+          .assessment-result
+            font-size: 16px
+            color: #495056
+            font-weight: 700
+            padding-top: 8px
+            > p
+              padding: 8px 0
+              font-size: 14px
+              line-height: 20px
+              font-weight: 500
+        .car-assessment-item
+          margin: 12px 0 0 46px
+          .assessment-item
+            font-size: 14px
+            float: left
+            width: 216px
+            > p
+              color: #495056
+              font-weight: 700
+              padding-bottom: 15px
+            li
+              padding-bottom: 10px
+              font-size: 0px
+              .assement-item-name
+                display: inline-block
+                width: 98px
+                font-size: 14px
+              .assement-item-count
+                display: inline-block
+                width: 34px
+                margin-right: 4px
+                text-align: right
+                font-size: 14px
+              .el-icon-warning,
+              .assement-exception-count
+                font-size: 14px
+                color: #fece36
+              .el-icon-check
+                font-size: 14px
+                color: $color-blue
+              
+              
+                
+                
+.icon
+  background-image: url('~IMAGES/icon_detail.png')
+  background-repeat: no-repeat
+  display: inline-block
+.icon-save
+  background-position: -89px -350px
+.icon-fire
+  background-position: -143px -350px
+.icon-water
+  background-position: -200px -350px
+.icon-appraiser
+  background-position: -571px -183px
 
 .guide-tip
   padding: 6px
