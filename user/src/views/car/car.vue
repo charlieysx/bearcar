@@ -176,6 +176,36 @@
           </div>
         </div>
         <!-- 二手车专项检测 结束 -->
+        <!-- 基本信息 -->
+        <div id="car-basic-info">
+          <p>基本信息</p>
+          <div class="car-owner">
+            车主：郭先生
+            <span>
+              咨询看车
+            </span>
+          </div>
+          <!-- 部分参数 -->
+          <ul class="car-assort">
+            <li v-for="(item, index) in carAssort2" :key="index">
+              <p class="assort-value">
+                {{ item.value }}
+              </p>
+                {{ item.title }}
+            </li>
+          </ul>
+          <!-- 部分参数 结束 -->
+          <div class="car-config">
+            <config-list
+              class="car-config-list"
+              v-for="(list, index) in configList"
+              :key="index"
+              :listData="list">
+            </config-list>
+          </div>
+          <div class="config-tip">以上基本信息为车辆初评时录入，实际情况以看车时为准</div>
+        </div>
+        <!-- 基本信息 结束 -->
     </div>
   </div>
 </template>
@@ -185,6 +215,7 @@ import { mapActions, mapGetters } from 'vuex'
 import breadCrumb from 'COMMON/breadCrumb/breadCrumb'
 import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
 import imagePreviewList from 'COMMON/imagePreviewList/imagePreviewList'
+import configList from 'COMMON/configList/configList'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -340,13 +371,320 @@ export default {
             }
           ]
         }
+      ],
+      carAssort2: {
+        licensedTime: {
+          title: '上牌时间',
+          value: '2016-11'
+        },
+        mileage: {
+          title: '表显里程',
+          value: '1.4万公里'
+        },
+        licensedCity: {
+          title: '上牌地',
+          value: '南京'
+        },
+        emissionStandards: {
+          title: '排放标准',
+          value: '国五'
+        },
+        displacement: {
+          title: '排量',
+          value: '2L'
+        },
+        guohu: {
+          title: '过户次数',
+          value: '0'
+        },
+        speed: {
+          title: '变速箱',
+          value: '手动'
+        },
+        address: {
+          title: '看车地址',
+          value: '广州'
+        },
+        checkYear: {
+          title: '年检到期',
+          value: '2018-03'
+        },
+        qx: {
+          title: '交强险',
+          value: '2018-03'
+        },
+        syx: {
+          title: '商业险到期',
+          value: '2018-03'
+        }
+      },
+      configList: [
+        {
+          name: '基本参数',
+          list: [
+            {
+              name: '证件品牌型号',
+              value: 'SGM7169MTA'
+            },
+            {
+              name: '厂商',
+              value: '上汽通用雪佛兰'
+            },
+            {
+              name: '级别',
+              value: '紧凑型车'
+            },
+            {
+              name: '发动机',
+              value: '1.6L 117马力 L4'
+            },
+            {
+              name: '变速箱',
+              value: '5档手动变速箱(MT)'
+            },
+            {
+              name: '车身结构',
+              value: '4门5座三厢车'
+            },
+            {
+              name: '长*宽*高(mm)',
+              value: '4598/1797/1477'
+            },
+            {
+              name: '轴距(mm)',
+              value: '2685'
+            },
+            {
+              name: '行李箱容积(L)',
+              value: '400'
+            },
+            {
+              name: '整备质量(kg)',
+              value: '1360'
+            }
+          ]
+        },
+        {
+          name: '发动机参数',
+          list: [
+            {
+              name: '排量(L)',
+              value: '1.6'
+            },
+            {
+              name: '进气形式',
+              value: '自然吸气'
+            },
+            {
+              name: '气缸',
+              value: 'L4'
+            },
+            {
+              name: '最大马力(Ps)',
+              value: '117'
+            },
+            {
+              name: '最大扭矩(N*m)',
+              value: '150'
+            },
+            {
+              name: '燃料类型',
+              value: '汽油'
+            },
+            {
+              name: '燃油标号',
+              value: '92号'
+            },
+            {
+              name: '供油方式',
+              value: '多点电喷'
+            },
+            {
+              name: '排放标准',
+              value: '国四'
+            },
+            {
+              name: '',
+              value: ''
+            }
+          ]
+        },
+        {
+          name: '底盘及制动',
+          list: [
+            {
+              name: '驱动方式',
+              value: '前置前驱'
+            },
+            {
+              name: '助力类型',
+              value: '助力类型'
+            },
+            {
+              name: '前悬挂类型',
+              value: '麦弗逊式独立悬架'
+            },
+            {
+              name: '后悬挂类型',
+              value: '扭力梁式非独立悬架'
+            },
+            {
+              name: '前制动类型',
+              value: '通风盘式'
+            },
+            {
+              name: '后制动类型',
+              value: '盘式'
+            },
+            {
+              name: '驻车制动类型',
+              value: '-'
+            },
+            {
+              name: '前轮胎规格',
+              value: '205/60 R16'
+            },
+            {
+              name: '后轮胎规格',
+              value: '205/60 R16'
+            },
+            {
+              name: '',
+              value: ''
+            }
+          ]
+        },
+        {
+          name: '安全配置',
+          list: [
+            {
+              name: '主副驾驶安全气囊',
+              value: '标配/标配'
+            },
+            {
+              name: '前后排侧气囊',
+              value: '标配/无'
+            },
+            {
+              name: '前后排头部气囊',
+              value: '无/无'
+            },
+            {
+              name: '胎压检测',
+              value: '无'
+            },
+            {
+              name: '车内中控锁',
+              value: '标配'
+            },
+            {
+              name: '儿童座椅接口',
+              value: '标配'
+            },
+            {
+              name: '无钥匙启动',
+              value: '无'
+            },
+            {
+              name: '防抱死系统(ABS)',
+              value: '标配'
+            },
+            {
+              name: '车身稳定控制(ESP)',
+              value: '无'
+            }
+          ]
+        },
+        {
+          name: '外部配置',
+          list: [
+            {
+              name: '电动天窗',
+              value: '标配'
+            },
+            {
+              name: '全景天窗',
+              value: '无'
+            },
+            {
+              name: '电动吸合门',
+              value: '无'
+            },
+            {
+              name: '感应后备箱',
+              value: '无'
+            },
+            {
+              name: '感应雨刷',
+              value: '无'
+            },
+            {
+              name: '后雨刷',
+              value: '无'
+            },
+            {
+              name: '前后电动车窗',
+              value: '标配/标配'
+            },
+            {
+              name: '后视镜电动调节',
+              value: '标配'
+            },
+            {
+              name: '后视镜加热',
+              value: '无'
+            }
+          ]
+        },
+        {
+          name: '内部配置',
+          list: [
+            {
+              name: '多功能方向盘',
+              value: '无'
+            },
+            {
+              name: '定速巡航',
+              value: '无'
+            },
+            {
+              name: '空调',
+              value: '标配'
+            },
+            {
+              name: '自动空调',
+              value: '无'
+            },
+            {
+              name: 'GPS导航',
+              value: '无'
+            },
+            {
+              name: '倒车雷达',
+              value: '标配'
+            },
+            {
+              name: '倒车影像系统',
+              value: '无'
+            },
+            {
+              name: '真皮座椅',
+              value: '无'
+            },
+            {
+              name: '前后排座椅加热',
+              value: '无/无'
+            }
+          ]
+        }
       ]
     }
   },
   components: {
     breadCrumb,
     searchCarInput,
-    imagePreviewList
+    imagePreviewList,
+    configList
   },
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
@@ -672,9 +1010,75 @@ export default {
               .el-icon-check
                 font-size: 14px
                 color: $color-blue
-              
-              
-                
+    #car-basic-info
+      width: 100%
+      > p
+        width: 100%
+        height: 47px
+        line-height: 47px
+        font-size: 22px
+        color: #495056
+        font-weight: 700
+        border-bottom: 1px solid #dee2e6
+      .car-owner
+        width: 100%
+        padding: 30px 15px
+        color: #495056
+        font-size: 18px
+        font-weight: 700
+        > span
+          margin-left: 10px
+          padding: 5px
+          border-radius: 2px
+          font-size: 14px
+          background: $color-blue
+          color: $color-white
+          cursor: pointer
+      .car-assort
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
+        padding-bottom: 15px
+        > li
+          padding: 0px 20px
+          text-align: center
+          font-size: 14px
+          position: relative
+          color: #a5abb2
+          line-height: 24px
+          > p
+            color: #495056
+            font-size: 16px
+            font-weight: 700
+          &:first-child
+            &:before
+              width: 0px
+          &:before
+            content: ""
+            width: 1px
+            height: 34px
+            position: absolute
+            left: 0px
+            top: 6px
+            background: #e6e6e6
+      .car-config
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
+        justify-content: space-between
+        flex-wrap: wrap
+        .car-config-list
+          float: left
+          width: 380px
+          margin-top: 15px
+          height: auto
+      .config-tip
+        width: 100%
+        font-size: 12px
+        text-align: center
+        color: #49505699
+        padding: 20px
+        margin-top: 20px
                 
 .icon
   background-image: url('~IMAGES/icon_detail.png')
