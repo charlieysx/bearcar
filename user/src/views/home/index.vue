@@ -450,6 +450,9 @@ export default {
       })
     },
     sellCar () {
+      this.$router.push({
+        name: 'sellCar'
+      })
     },
     searchCar (car) {
       this.$router.push({

@@ -1,4 +1,4 @@
-export const buyAQ = [
+export const buyCarAQ = [
   {
     style: {
       'background-position': '-366px -176px'
@@ -70,6 +70,49 @@ export const buyAQ = [
   }
 ]
 
+export const sellCarAQ = [
+  {
+    style: {
+      'background-position': '-366px -176px'
+    },
+    question: 'Q1：在瓜子卖车有什么优势？',
+    answer: [
+      '小熊二手车直卖网是中国领先的二手车直卖平台，平均每一分钟就成交一辆。小熊二手车撮合个人直接卖给个人，没有中间商赚差价，买家少花钱，卖家最高多卖20%，车辆平均7天售出，卖车流程安全省心可靠。'
+    ]
+  },
+  {
+    style: {
+      'background-position': '-429px -176px'
+    },
+    question: 'Q2：卖车流程是怎样的？',
+    answer: [
+      '1、在本页填写卖车信息或拨打020-12345678联系我们。',
+      '2、接受评估师专业的上门质检，定出售价。',
+      '3、交易专员带领买家上门看车。',
+      '4、达成交易协议，小熊二手车直卖网帮你办过户。'
+    ]
+  },
+  {
+    style: {
+      'background-position': '0 -176px'
+    },
+    question: 'Q3：卖车需要准备什么？',
+    answer: [
+      '1、身份证；2、环保标；3、购置税本；4、行驶证；5、检字标；6、购置税发票；7、车辆登记证；8、交强险标；9、购车发票/最近一次过户发票；10、交强险单。'
+    ]
+  },
+  {
+    style: {
+      'background-position': '-122px -176px'
+    },
+    question: 'Q4：大概多久能成交？',
+    answer: [
+      '大部分车辆在小熊二手车直卖网上上架7天内就可成交。'
+    ]
+  }
+]
+
 export default {
-  buyAQ
+  buyCarAQ,
+  sellCarAQ
 }

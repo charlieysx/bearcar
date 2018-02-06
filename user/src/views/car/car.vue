@@ -307,7 +307,7 @@ import configList from 'COMMON/configList/configList'
 import carImage from 'COMMON/carImage/carImage'
 import configGrid from 'COMMON/configGrid/configGrid'
 
-import buyCarAQ from 'DATA/buyCarAQ'
+import carAQ from 'DATA/carAQ'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -1630,7 +1630,7 @@ export default {
           carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
         }
       ],
-      buyCarAQ
+      buyCarAQ: {}
     }
   },
   components: {
@@ -1650,7 +1650,7 @@ export default {
       text: '长安悦翔V3 2015款 1.4L 手动美满型 国V',
       to: {name: 'car', params: { carId: this.carId }}
     }
-    this.buyCarAQ = buyCarAQ.buyAQ
+    this.buyCarAQ = carAQ.buyCarAQ
   },
   computed: {
     ...mapGetters([
@@ -1736,7 +1736,6 @@ export default {
 @import '~STYLUS/color.styl'
 @import '~STYLUS/mixin.styl'
 #car
-  padding-bottom: 10px
   background: $color-white
   #title
     width: 100%

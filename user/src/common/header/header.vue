@@ -1,5 +1,5 @@
 <template>
-  <div id="header-main" v-if="showHeader">
+  <div id="header-main" v-show="showHeader">
     <div id="header-body">
       <div class="header-wrap" :style="style">
         <!-- logo -->
@@ -171,6 +171,7 @@ export default {
           this.toBuyCar()
           break
         case 2:
+          this.toSellCar()
           break
         case 3:
           break
@@ -195,6 +196,9 @@ export default {
     },
     toBuyCar () {
       this.$router.push({ name: 'searchCar' })
+    },
+    toSellCar () {
+      this.$router.push({ name: 'sellCar' })
     },
     fixTopBarScroll () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
