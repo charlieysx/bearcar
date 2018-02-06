@@ -65,7 +65,7 @@
         color: $color-white
         font-size: 60px
     .image-wrap
-      height: 760px
+      height: 740px
       margin: 20px 0
       width: 100%
       padding: 10px 0
