@@ -2316,8 +2316,6 @@ export default {
             margin-bottom: 12px
 
             
-            
-                
 .icon
   background-image: url('~IMAGES/icon_detail.png')
   background-repeat: no-repeat
