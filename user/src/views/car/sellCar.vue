@@ -8,7 +8,7 @@
               买家少花钱，卖家最高多卖20%，平均7天售出
           </div>
           <div class="btn">
-            <span class="btn-sell">
+            <span class="btn-sell" @click="sellCar">
                 免费卖车
             </span>
             <span class="btn-estimate">
@@ -25,7 +25,7 @@
         <ul class="car-list-wrap" v-if="!loadImageSuccess">
             <li class="car-list" 
                 v-for="n in 4"
-                :key="n * 1000">
+                :key="n">
                 <div class="car-img">
                 </div>
             </li>
@@ -42,7 +42,7 @@
                     <p class="car-name">{{item.carName}}</p>
                     <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
                     <p class="car-info-price">
-                    <span style="color: #000000;font-size: 16px">成交价</span>
+                    <span style="color: #000000;font-size: 14px">成交价</span>
                     {{item.price}}
                     <span>万</span>
                     </p>
@@ -76,20 +76,28 @@
         </ul>
       </div>
       <!-- 卖车问答 结束 -->
+      <sell-car-box ref="sellCarBox"></sell-car-box>
   </div>
 </template>
 
 <script>
 import carAQ from 'DATA/carAQ'
+import {
+  mapActions,
+  mapGetters
+} from 'vuex'
 
 import {
   SET_HEADER_ACTIVE_TAB
 } from 'STORE/mutation-types'
 
+import sellCarBox from 'COMMON/sellCarBox/sellCarBox'
+
 export default {
   name: 'sell-car',
   data () {
     return {
+      showSellBox: false,
       loadImageSuccess: false,
       sellCarAQ: {},
       newSellIndex: {
@@ -470,12 +478,24 @@ export default {
       ]
     }
   },
+  components: {
+    sellCarBox
+  },
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 2)
     this.sellCarAQ = carAQ.sellCarAQ
     this.load()
   },
+  computed: {
+    ...mapGetters([
+      'isLogin',
+      'userInfo'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'setLoginMaskStatus'
+    ]),
     load () {
       this.initConfig()
     },
@@ -485,6 +505,13 @@ export default {
         this.swiperOption.slidesPerView = this.newSellList.length
       }
       this.loadImageSuccess = true
+    },
+    sellCar () {
+      if (!this.isLogin) {
+        this.setLoginMaskStatus({ show: true, view: 'login' })
+      } else {
+        this.$refs.sellCarBox.$refs.modal.showModal()
+      }
     }
   }
 }
@@ -534,7 +561,7 @@ export default {
     width: 100%
     background: #f8f8f8
     padding: 20px
-    padding-top: 30px
+    padding-top: 80px
     text-align: center
     .aq-title
       font-size: 24px
@@ -605,9 +632,9 @@ export default {
             margin-bottom: 12px
   #car-new-sell
     width: 100%
-    background: #f8f8f8
+    background: $color-white
     padding: 20px
-    padding-top: 60px
+    padding-top: 80px
     text-align: center
     .new-sell-title
       font-size: 24px

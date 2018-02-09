@@ -76,5 +76,25 @@ export default {
         count: count
       }
     })
+  },
+  /**
+   * 根据品牌id获取对应的车系列
+   */
+  getSeriesByBrandId (brandId) {
+    return axios.get('car/get_series_by_brand_id', {
+      params: {
+        brandId: brandId
+      }
+    })
+  },
+  /**
+   * 根据车系列id获取车型
+   */
+  getModelBySeriesId (seriesId) {
+    return axios.get('car/get_model_by_series_id', {
+      params: {
+        seriesId: seriesId
+      }
+    })
   }
 }

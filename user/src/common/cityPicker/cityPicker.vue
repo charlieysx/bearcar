@@ -43,6 +43,7 @@ export default {
   height: 400px
   overflow: auto
   cursor: default
+  overflow-x: hidden
 .city-inner
   background: $color-white
   width: 800px

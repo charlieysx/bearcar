@@ -83,6 +83,34 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 根据品牌id获取对应的车系列
+   * @param brandId
+   * @return {Promise}
+   */
+  getSeriesByBrandId (store, brandId) {
+    return api.getSeriesByBrandId(brandId)
+      .then((response) => {
+        return Promise.resolve(response.data.data.list)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 根据车系列id获取车型
+   * @param seriesId
+   * @return {Promise}
+   */
+  getModelBySeriesId (store, seriesId) {
+    return api.getModelBySeriesId(seriesId)
+      .then((response) => {
+        return Promise.resolve(response.data.data.list)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

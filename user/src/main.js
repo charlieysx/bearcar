@@ -9,6 +9,7 @@ import store from './store/index'
 import { sync } from 'vuex-router-sync'
 import validator from 'UTIL/validator'
 import 'swiper/dist/css/swiper.css'
+import VueScrollLock from 'vue-scroll-lock'
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
@@ -17,6 +18,7 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 Vue.use(validator)
 Vue.use(VueAwesomeSwiper)
+Vue.use(VueScrollLock)
 
 sync(store, router)
 

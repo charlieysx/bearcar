@@ -1,4 +1,5 @@
 <template>
+<scroll-lock>
   <div id="auth-layout">
     <span class="close-icon-wrap" @click="closeLoginMask()"><i class="el-icon-close"></i></span>
     <div class="layout-wrap">
@@ -9,6 +10,7 @@
       </div>
     </div>
   </div>
+</scroll-lock>
 </template>
 <script>
   import login from 'VIEWS/auth/login'

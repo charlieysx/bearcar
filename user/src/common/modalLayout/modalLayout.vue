@@ -2,8 +2,8 @@
   <div id="modal-layout" v-show="modalShow">
     <div class="layout-inner" :style="{ 'width': width + 'px'}">
       <div class="layout-content">
+        <span class="layout-icon-wrap" @click="modalShow = !modalShow"><i class="el-icon-close"></i></span>
         <div class="layout-container">
-          <span class="layout-icon-wrap" @click="modalShow = !modalShow"><i class="el-icon-close"></i></span>
           <slot></slot>
         </div>
       </div>
@@ -53,13 +53,13 @@ export default {
       border-radius: 4px
     .layout-icon-wrap
       position: absolute
+      cursor: pointer
       right: 20px
       top: 20px
-      cursor: pointer
       .el-icon-close
         font-size: 20px
-        color: $color-light-grey
-        background: #00000055
+        color: $color-white
+        background: #ffffff33
         padding: 10px
         border-radius: 100px
         font-weight: bold
