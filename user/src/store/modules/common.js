@@ -111,6 +111,62 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 获取省份
+   * @param store
+   * @return {Promise}
+   */
+  getProvince (store) {
+    return api.getProvince()
+      .then((response) => {
+        return Promise.resolve(response.data.data.list)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 根据省份id获取城市
+   * @param store
+   * @return {Promise}
+   */
+  getCity (store, provinceId) {
+    return api.getCity(provinceId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 根据城市id获取地区
+   * @param store
+   * @return {Promise}
+   */
+  getDistrict (store, cityId) {
+    return api.getDistrict(cityId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 根据城市id获取地区
+   * @param store
+   * @return {Promise}
+   */
+  getInfoByCity (store, cityId) {
+    return api.getInfoByCity(cityId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

@@ -72,7 +72,7 @@
           </div>
           <div id="box-content-bottom">
             <li class="color-blue" @click="sellCar">我要卖车</li>
-            <li class="color-green" @click="freeEstimate">免费估价</li>
+            <!-- <li class="color-green" @click="freeEstimate">免费估价</li> -->
           </div>
         </div>
         <!-- 买车 结束 -->
@@ -106,8 +106,8 @@
         <!-- 资讯 -->
         <div id="car-box-right">
           <div id="box-right-top">
-            <span>资讯</span>
-            <div class="info-more">更多</div>
+            <span @click="toNews">资讯</span>
+            <div class="info-more" @click="toNews">更多</div>
           </div>
           <div id="box-right-content">
             <li 
@@ -466,6 +466,9 @@ export default {
     },
     freeEstimate () {
     },
+    toNews () {
+      this.$router.push({ name: 'news' })
+    },
     clickCarTab (tab) {
       this.activeCarTab = tab
     },
@@ -520,13 +523,14 @@ export default {
       padding-left: 30px
       padding-right: 30px
       border-radius: 10px
+      display: flex
+      display: -webkit-flex
+      flex-direction: row
     #box-left
-      display: inline-block
       width: 65%
       height: 100%
       font-size: 16px
     #box-right
-      display: inline-block
       width: 35%
       height: 100%
       font-size: 16px
@@ -598,6 +602,7 @@ export default {
           cursor: pointer
       .color-blue
         background: #24b9ffe8
+        margin-top: 30px
         &:hover
           background: #24b9ff
       .color-green

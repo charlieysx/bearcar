@@ -11,9 +11,9 @@
             <span class="btn-sell" @click="sellCar">
                 免费卖车
             </span>
-            <span class="btn-estimate">
+            <!-- <span class="btn-estimate">
                 快速估价
-            </span>
+            </span> -->
           </div>
       </div>
       <!-- 最新成交 -->
@@ -485,6 +485,9 @@ export default {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 2)
     this.sellCarAQ = carAQ.sellCarAQ
     this.load()
+  },
+  mounted () {
+    this.sellCar()
   },
   computed: {
     ...mapGetters([

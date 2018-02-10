@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import home from './modules/home'
 import searchCar from './modules/searchCar'
 import car from './modules/car'
+import news from './modules/news'
 
 import NProgress from 'nprogress'
 
@@ -15,7 +16,8 @@ Vue.use(VueRouter)
 const routes = [
   ...home,
   ...searchCar,
-  ...car
+  ...car,
+  ...news
 ]
 
 const router = new VueRouter({

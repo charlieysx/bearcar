@@ -111,12 +111,12 @@ export default {
           id: 2,
           name: '我要卖车'
         },
+        // {
+        //   id: 3,
+        //   name: '车辆评估'
+        // },
         {
           id: 3,
-          name: '车辆评估'
-        },
-        {
-          id: 4,
           name: '资讯'
         }
       ],
@@ -174,8 +174,7 @@ export default {
           this.toSellCar()
           break
         case 3:
-          break
-        case 4:
+          this.$router.push({ name: 'news' })
           break
       }
     },

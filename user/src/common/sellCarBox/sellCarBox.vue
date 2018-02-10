@@ -1,7 +1,7 @@
 <template>
   <div id="sell-car-box">
     <modal-layout ref="modal" width="800">
-      <div class="box">
+      <div class="box" v-show="step === 1">
         <p>只差<span class="blue-text">2</span>步，多卖<span class="blue-text">20%</span>，平均<span class="blue-text">7</span>天成交</p>
         <!-- 售卖车型 -->
         <div class="sell-item-col">
@@ -120,6 +120,67 @@
         <!-- 预期售出时间 结束 -->
         <div class="next-step" @click="nextStep">下一步</div>
       </div>
+      <div class="box" v-show="step === 2" style="height: 450px">
+        <p>只差<span class="blue-text">1</span>步，多卖<span class="blue-text">20%</span>，平均<span class="blue-text">7</span>天成交</p>
+        <!-- 验车时间 -->
+        <div class="sell-item-col">
+            <div class="sell-item-title">验车时间</div>
+            <div class="sell-item-check-time">
+                <span 
+                  v-for="(item, index) in checkCarTimeList" 
+                  :key="index"
+                  :class="{ban: !item.disable, active: selectCheckCarTime.id === item.id, 'space-right': index === 0 || index === 2}"
+                  @click="selectCheckCarTimeItem(item.disable ? item : selectCheckCarTime)">
+                  {{ item.value }}
+                  <i class="el-icon-check" v-if="selectCheckCarTime.id === item.id"></i>
+                  </span>
+            </div>
+        </div>
+        <!-- 验车时间 结束 -->
+        <!-- 验车地点 -->
+        <div class="sell-item-col">
+            <div class="sell-item-title">验车地点</div>
+            <div class="sell-item-input">
+                <select-province-list
+                    class="item-three"
+                    :selectModel="provinceList"
+                    :title="'省份'"
+                    :currentProvince="selectProvince"
+                    @item-select="selectProvinceItem">
+                </select-province-list>
+                <select-city-list
+                    class="item-three"
+                    :selectModel="cityList"
+                    :mark="cityMark"
+                    :title="'城市'"
+                    :currentCity="selectCity2"
+                    @item-select="selectCityItem2">
+                </select-city-list>
+                <select-district-list
+                    class="item-three"
+                    :selectModel="districtList"
+                    :mark="districtMark"
+                    :title="'地区'"
+                    @item-select="selectDistrictItem">
+                </select-district-list>
+            </div>
+        </div>
+        <div class="sell-item-col">
+            <div class="sell-item-title"></div>
+            <div class="sell-item-input">
+                <div class="input-border item">
+                    <input v-model="address"
+                      type="text"
+                      placeholder="详细地址">
+                </div>
+            </div>
+        </div>
+        <!-- 验车地点 结束 -->
+        <div class="btn">
+          <div class="pre-step" @click="preStep">上一步</div>
+          <div class="submit" @click="submit">提交</div>
+        </div>
+      </div>
     </modal-layout>
   </div>
 </template>
@@ -135,6 +196,9 @@ import selectSeriesList from 'COMMON/selectList/selectSeriesList'
 import selectModelList from 'COMMON/selectList/selectModelList'
 import sortBrandList from 'COMMON/selectList/sortBrandList'
 import sellCarCityPicker from 'COMMON/cityPicker/sellCarCityPicker'
+import selectProvinceList from 'COMMON/selectList/selectProvinceList'
+import selectCityList from 'COMMON/selectList/selectCityList'
+import selectDistrictList from 'COMMON/selectList/selectDistrictList'
 
 export default {
   name: 'sellCarBox',
@@ -145,133 +209,17 @@ export default {
     selectSeriesList,
     sellCarCityPicker,
     sortBrandList,
-    selectModelList
+    selectModelList,
+    selectProvinceList,
+    selectCityList,
+    selectDistrictList
   },
   data () {
     return {
-      yearData: [
-        {
-          value: '2018年',
-          month: [
-            {
-              value: '1月'
-            },
-            {
-              value: '2月'
-            }
-          ]
-        },
-        {
-          value: '2017年',
-          month: [
-            {
-              value: '1月'
-            },
-            {
-              value: '2月'
-            },
-            {
-              value: '3月'
-            },
-            {
-              value: '4月'
-            },
-            {
-              value: '5月'
-            },
-            {
-              value: '6月'
-            },
-            {
-              value: '7月'
-            },
-            {
-              value: '8月'
-            },
-            {
-              value: '9月'
-            },
-            {
-              value: '10月'
-            },
-            {
-              value: '11月'
-            },
-            {
-              value: '12月'
-            }
-          ]
-        },
-        {
-          value: '2016年',
-          month: [
-            {
-              value: '1月'
-            },
-            {
-              value: '2月'
-            },
-            {
-              value: '3月'
-            },
-            {
-              value: '4月'
-            },
-            {
-              value: '5月'
-            },
-            {
-              value: '6月'
-            },
-            {
-              value: '7月'
-            },
-            {
-              value: '8月'
-            },
-            {
-              value: '9月'
-            },
-            {
-              value: '10月'
-            },
-            {
-              value: '11月'
-            },
-            {
-              value: '12月'
-            }
-          ]
-        }
-      ],
-      carStatus: [
-        {
-          value: '车况好，无事故且外观无损伤'
-        },
-        {
-          value: '车况正常，无事故但有少量剐蹭钣金'
-        },
-        {
-          value: '车况一般，发生过碰撞事故'
-        },
-        {
-          value: '车辆有重大事故，车身骨架受损（含泡水火烧）'
-        }
-      ],
-      sellDate: [
-        {
-          value: '非常急，3天以内'
-        },
-        {
-          value: '不是很着急，但要在1周之内'
-        },
-        {
-          value: '想卖个好价，1个月内'
-        },
-        {
-          value: '不着急，价格合适再卖'
-        }
-      ],
+      step: 1,
+      yearData: [],
+      carStatus: [],
+      sellDate: [],
       monthMark: true,
       selectYear: {},
       selectMonth: {},
@@ -317,13 +265,34 @@ export default {
         }
       ],
       selectGuohu: {},
-      message: ''
+      message: '',
+      checkCarTimeList: [],
+      selectCheckCarTime: {},
+      provinceList: [],
+      cityList: [],
+      districtList: [],
+      selectProvince: {},
+      selectCity2: {},
+      selectDistrict: {},
+      cityMark: true,
+      districtMark: true,
+      address: ''
     }
   },
   created () {
     this.getCitySort()
     this.getHotBrand(8)
     this.getCarBrandSort()
+    this.getProvince()
+      .then((list) => {
+        this.provinceList = list
+      })
+    this.getSellInfo()
+      .then((data) => {
+        this.yearData = data.licenseTime
+        this.carStatus = data.condition
+        this.sellDate = data.expireDate
+      })
   },
   computed: {
     ...mapGetters([
@@ -339,7 +308,13 @@ export default {
       'getHotBrand',
       'getCitySort',
       'getSeriesByBrandId',
-      'getModelBySeriesId'
+      'getModelBySeriesId',
+      'getProvince',
+      'getCity',
+      'getDistrict',
+      'getInfoByCity',
+      'getSellInfo',
+      'getCheckTime'
     ]),
     selectYearItem (year) {
       this.selectYear = year
@@ -364,9 +339,6 @@ export default {
         .then((list) => {
           this.seriesList = list
         })
-        .catch(({response}) => {
-          this.seriesList = {}
-        })
     },
     selectSeriesItem (series) {
       this.selectSeries = series
@@ -376,12 +348,20 @@ export default {
         .then((list) => {
           this.modelList = list
         })
-        .catch(({response}) => {
-          this.modelList = {}
-        })
     },
     selectCityItem (city) {
       this.selectCity = city
+      this.selectProvince = {}
+      this.selectCity2 = {}
+      this.cityList = []
+      this.districtList = []
+      this.getInfoByCity(city.cityId)
+        .then((data) => {
+          this.selectProvince = data.province
+          this.selectCity2 = city
+          this.cityList = data.cityList
+          this.districtList = data.districtList
+        })
     },
     selectSellDateItem (sellDate) {
       this.selectSellDate = sellDate
@@ -432,11 +412,79 @@ export default {
         this.error('请选择预期售出时间')
         return
       }
-      this.message = this.$message({
-        showClose: true,
-        message: '下一步',
-        type: 'success'
-      })
+      this.step = 2
+      this.getCheckTime()
+        .then((data) => {
+          this.checkCarTimeList = data
+        })
+    },
+    preStep () {
+      this.step = 1
+    },
+    submit () {
+      if (!this.selectCheckCarTime.id) {
+        this.error('请选择验车时间')
+        return
+      }
+      if (!this.selectProvince.provinceId) {
+        this.error('请选择省份')
+        return
+      }
+      if (!this.selectCity2.cityId) {
+        this.error('请选择城市')
+        return
+      }
+      if (!this.address) {
+        this.error('请填写详细地址')
+        return
+      }
+      var params = {
+        'brandId': this.selectBrand.brandId,
+        'seriesId': this.selectSeries.seriesId,
+        'modelId': this.selectModel.modelId ? this.selectModel.modelId : '',
+        'year': this.selectYear.value,
+        'month': this.selectMonth.value,
+        'driverMileage': this.driverMileage,
+        'guohu': this.selectGuohu.id,
+        'licenseCity': this.selectCity.cityId,
+        'condition': this.selectCarStatus.conditionId,
+        'expireDate': this.selectSellDate.expireDateId,
+        'checkTime': this.selectCheckCarTime.id,
+        'provinceId': this.selectProvince.provinceId,
+        'cityId': this.selectCity2.cityId,
+        'districtId': this.selectDistrict.districtId ? this.selectDistrict.districtId : '',
+        'address': this.address
+      }
+      console.log(params)
+    },
+    selectCheckCarTimeItem (item) {
+      this.selectCheckCarTime = item
+    },
+    selectProvinceItem (province) {
+      this.selectProvince = province
+      this.selectCity2 = {}
+      this.selectDistrict = {}
+      this.cityList = []
+      this.districtList = []
+      this.cityMark = !this.cityMark
+      this.districtMark = !this.districtMark
+      this.getCity(province.provinceId)
+        .then((data) => {
+          this.cityList = data.list
+        })
+    },
+    selectCityItem2 (city) {
+      this.selectCity2 = city
+      this.selectDistrict = {}
+      this.districtList = []
+      this.districtMark = !this.districtMark
+      this.getDistrict(city.cityId)
+        .then((data) => {
+          this.districtList = data.list
+        })
+    },
+    selectDistrictItem (district) {
+      this.selectDistrict = district
     },
     changeMileage () {
       var newValue = ''
@@ -489,6 +537,28 @@ export default {
     margin: 20px auto
     .blue-text
       color: $color-blue
+  .btn
+    position: absolute
+    display: flex
+    display: -webkit-flex
+    flex-direction: row
+    justify-content: space-between
+    width: 420px
+    bottom: 20px
+    left: 210px
+    .pre-step,
+    .submit
+      width: 300px
+      color: $color-white
+      background: $color-blue
+      text-align: center
+      font-size: 20px
+      font-weight: bold
+      padding: 15px
+      cursor: pointer
+      border-radius: 3px
+    .pre-step
+      width: 100px
   .next-step
     position: absolute
     width: 400px
@@ -501,9 +571,9 @@ export default {
     font-weight: bold
     bottom: 20px
     left: 210px
+    border-radius: 3px
   .sell-item-col
     width: 640px
-    height: 50px
     display: flex
     display: -webkit-flex
     flex-direction: row
@@ -515,8 +585,40 @@ export default {
       font-size: 18px
       color: #495056
       text-align: right
-      line-height: 20px
-      padding: 18px 0px
+      line-height: 18px
+      padding: 15px 0px
+    .sell-item-check-time
+      width: 530px
+      display: flex
+      display: -webkit-flex
+      flex-direction: row
+      justify-content: space-between
+      flex-wrap: wrap
+      padding: 0px 15px
+      align-items: center
+      > span
+        cursor: pointer
+        min-width: 240px
+        flex-grow: 1
+        padding: 10px 18px
+        border: 1px solid #e6e6e6
+        border-radius: 3px
+        margin-bottom: 15px
+        &.space-right
+          margin-right: 10px
+        &.active,
+        &:hover
+          border: 1px solid $color-blue
+        &.ban
+          background: #eeeeee
+          color: #b4b9bd
+          cursor: not-allowed
+          &:hover
+            border: 1px solid #e6e6e6
+        > i
+          float: right
+          font-size: 18px
+          color: $color-blue
     .sell-item-input
       width: 530px
       display: flex
@@ -533,6 +635,8 @@ export default {
         &:hover,
         &.gh-active
           border: 1px solid $color-blue
+      .item-three
+        width: 160px
       .item-half
         width: 240px
       .item

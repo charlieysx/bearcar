@@ -111,6 +111,34 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 卖车时获取相关信息
+   * @param seriesId
+   * @return {Promise}
+   */
+  getSellInfo (store) {
+    return api.getSellInfo()
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 卖车时获取验车时间
+   * @param seriesId
+   * @return {Promise}
+   */
+  getCheckTime (store) {
+    return api.getCheckTime()
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

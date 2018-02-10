@@ -96,5 +96,53 @@ export default {
         seriesId: seriesId
       }
     })
+  },
+  /**
+   * 获取省份
+   */
+  getProvince () {
+    return axios.get('common/get_province')
+  },
+  /**
+   * 根据省份id获取城市
+   */
+  getCity (provinceId) {
+    return axios.get('common/get_city', {
+      params: {
+        provinceId: provinceId
+      }
+    })
+  },
+  /**
+   * 根据城市id获取地区
+   */
+  getDistrict (cityId) {
+    return axios.get('common/get_district', {
+      params: {
+        cityId: cityId
+      }
+    })
+  },
+  /**
+   * 根据城市id获取地区及城市、省份
+   */
+  getInfoByCity (cityId) {
+    return axios.get('common/get_info_by_city', {
+      params: {
+        cityId: cityId
+      }
+    })
+  },
+  /**
+   * 卖车时获取相关信息
+   */
+  getSellInfo () {
+    return axios.get('car/get_sell_info')
+  },
+  /**
+   * 卖车时获取验车时间
+   */
+  getCheckTime () {
+    return axios.get('car/get_check_time')
   }
 }
