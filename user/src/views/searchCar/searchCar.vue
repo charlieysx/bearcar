@@ -964,10 +964,6 @@ export default {
       this.activeOrder.type = type
     },
     pageChange (currentPage) {
-      // this.$store.commit('SET_JOB_QUERY', {
-      //   key: 'page',
-      //   value: currentPage
-      // })
       this.scrollToTop()
     },
     scrollToTop () {

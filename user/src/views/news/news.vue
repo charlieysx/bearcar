@@ -14,6 +14,17 @@
             <div class="news-content">{{ news.content }}</div>
           </li>
         </ul>
+        <!-- 分页 -->
+        <div class="search-page">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="40"
+            @current-change="pageChange"
+            :total="40">
+          </el-pagination>
+        </div>
+        <!-- 分页 结束 -->
       </div>
       <div class="hot-news">
         <p>热门资讯</p>
@@ -158,6 +169,11 @@ export default {
   },
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 3)
+  },
+  methods: {
+    pageChange (currentPage) {
+      this.scrollToTop()
+    }
   }
 }
 </script>
@@ -210,7 +226,14 @@ export default {
             padding: 10px
             font-size: 14px
           &:hover
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
+            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1) 
+      .search-page
+        width: 100%
+        padding-bottom: 40px
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
+        justify-content: center
     .hot-news
       position: fixed
       margin-left: 700px
