@@ -167,5 +167,17 @@ export default {
    */
   sellCar (params) {
     return axios.post('car/sell_car', Qs.stringify(params))
+  },
+  /**
+   * 获取 我的车 列表  type:{waiting, selling, ordering, under}
+   */
+  getMyCar (type, page) {
+    return axios.get('car/get_my_car', {
+      params: {
+        type: type,
+        page: page,
+        pageSize: 15
+      }
+    })
   }
 }

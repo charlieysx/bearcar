@@ -8,6 +8,7 @@ import './ElementUI'
 import store from './store/index'
 import { sync } from 'vuex-router-sync'
 import validator from 'UTIL/validator'
+import 'UTIL/filters'
 import 'swiper/dist/css/swiper.css'
 import VueScrollLock from 'vue-scroll-lock'
 

@@ -42,7 +42,7 @@
                 <!-- 用户信息下拉 -->
                 <div class="user-info">
                   <ul class="user-info-ul">
-                    <li class="info-content info-border">
+                    <li class="info-content info-border" @click="toMyCar">
                       <span class="icon-page"></span>
                       <span class="info-content-text">我的车</span>
                     </li>
@@ -189,6 +189,7 @@ export default {
       cachedUserInfo.delete()
       this.$store.commit(SET_LOGIN_STATUS, false)
       this.$store.commit(SET_USER_INFO, {})
+      this.toIndex()
     },
     toIndex () {
       this.$router.push({ name: 'home' })
@@ -198,6 +199,9 @@ export default {
     },
     toSellCar () {
       this.$router.push({ name: 'sellCar' })
+    },
+    toMyCar () {
+      this.$router.push({ name: 'myCar' })
     },
     fixTopBarScroll () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft

@@ -151,6 +151,18 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 获取 我的车 列表  type:{waiting, selling, ordering, under}
+   */
+  getMyCar (store, type, page) {
+    return api.getMyCar(type, page)
+      .then((response) => {
+        return Promise.resolve(response.data.data.list)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

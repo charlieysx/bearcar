@@ -184,7 +184,7 @@ export default {
 #news
   width: 100%
   min-height: calc(110vh - 110px)
-  background: #eeeeee
+  background: $color-bg-blue
   #news-wrap
     width: 1000px
     margin: 0 auto
