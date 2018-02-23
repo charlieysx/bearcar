@@ -1,5 +1,15 @@
 import axios from 'axios'
 import Qs from 'qs'
+import store from 'STORE/index'
+import {
+  getAccessToken,
+  removeAccessToken,
+  cachedUserInfo
+} from 'API/cacheService'
+
+import {
+  SET_LOGIN_MASK_STATUS
+} from 'STORE/mutation-types'
 
 /* eslint-disable */
 const API_ROOT = 'http://bearcarapi.codebear.cn/index.php'
@@ -11,7 +21,9 @@ axios.defaults.headers.Accept = 'application/json'
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  config.headers['isDebug'] = true
+  if (getAccessToken()) {
+    config.headers['accessToken'] = getAccessToken()
+  }
   return config
 }, function (error) {
   return Promise.reject(error)
@@ -22,6 +34,11 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   if (error.response.status === 401) {
+    // 清空登录信息;
+    removeAccessToken()
+    cachedUserInfo.delete()
+    // 弹出登录窗口
+    store.commit(SET_LOGIN_MASK_STATUS, { show: true, view: 'login' })
   }
   return Promise.reject(error)
 })
@@ -144,5 +161,11 @@ export default {
    */
   getCheckTime () {
     return axios.get('car/get_check_time')
+  },
+  /**
+   * 提交二手车信息
+   */
+  sellCar (params) {
+    return axios.post('car/sell_car', Qs.stringify(params))
   }
 }

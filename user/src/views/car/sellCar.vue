@@ -511,10 +511,18 @@ export default {
     },
     sellCar () {
       if (!this.isLogin) {
+        this.error('请先登录')
         this.setLoginMaskStatus({ show: true, view: 'login' })
       } else {
         this.$refs.sellCarBox.$refs.modal.showModal()
       }
+    },
+    error (err) {
+      this.message = this.$message({
+        showClose: true,
+        message: err,
+        type: 'error'
+      })
     }
   }
 }

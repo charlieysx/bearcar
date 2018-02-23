@@ -314,7 +314,8 @@ export default {
       'getDistrict',
       'getInfoByCity',
       'getSellInfo',
-      'getCheckTime'
+      'getCheckTime',
+      'sellCar'
     ]),
     selectYearItem (year) {
       this.selectYear = year
@@ -440,8 +441,8 @@ export default {
       }
       var params = {
         'brandId': this.selectBrand.brandId,
-        'seriesId': this.selectSeries.seriesId,
-        'modelId': this.selectModel.modelId ? this.selectModel.modelId : '',
+        'seriesId': this.selectSeries.seriesId ? this.selectSeries.seriesId : '-9999',
+        'modelId': this.selectModel.modelId ? this.selectModel.modelId : '-9999',
         'year': this.selectYear.value,
         'month': this.selectMonth.value,
         'driverMileage': this.driverMileage,
@@ -452,10 +453,18 @@ export default {
         'checkTime': this.selectCheckCarTime.id,
         'provinceId': this.selectProvince.provinceId,
         'cityId': this.selectCity2.cityId,
-        'districtId': this.selectDistrict.districtId ? this.selectDistrict.districtId : '',
+        'districtId': this.selectDistrict.districtId ? this.selectDistrict.districtId : '-9999',
         'address': this.address
       }
-      console.log(params)
+      this.sellCar(params)
+        .then((data) => {
+          this.$router.push({ name: 'home' })
+        })
+        .catch((err) => {
+          if (err.status === 401) {
+            this.error('登录过期，请重新登录')
+          }
+        })
     },
     selectCheckCarTimeItem (item) {
       this.selectCheckCarTime = item

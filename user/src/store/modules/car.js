@@ -139,6 +139,18 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 提交二手车信息
+   */
+  sellCar (store, params) {
+    return api.sellCar(params)
+      .then((response) => {
+        return Promise.resolve(response.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

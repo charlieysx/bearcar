@@ -12,11 +12,19 @@ import {
 } from 'API/cacheService'
 
 const state = {
+  loginMaskShow: false,
+  loginView: 'login',
   isLogin: getAccessToken() ? true : false, // eslint-disable-line
   userInfo: cachedUserInfo.load() || {}
 }
 
 const getters = {
+  loginMaskShow (state) {
+    return state.loginMaskShow
+  },
+  loginView (state) {
+    return state.loginView
+  },
   isLogin (state) {
     return state.isLogin
   },
@@ -26,6 +34,10 @@ const getters = {
 }
 
 const mutations = {
+  [SET_LOGIN_MASK_STATUS] (state, data) {
+    state.loginMaskShow = data.show
+    state.loginView = data.view
+  },
   [SET_LOGIN_STATUS] (state, data) {
     state.isLogin = data
   },
@@ -35,6 +47,10 @@ const mutations = {
 }
 
 const actions = {
+
+  setLoginMaskStatus (store, data) {
+    store.commit(SET_LOGIN_MASK_STATUS, data)
+  },
   /**
    * 用户登录
    * @param store
