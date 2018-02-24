@@ -1,7 +1,7 @@
 {
-  "name": "user",
+  "name": "admin",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "小熊二手车-后台管理系统",
   "author": "CodeBear <249900679@qq.com>",
   "private": true,
   "scripts": {

@@ -10,7 +10,7 @@ import {
   saveAccessToken,
   getAccessToken,
   cachedUserInfo,
-  cachedUserName
+  cachedPhone
 } from 'API/cacheService'
 
 const state = {
@@ -19,7 +19,7 @@ const state = {
   isLogin: getAccessToken() ? true : false, // eslint-disable-line
   userInfo: cachedUserInfo.load() || {},
   tokenError: false,
-  userName: cachedUserName.load() || ''
+  phone: cachedPhone.load() || ''
 }
 
 const getters = {
@@ -38,8 +38,8 @@ const getters = {
   tokenError (state) {
     return state.tokenError
   },
-  userName (state) {
-    return state.userName
+  phone (state) {
+    return state.phone
   }
 }
 
@@ -66,40 +66,13 @@ const actions = {
   },
   /**
    * 用户登录
-   * @param store
-   * @param {String} userName 手机号码
-   * @param {String} password 密码
-   * @return {Promise}
    */
   login (store, params) {
     return api.login(params)
       .then((response) => {
         saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
         cachedUserInfo.save(response.data.data)
-        cachedUserName.save(response.data.data.userName)
-        store.commit(SET_LOGIN_STATUS, true)
-        store.commit(SET_USER_INFO, response.data.data)
-        // 关闭登录mask
-        store.commit(SET_LOGIN_MASK_STATUS, false)
-        return Promise.resolve(response.data)
-      })
-      .catch(({response}) => {
-        return Promise.reject(response)
-      })
-  },
-  /**
-   * 用户注册
-   * @param store
-   * @param {String} userName 手机号码
-   * @param {String} password 密码
-   * @return {Promise}
-   */
-  register (store, params) {
-    return api.register(params)
-      .then((response) => {
-        saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
-        cachedUserInfo.save(response.data.data)
-        cachedUserName.save(response.data.data.userName)
+        cachedPhone.save(response.data.data.phone)
         store.commit(SET_LOGIN_STATUS, true)
         store.commit(SET_USER_INFO, response.data.data)
         // 关闭登录mask

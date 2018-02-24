@@ -1,16 +1,15 @@
 <template>
   <div id="appindex">
-    <!-- header -->
-    <page-header></page-header>
-    <!-- header 结束 -->
+    <!-- left-nav -->
+    <left-nav></left-nav>
+    <!-- left-nav 结束 -->
     <!-- content -->
     <div class="viewWrap">
-      <router-view></router-view>
+      <div class="viewContent">
+        <router-view></router-view>
+      </div>
     </div>
     <!-- content 结束 -->
-    <!-- footer -->
-    <page-footer></page-footer>
-    <!-- footer 结束 -->
     <!-- 返回顶部 -->
     <div class="nav-wrap">
       <float-nav></float-nav>
@@ -25,8 +24,7 @@
 </template>
 
 <script>
-import pageHeader from 'COMMON/header/header'
-import pageFooter from 'COMMON/footer/footer'
+import leftNav from 'COMMON/leftNav/leftNav'
 import floatNav from 'COMMON/floatNav/floatNav'
 import authLayout from 'VIEWS/auth/layout'
 
@@ -47,8 +45,7 @@ export default {
     }
   },
   components: {
-    pageHeader,
-    pageFooter,
+    leftNav,
     floatNav,
     authLayout
   },
@@ -120,15 +117,24 @@ export default {
 }
 </script>
 
- <style lang="stylus" src="STYLUS/main.styl"></style>
+<style lang="stylus" src="STYLUS/main.styl"></style>
 
 <style lang="stylus">
   #appindex
-    min-width: 1180px
+    min-width: 1900px
+    display: flex
+    display: -webkit-flex
+    flex-direction: row
+    background-color: #f5f5f7
     .viewWrap
-      background-color: #f5f5f7
       min-height: calc(110vh - 110px)
-      min-width: 1170px
+      min-width: 1640px
+      width: 100%
+      .viewContent
+        min-height: calc(110vh - 110px)
+        background: #ffffff
+        width: 1660px
+        margin: 0 auto
     .nav-wrap
       position: fixed
       right: 6px

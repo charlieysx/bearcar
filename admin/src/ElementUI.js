@@ -7,10 +7,10 @@ import {
   // Dropdown,
   // DropdownMenu,
   // DropdownItem,
-  // Menu,
-  // Submenu,
-  // MenuItem,
-  // MenuItemGroup,
+  Menu,
+  Submenu,
+  MenuItem,
+  MenuItemGroup,
   Input,
   InputNumber,
   // Radio,
@@ -71,10 +71,10 @@ Vue.use(Pagination)
 // Vue.use(Dropdown)
 // Vue.use(DropdownMenu)
 // Vue.use(DropdownItem)
-// Vue.use(Menu)
-// Vue.use(Submenu)
-// Vue.use(MenuItem)
-// Vue.use(MenuItemGroup)
+Vue.use(Menu)
+Vue.use(Submenu)
+Vue.use(MenuItem)
+Vue.use(MenuItemGroup)
 Vue.use(Input)
 Vue.use(InputNumber)
 // Vue.use(Radio)
@@ -130,7 +130,7 @@ Vue.use(Card)
 // Vue.prototype.$msgbox = MessageBox
 // Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
-// Vue.prototype.$prompt = MessageBox.prompt
+Vue.prototype.$prompt = MessageBox.prompt
 // Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
 export default Vue

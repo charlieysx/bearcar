@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1 class="login-title">Hi~好久不见~</h1>
+    <h1 class="login-title">小熊二手车-后台管理</h1>
     <div class="login-form-wrap">
       <el-form :model="loginForm"
                :rules="loginRules"
@@ -27,10 +27,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </div>
-    <div class="login-options">
-      <a @click="changeView('register')" class="login-toregister">注册账号</a>
-      <a @click="changeView('resetPsw')" class="login-toreset">忘记密码</a>
     </div>
   </div>
 </template>
@@ -62,7 +58,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userName'
+      'phone'
     ]),
     btnDisabled () {
       return this.loginForm.phone === '' ||
@@ -71,7 +67,7 @@ export default {
     }
   },
   mounted () {
-    this.loginForm.phone = this.userName
+    this.loginForm.phone = this.phone
   },
   methods: {
     changeView (type) {
@@ -81,7 +77,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let loginFormParams = {
-            userName: this.loginForm.phone,
+            phone: this.loginForm.phone,
             password: this.loginForm.password
           }
           if (this.message) {
@@ -136,14 +132,6 @@ export default {
       height: 14px
       line-height: 14px
       cursor: pointer
-    .login-toreset
-      &:hover
-        color: $color-blue
-        border-bottom: 1px solid $color-blue
-    .login-toregister
-      &:hover
-        color: $color-orange
-        border-bottom: 1px solid $color-orange
     .el-button
       width: 100%
       height: 40px

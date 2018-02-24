@@ -1,6 +1,5 @@
 <template>
   <div id="auth-layout">
-    <span class="close-icon-wrap" @click="closeLoginMask()"><i class="el-icon-close"></i></span>
     <div class="layout-wrap">
       <div class="layout-inner">
         <transition name="component-fade" mode="out-in">
@@ -12,15 +11,11 @@
 </template>
 <script>
   import login from 'VIEWS/auth/login'
-  import register from 'VIEWS/auth/register'
-  import resetPsw from 'VIEWS/auth/resetPsw'
   import { mapActions, mapGetters } from 'vuex'
   export default {
     name: 'auth-layout',
     components: {
-      login,
-      register,
-      resetPsw
+      login
     },
     computed: {
       ...mapGetters([
@@ -31,19 +26,10 @@
       ...mapActions([
         'setLoginMaskStatus'
       ]),
-      closeLoginMask () {
-        this.setLoginMaskStatus({ show: false, view: 'login' })
-      },
       change (type) {
         switch (type) {
           case 'login':
             this.setLoginMaskStatus({ show: true, view: 'login' })
-            break
-          case 'register':
-            this.setLoginMaskStatus({ show: true, view: 'register' })
-            break
-          case 'resetPsw':
-            this.setLoginMaskStatus({ show: true, view: 'resetPsw' })
             break
           default:
             break
@@ -61,7 +47,7 @@
     bottom: 0
     right: 0
     z-index: 1000
-    background: rgba(255, 255, 255, 0.95)
+    background: $color-white
     .layout-tocompany
       display: block
       width: 460px

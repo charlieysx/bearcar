@@ -244,7 +244,7 @@ export default {
         margin: 23px 0
         height: 24px
         width: 112px
-        background: url('~IMAGES/logo.png') no-repeat
+        background: url('~IMAGES/bearcar_logo.png') no-repeat
         background-position: 50% 50%
         background-size: 112px 24px
         cursor: pointer
