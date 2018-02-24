@@ -137,6 +137,8 @@
         <ul class="car-list-wrap">
           <li class="car-list" v-for="item in newCarList" :key="item.id" @click="toCarInfo(item)">
             <div class="car-img">
+              <div class="icon-guazi icon-sell" v-if="true">急售</div>
+              <div class="icon-guazi icon-new" v-else-if="false">新上架</div>
               <img :src="item.carImg" alt="">
             </div>
             <div class="car-info">
@@ -813,6 +815,22 @@ export default {
             > img
               width: 100%
               height: 190px
+            .icon-new,
+            .icon-sell
+              position: absolute
+              background-position: -100px -100px
+              width: 60px
+              height: 70px
+              margin-top: -4px
+              margin-left: 5px
+              padding-top: 7px
+              font-size: 16px
+              color: $color-white
+              line-height: 38px
+              text-align: center
+              font-weight: 700
+            .icon-new
+              background-position: -36px -100px
           .car-info
             width: 100%
             height: 121px
@@ -856,5 +874,11 @@ export default {
           height: 17px
           background-image: url('~IMAGES/ic_more_car_arrow.png')
           background-size: 17px
+
+
+.icon-guazi
+  background-image: url('~IMAGES/icon_guazi.png')
+  background-repeat: no-repeat
+  display: inline-block
 </style>
 

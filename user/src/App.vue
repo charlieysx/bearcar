@@ -31,7 +31,8 @@ import floatNav from 'COMMON/floatNav/floatNav'
 import authLayout from 'VIEWS/auth/layout'
 
 import {
-  SET_PAGE_VISIBILITY
+  SET_PAGE_VISIBILITY,
+  SHOW_TOKEN_ERROR
 } from 'STORE/mutation-types'
 
 import {
@@ -53,7 +54,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'loginMaskShow'
+      'loginMaskShow',
+      'tokenError'
     ])
   },
   mounted () {
@@ -63,6 +65,18 @@ export default {
   },
   beforeDestroy () {
     document.removeEventListener(this.evtname, this.visibilityChange, false)
+  },
+  watch: {
+    tokenError (value) {
+      if (value) {
+        this.$store.commit(SHOW_TOKEN_ERROR, false)
+        this.message = this.$message({
+          showClose: true,
+          message: '账号过期，请重新登录',
+          type: 'error'
+        })
+      }
+    }
   },
   methods: {
     getHiddenProp () {

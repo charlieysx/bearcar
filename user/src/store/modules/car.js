@@ -155,10 +155,19 @@ const actions = {
   /**
    * 获取 我的车 列表  type:{waiting, selling, ordering, under}
    */
-  getMyCar (store, type, page) {
-    return api.getMyCar(type, page)
+  getMyCar (store, params) {
+    return api.getMyCar(params)
       .then((response) => {
-        return Promise.resolve(response.data.data.list)
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  underMyCar (store, carId) {
+    return api.underMyCar(carId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
       })
       .catch(({response}) => {
         return Promise.reject(response)

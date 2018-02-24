@@ -173,6 +173,9 @@ export default {
   methods: {
     pageChange (currentPage) {
       this.scrollToTop()
+    },
+    scrollToTop () {
+      document.body.scrollTop = document.documentElement.scrollTop = 0
     }
   }
 }

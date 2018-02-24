@@ -2,20 +2,24 @@ import api from 'API/index'
 import {
   SET_LOGIN_STATUS,
   SET_USER_INFO,
-  SET_LOGIN_MASK_STATUS
+  SET_LOGIN_MASK_STATUS,
+  SHOW_TOKEN_ERROR
 } from '../mutation-types'
 
 import {
   saveAccessToken,
   getAccessToken,
-  cachedUserInfo
+  cachedUserInfo,
+  cachedUserName
 } from 'API/cacheService'
 
 const state = {
   loginMaskShow: false,
   loginView: 'login',
   isLogin: getAccessToken() ? true : false, // eslint-disable-line
-  userInfo: cachedUserInfo.load() || {}
+  userInfo: cachedUserInfo.load() || {},
+  tokenError: false,
+  userName: cachedUserName.load() || ''
 }
 
 const getters = {
@@ -30,6 +34,12 @@ const getters = {
   },
   userInfo (state) {
     return state.userInfo
+  },
+  tokenError (state) {
+    return state.tokenError
+  },
+  userName (state) {
+    return state.userName
   }
 }
 
@@ -43,6 +53,9 @@ const mutations = {
   },
   [SET_USER_INFO] (state, data) {
     state.userInfo = data
+  },
+  [SHOW_TOKEN_ERROR] (state, data) {
+    state.tokenError = data
   }
 }
 
@@ -63,6 +76,7 @@ const actions = {
       .then((response) => {
         saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
         cachedUserInfo.save(response.data.data)
+        cachedUserName.save(response.data.data.userName)
         store.commit(SET_LOGIN_STATUS, true)
         store.commit(SET_USER_INFO, response.data.data)
         // 关闭登录mask
@@ -85,6 +99,7 @@ const actions = {
       .then((response) => {
         saveAccessToken(response.data.data.token.accessToken, response.data.data.token.exp)
         cachedUserInfo.save(response.data.data)
+        cachedUserName.save(response.data.data.userName)
         store.commit(SET_LOGIN_STATUS, true)
         store.commit(SET_USER_INFO, response.data.data)
         // 关闭登录mask

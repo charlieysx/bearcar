@@ -11,35 +11,12 @@
             {{ tab.name }}
           </span>
         </div>
-        <div class="title-right">
-          <div class="info-button">
-            <div class="subscribe-button">
-              预约看车
-            </div>
-            <div class="bargain-button">
-              我要砍价
-            </div>
-            <div class="consult-button">
-              免费咨询
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <!-- 空白 占位用 -->
     <div id="title-space" v-if="fixedTitle"></div>
     <!-- 空白 占位用 结束 -->
     <div class="car-wrap">
-        <!-- 面包屑，搜索框 -->
-        <div id="car-bread">
-            <bread-crumb class="bread-crumb" :items="breadCrumbItems"></bread-crumb>
-            <search-car-input 
-              @search="toSearch" 
-              @search-item="inputSearchItem"
-              :searchCarList="innerHotBrands">
-            </search-car-input>
-        </div>
-        <!-- 面包屑，搜索框 结束 -->
         <!-- 二手车基础信息 -->
         <div id="car-base-info">
             <div class="car-base-image">
@@ -127,17 +104,6 @@
                     </li>
                 </ul>
                 <!-- 部分参数 结束 -->
-                <div class="info-button">
-                    <div class="subscribe-button">
-                        预约看车
-                    </div>
-                    <div class="bargain-button">
-                        我要砍价
-                    </div>
-                    <div class="consult-button">
-                        免费咨询
-                    </div>
-                </div>
                 <div class="car-source-number">
                     <span>车源号:</span>
                     <span>HC-26469924</span>
@@ -210,9 +176,6 @@
           <p>基本信息</p>
           <div class="car-owner">
             车主：郭先生
-            <span>
-              咨询看车
-            </span>
           </div>
           <!-- 部分参数 -->
           <ul class="car-assort">
@@ -249,65 +212,16 @@
           </div>
         </div>
         <!-- 检测报告 结束 -->
-        <!-- 猜你喜欢 -->
-        <div id="car-guess-love" ref="carGuessLove">
-          <p>猜您喜欢</p>
-          <ul class="car-list-wrap" v-show="searchResultList.length > 0">
-            <li class="car-list" v-for="(item, index) in searchResultList" :key="index" @click="toCarInfo(item)">
-              <div class="car-img">
-                <img :src="item.carImg" alt="">
-              </div>
-              <div class="car-info">
-                <p class="car-name">{{item.carName}}</p>
-                <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
-                <p class="car-info-price">
-                  {{item.price}}
-                  <span>万</span>
-                </p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <!-- 猜你喜欢 结束 -->
     </div>
-    <!-- 购车问答 -->
-    <div id="car-aq" ref="carAQ">
-      <div class="aq-title">
-        购车问答
-        <div class="line"></div>
-      </div>
-      <ul class="aq-wrap">
-        <li class="aq-item"
-          v-for="(aq, index) in buyCarAQ"
-          :key="index">
-          <div class="aq-top">
-            <span class="icon" :style="aq.style"></span>
-            <span class="question">
-              {{ aq.question }}
-            </span>
-          </div>
-          <ul class="answer">
-            <li v-for="(answer, index) in aq.answer" :key="index">
-              {{ answer }}
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <!-- 购车问答 结束 -->
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import breadCrumb from 'COMMON/breadCrumb/breadCrumb'
 import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
 import imagePreviewList from 'COMMON/imagePreviewList/imagePreviewList'
 import configList from 'COMMON/configList/configList'
 import carImage from 'COMMON/carImage/carImage'
 import configGrid from 'COMMON/configGrid/configGrid'
-
-import carAQ from 'DATA/carAQ'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -330,28 +244,11 @@ export default {
         },
         {
           name: '检测报告'
-        },
-        {
-          name: '猜您喜欢'
-        },
-        {
-          name: '购车问答'
         }
       ],
       thisTitleTab: {
         name: '基本信息'
       },
-      breadCrumbItems: [
-        {
-          text: '小熊二手车',
-          to: {path: '/'}
-        },
-        {
-          text: '全国二手车',
-          to: {path: '/searchCar'}
-        }
-      ],
-      innerHotBrands: [],
       carId: '',
       carAssort: {
         licensedTime: {
@@ -1629,12 +1526,10 @@ export default {
           price: '8.00',
           carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
         }
-      ],
-      buyCarAQ: {}
+      ]
     }
   },
   components: {
-    breadCrumb,
     searchCarInput,
     imagePreviewList,
     configList,
@@ -1644,27 +1539,6 @@ export default {
   created () {
     this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
     this.carId = this.$route.params.carId
-    this.getHotBrand(15)
-    this.breadCrumbItems[1].text = this.currentCity.cityName + '二手车'
-    this.breadCrumbItems[2] = {
-      text: '长安悦翔V3 2015款 1.4L 手动美满型 国V',
-      to: {name: 'car', params: { carId: this.carId }}
-    }
-    this.buyCarAQ = carAQ.buyCarAQ
-  },
-  computed: {
-    ...mapGetters([
-      'currentCity',
-      'hotBrands'
-    ])
-  },
-  watch: {
-    currentCity (value) {
-      window.location.reload()
-    },
-    hotBrands (list) {
-      this.innerHotBrands = list
-    }
   },
   mounted () {
     window.addEventListener('scroll', this.handelFixedTitle)
@@ -1673,14 +1547,6 @@ export default {
     window.removeEventListener('scroll', this.handelFixedTitle)
   },
   methods: {
-    ...mapActions([
-      'getHotBrand'
-    ]),
-    toSearch (value) {
-    },
-    inputSearchItem (item) {
-      this.selectBrand(item)
-    },
     handelFixedTitle () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
       this.style.left = `-${scrollLeft}px`
@@ -1691,12 +1557,8 @@ export default {
         this.thisTitleTab = this.titleTab[0]
       } else if (scrollTop < this.$refs.carReport.offsetTop - 70) {
         this.thisTitleTab = this.titleTab[1]
-      } else if (scrollTop < this.$refs.carGuessLove.offsetTop - 70) {
-        this.thisTitleTab = this.titleTab[2]
-      } else if (scrollTop < this.$refs.carAQ.offsetTop - 70) {
-        this.thisTitleTab = this.titleTab[3]
       } else {
-        this.thisTitleTab = this.titleTab[4]
+        this.thisTitleTab = this.titleTab[2]
       }
       if (scrollTop > 482) {
         this.fixedTitle = true
@@ -1718,12 +1580,6 @@ export default {
           break
         case 2:
           scrollTop = this.$refs.carReport.offsetTop - 70
-          break
-        case 3:
-          scrollTop = this.$refs.carGuessLove.offsetTop - 70
-          break
-        case 4:
-          scrollTop = this.$refs.carAQ.offsetTop - 70
           break
       }
       document.body.scrollTop = document.documentElement.scrollTop = scrollTop
@@ -1768,60 +1624,13 @@ export default {
           &.active
             background: $color-blue
             color: $color-white
-      .title-right
-        float: right
-        .info-button
-          padding: 12px
-          display: flex
-          display: -webkit-flex
-          flex-direction: row
-          justify-content: space-between
-          font-size: 18px
-          text-align: center
-          font-weight: bold
-          .subscribe-button
-            padding: 12px 40px
-            background: #fd6c34e8
-            color: $color-white
-            cursor: pointer
-            border-radius: 4px
-            margin-right: 10px
-            &:hover
-              background: #fd6c34
-          .bargain-button
-            padding: 12px 40px
-            color: $color-white
-            background: #24b9ffe8
-            cursor: pointer
-            border-radius: 4px
-            margin-right: 10px
-            &:hover
-              background: #24b9ff
-          .consult-button
-            padding: 12px 40px
-            background: $color-white
-            color: #24b9ffe8
-            border 1px solid $color-blue
-            cursor: pointer
-            border-radius: 4px
-            margin-right: 10px
-            &:hover
-              color: #24b9ff
   #title-space
     width: 100%
     height: 70px
   .car-wrap
     width: 1170px
     margin: 0 auto
-    #car-bread
-      height: 60px
-      display: flex
-      display: -webkit-flex
-      flex-direction: row
-      align-items: center
-      justify-content: space-between
-      .bread-crumb
-        margin: 0 0
+    padding-top: 40px
     #car-base-info
       display: flex
       display: -webkit-flex
@@ -1917,41 +1726,6 @@ export default {
               > i
                 font-size: 16px
                 color: $color-blue
-        .info-button
-          margin: 10px 15px
-          padding: 12px
-          display: flex
-          display: -webkit-flex
-          flex-direction: row
-          justify-content: space-between
-          font-size: 20px
-          text-align: center
-          font-weight: bold
-          .subscribe-button
-            padding: 16px 40px
-            background: #fd6c34e8
-            color: $color-white
-            cursor: pointer
-            border-radius: 4px
-            &:hover
-              background: #fd6c34
-          .bargain-button
-            padding: 16px 40px
-            color: $color-white
-            background: #24b9ffe8
-            cursor: pointer
-            border-radius: 4px
-            &:hover
-              background: #24b9ff
-          .consult-button
-            padding: 16px 40px
-            background: $color-white
-            color: #24b9ffe8
-            border 1px solid $color-blue
-            cursor: pointer
-            border-radius: 4px
-            &:hover
-              color: #24b9ff
         .car-source-number
           text-align: right
           margin: 0px 15px
@@ -2185,135 +1959,6 @@ export default {
         border-bottom: 1px solid #dee2e6
       .report-grid
         margin: 20px 0px
-    #car-guess-love
-      width: 100%
-      > p
-        width: 100%
-        height: 47px
-        line-height: 47px
-        font-size: 22px
-        color: #495056
-        font-weight: 700
-        margin-top: 10px
-        border-bottom: 1px solid #dee2e6
-      .car-list-wrap
-        width: 1170px
-        display: flex
-        justify-content: space-between
-        flex-wrap: wrap
-        margin-top: 16px
-        .car-list
-          width: 280.5px
-          height: 314px
-          padding: 8px
-          margin-bottom: 16px
-          &:hover
-            cursor: pointer
-            box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
-          .car-img
-            width: 100%
-            height: 174px
-            margin-top: 3px
-            background-image: url('~IMAGES/car_default.png')
-            background-size: 100% 174px
-            > img
-              width: 100%
-              height: 174px
-          .car-info
-            width: 100%
-            height: 121px
-            padding: 20px 5px
-            background: $color-white
-            .car-name
-              font-size: 16px
-              color: $color-black
-              single-text-ellipsis()
-            .car-info-p
-              font-size: 14px
-              color: #a5abb2
-              margin: 12px 0
-              > em
-                padding: 0 6px
-                color: #d2d2d2
-                font-style: normal
-            .car-info-price
-              font-size: 20px
-              color: #ff0000cc
-              > span
-                font-size: 14px
-  #car-aq
-    width: 100%
-    background: #f8f8f8
-    padding: 20px
-    padding-top: 40px
-    margin-top: 60px
-    text-align: center
-    .aq-title
-      font-size: 24px
-      font-weight: 700
-      color: #495056
-      margin: 0 auto
-      padding: 5px
-      width: 106px
-      text-align: center
-      .line
-        height: 3px
-        width: 30px
-        margin: 0 auto
-        margin-top: 5px
-        background: $color-blue
-    .aq-wrap
-      width: 1170px
-      height: 100%
-      margin: 0 auto
-      padding: 20px
-      padding-top: 30px
-      display: flex
-      display: -webkit-flex
-      flex-direction: row
-      justify-content: space-between
-      flex-wrap: wrap
-      .aq-item
-        width: 540px
-        text-align: left
-        margin-left: 20px
-        margin-top: 40px
-        .aq-top
-          height: 60px
-          font-size: 0px
-          display: flex
-          display: -webkit-flex
-          flex-direction: row
-          align-content: center
-          .icon
-            display: inline-block
-            width: 60px
-            height: 60px
-            border-radius: 30px
-          .question
-            display: inline-block
-            font-size: 18px
-            padding: 6px
-            background: #ebebeb
-            transform: translateY(-50%)
-            margin-left: 10px
-            margin-top: 30px
-            border-radius: 3px
-            &:after
-              position: absolute
-              top: 50%
-              left: -5px
-              content: ' '
-              width: 10px
-              height: 10px
-              transform: translateY(-50%) rotate(45deg)
-              background: #ebebeb
-        .answer
-          margin-left: 65px
-          font-size: 13px
-          color: #2e2e2e
-          > li
-            margin-bottom: 12px
 
             
 .icon

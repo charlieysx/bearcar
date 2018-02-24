@@ -9,7 +9,8 @@ const ssCache = new Cache({storage: 'sessionStorage'})
 const KEYS = {
   token: 'ak',
   userInfo: 'userInfo',
-  currentCity: 'currentCity'
+  currentCity: 'currentCity',
+  userName: 'userName'
 }
 
 const nameSpace = 'BEARCAR'
@@ -55,4 +56,5 @@ export function removeAccessToken () {
 }
 
 export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 0)
+export const cachedUserName = new CommonStorage(KEYS.userName, 0)
 export const cachedCurrentCity = new CommonStorage(KEYS.currentCity, 0)

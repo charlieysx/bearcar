@@ -8,7 +8,9 @@ import {
 } from 'API/cacheService'
 
 import {
-  SET_LOGIN_MASK_STATUS
+  SET_LOGIN_STATUS,
+  SET_LOGIN_MASK_STATUS,
+  SHOW_TOKEN_ERROR
 } from 'STORE/mutation-types'
 
 /* eslint-disable */
@@ -37,6 +39,9 @@ axios.interceptors.response.use(function (response) {
     // 清空登录信息;
     removeAccessToken()
     cachedUserInfo.delete()
+    store.commit(SET_LOGIN_STATUS, false)
+    // 弹出提示信息
+    store.commit(SHOW_TOKEN_ERROR, true)
     // 弹出登录窗口
     store.commit(SET_LOGIN_MASK_STATUS, { show: true, view: 'login' })
   }
@@ -171,13 +176,12 @@ export default {
   /**
    * 获取 我的车 列表  type:{waiting, selling, ordering, under}
    */
-  getMyCar (type, page) {
-    return axios.get('car/get_my_car', {
-      params: {
-        type: type,
-        page: page,
-        pageSize: 15
-      }
+  getMyCar (params) {
+    return axios.get('mycar/get_my_car', {
+      params: params
     })
+  },
+  underMyCar (carId) {
+    return axios.post('mycar/under', Qs.stringify({ carId: carId }))
   }
 }

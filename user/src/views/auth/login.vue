@@ -36,7 +36,8 @@
 </template>
 <script>
 import {
-  mapActions
+  mapActions,
+  mapGetters
 } from 'vuex'
 
 export default {
@@ -60,11 +61,17 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'userName'
+    ]),
     btnDisabled () {
       return this.loginForm.phone === '' ||
             this.loginForm.password === '' ||
             this.loginForm.password.length < 6
     }
+  },
+  mounted () {
+    this.loginForm.phone = this.userName
   },
   methods: {
     changeView (type) {
