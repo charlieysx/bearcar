@@ -125,7 +125,7 @@ export default {
     display: flex
     display: -webkit-flex
     flex-direction: row
-    background-color: #f5f5f7
+    background-color: #ffffff
     .viewWrap
       min-height: calc(110vh - 110px)
       min-width: 1640px
@@ -133,7 +133,8 @@ export default {
       .viewContent
         min-height: calc(110vh - 110px)
         background: #ffffff
-        width: 1660px
+        max-width: 1660px
+        min-width: 1640px
         margin: 0 auto
     .nav-wrap
       position: fixed

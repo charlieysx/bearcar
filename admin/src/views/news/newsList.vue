@@ -1,5 +1,6 @@
 <template>
-  <div id="news">
+  <div id="news-list">
+    <div class="title">资讯-资讯列表  （总数：{{ 0 }}）</div>
     <div id="news-wrap">
       <div class="news-list">
         <ul class="all-list-ul">
@@ -26,17 +27,6 @@
         </div>
         <!-- 分页 结束 -->
       </div>
-      <div class="hot-news">
-        <p>热门资讯</p>
-        <ul class="hot-list-ul">
-          <li
-            v-for="(hotNews, index) in hotNewsList"
-            :key="index">
-            <div class="hot-news-title">• {{ hotNews.title }}</div>
-            <div class="hot-news-view"><i class="el-icon-view"></i>{{ hotNews.views }}</div>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
 </template>
@@ -48,51 +38,9 @@ import {
 } from 'STORE/mutation-types'
 
 export default {
-  name: 'news',
+  name: 'news-list',
   data () {
     return {
-      hotNewsList: [
-        {
-          id: 0,
-          title: '编辑开啥车 编辑部高尔夫使用感受',
-          views: 213213
-        },
-        {
-          id: 1,
-          title: '高保值车型年终盘点第十名本田CR-V',
-          views: 123213
-        },
-        {
-          id: 2,
-          title: '车型保值就是好 瑕疵凯美瑞照样抢着要',
-          views: 21322
-        },
-        {
-          id: 3,
-          title: '秒完天地秒空气 本田思域到底能秒谁',
-          views: 3213
-        },
-        {
-          id: 4,
-          title: '编辑心凉了 原来是用生命在开事故车！',
-          views: 312
-        },
-        {
-          id: 5,
-          title: '小车也有大惊喜，7年二手车到底值不值',
-          views: 123
-        },
-        {
-          id: 6,
-          title: '很可能颠覆你的认知 关于奔驰G级的历史',
-          views: 123
-        },
-        {
-          id: 7,
-          title: '想不到法拉利被兰博基尼打脸 到底为何',
-          views: 12
-        }
-      ],
       allNewsList: [
         {
           id: 0,
@@ -184,23 +132,32 @@ export default {
 <style lang="stylus" scoped>
 @import '~STYLUS/color.styl'
 @import '~STYLUS/mixin.styl'
-#news
+#news-list
   width: 100%
   min-height: calc(110vh - 110px)
   background: $color-bg-blue
+  .title
+    text-align: center
+    background: #545c64
+    color: $color-white
+    font-size: 18px
+    height: 70px
+    line-height: 18px
+    padding: 26px
   #news-wrap
-    width: 1000px
+    width: 1380px
     margin: 0 auto
-    display: flex
-    display: -webkit-flex
-    flex-direction: row
-    justify-content: space-between
     padding: 20px 0px
     .news-list
-      width: 680px
+      width: 100%
       .all-list-ul
+        display: flex
+        display: -webkit-flex
+        flex-direction: row
+        flex-wrap: wrap
+        justify-content: space-between
         > li
-          width: 100%
+          width: 680px
           cursor: pointer
           margin-bottom: 20px
           background: $color-white
@@ -218,7 +175,6 @@ export default {
           .news-img
             width: 100%
             height: 240px
-            margin-top: 3px
             background-image: url('~IMAGES/car_default.png')
             background-size: 100% 240px
             > img
@@ -235,40 +191,5 @@ export default {
         padding-bottom: 40px
         display: flex
         display: -webkit-flex
-        flex-direction: row
         justify-content: center
-    .hot-news
-      position: fixed
-      margin-left: 700px
-      width: 300px
-      background: $color-white
-      padding: 5px
-      > p
-        margin: 10px
-        padding-bottom: 10px
-        font-size: 20px
-        border-bottom: 1px solid #e8e8e8
-        color: #495056
-        font-weight: bold
-      .hot-list-ul
-        > li
-          width: 100%
-          padding: 5px 10px
-          .hot-news-title
-            padding-right: 10px
-            font-size: 16px
-            single-text-ellipsis()
-            cursor: pointer
-            color: #495056
-            &:hover
-              color: $color-blue
-          .hot-news-view
-            font-size: 12px
-            color: #999999
-            margin-left: 20px
-            margin-top: 6px
-            margin-bottom: 10px
-            > i
-              color: #495056
-              margin-right: 10px
 </style>

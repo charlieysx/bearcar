@@ -158,6 +158,7 @@ export default {
 @import '~STYLUS/color.styl'
 @import '~STYLUS/mixin.styl'
 #mycar-under
+  width: 100%
   .title
     text-align: center
     background: #545c64

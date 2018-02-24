@@ -1,12 +1,21 @@
 /**
- * 资讯
+ * 资讯列表
  */
-const news = r => require.ensure([], () => r(require('VIEWS/news/news.vue')), 'news')
+const newsList = r => require.ensure([], () => r(require('VIEWS/news/newsList.vue')), 'newsList')
+/**
+ * 编辑资讯
+ */
+const editNews = r => require.ensure([], () => r(require('VIEWS/news/editNews.vue')), 'editNews')
 
 export default [
   {
-    path: '/news',
-    name: 'news',
-    component: news
+    path: '/news/newslist',
+    name: 'newsList',
+    component: newsList
+  },
+  {
+    path: '/news/editnews',
+    name: 'editNews',
+    component: editNews
   }
 ]

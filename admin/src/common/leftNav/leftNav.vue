@@ -40,8 +40,8 @@
               <i class="el-icon-document"></i>
               <span slot="title">资讯</span>
             </template>
-            <el-menu-item index="3-1">资讯列表</el-menu-item>
-            <el-menu-item index="3-2">新增资讯</el-menu-item>
+            <el-menu-item index="3-1" @click="toNewsList">资讯列表</el-menu-item>
+            <el-menu-item index="3-2" @click="toEditNews">发布资讯</el-menu-item>
           </el-submenu>
           <!-- <el-menu-item index="4">
             <i class="el-icon-menu"></i>
@@ -104,6 +104,12 @@ export default {
     },
     toCarList (type) {
       this.$router.push({name: type})
+    },
+    toEditNews () {
+      this.$router.push({name: 'editNews'})
+    },
+    toNewsList () {
+      this.$router.push({name: 'newsList'})
     }
   }
 }
@@ -113,6 +119,7 @@ export default {
 @import '~STYLUS/color.styl'
 #left-nav
   height: 100%
+  z-index: 1000
   .nav-space
     width: 260px
     height: 1px
