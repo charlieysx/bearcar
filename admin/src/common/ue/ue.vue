@@ -5,6 +5,11 @@
 </template>
 <script>
 
+import 'STATIC/UE/ueditor.config.js'
+import 'STATIC/UE/ueditor.all.min.js'
+import 'STATIC/UE/lang/zh-cn/zh-cn.js'
+import 'STATIC/UE/ueditor.parse.min.js'
+
 export default {
   name: 'UE',
   data () {

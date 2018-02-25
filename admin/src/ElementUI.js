@@ -44,7 +44,7 @@ import {
   // Icon,
   // Row,
   // Col,
-  // Upload,
+  Upload,
   // Progress,
   // Spinner,
   // Badge,
@@ -59,7 +59,7 @@ import {
   // CollapseItem,
   // Cascader,
   // ColorPicker,
-  // Loading,
+  Loading,
   MessageBox,
   Message
   // Notification
@@ -108,7 +108,7 @@ Vue.use(FormItem)
 // Vue.use(Icon)
 // Vue.use(Row)
 // Vue.use(Col)
-// Vue.use(Upload)
+Vue.use(Upload)
 // Vue.use(Progress)
 // Vue.use(Spinner)
 // Vue.use(Badge)
@@ -124,9 +124,9 @@ Vue.use(Card)
 // Vue.use(Cascader)
 // Vue.use(ColorPicker)
 
-// Vue.use(Loading.directive)
+Vue.use(Loading.directive)
 
-// Vue.prototype.$loading = Loading.service
+Vue.prototype.$loading = Loading.service
 // Vue.prototype.$msgbox = MessageBox
 // Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm

@@ -150,6 +150,15 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  getQiniuToken (store, bucket) {
+    return api.getQiniuToken(bucket)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

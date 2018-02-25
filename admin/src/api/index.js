@@ -66,5 +66,29 @@ export default {
   },
   underMyCar (carId) {
     return axios.post('mycar/under', Qs.stringify({ carId: carId }))
+  },
+  /**
+   * 获取七牛上传图片token
+   */
+  getQiniuToken (bucket) {
+    return axios.get('qiniu/get_upload_token', {
+      params: {
+        bucket: bucket
+      }
+    })
+  },
+  /**
+   * 发布资讯
+   */
+  publishNews (params) {
+    return axios.post('news/publish', Qs.stringify(params))
+  },
+  /**
+   * 获取资讯列表
+   */
+  getNewsList (params) {
+    return axios.get('news/get_news_list', {
+      params: params
+    })
   }
 }

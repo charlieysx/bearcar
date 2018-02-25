@@ -126,6 +126,7 @@ export default {
         })
         .catch(() => {
           this.carList = []
+          this.sizeAll = 0
         })
     },
     pageChange (currentPage) {

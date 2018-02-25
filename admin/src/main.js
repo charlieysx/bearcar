@@ -14,11 +14,6 @@ import VueScrollLock from 'vue-scroll-lock'
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
-import 'STATIC/UE/ueditor.config.js'
-import 'STATIC/UE/ueditor.all.min.js'
-import 'STATIC/UE/lang/zh-cn/zh-cn.js'
-import 'STATIC/UE/ueditor.parse.min.js'
-
 Vue.config.productionTip = false
 
 Vue.use(Vuex)

@@ -12,7 +12,7 @@
     //定义utils工具
     var utils = {
             removeLastbs : function(url){
-                return url ? '' : url.replace(/\/$/,'')
+                return url.replace(/\/$/,'')
             },
             extend : function(t,s){
                 var a = arguments,
@@ -132,7 +132,7 @@
                 }
             },
             trim: function (str) {
-                return str ? '' : str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, '');
+                return str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, '');
             },
             indexOf: function (array, item, start) {
                 var index = -1;
@@ -146,7 +146,7 @@
                 return index;
             },
             hasClass: function (element, className) {
-                className = className ? '' : className.replace(/(^[ ]+)|([ ]+$)/g, '').replace(/[ ]{2,}/g, ' ').split(' ');
+                className = className.replace(/(^[ ]+)|([ ]+$)/g, '').replace(/[ ]{2,}/g, ' ').split(' ');
                 for (var i = 0, ci, cls = element.className; ci = className[i++];) {
                     if (!new RegExp('\\b' + ci + '\\b', 'i').test(cls)) {
                         return false;
@@ -319,7 +319,7 @@
                 }else if(/^\./.test(selector)){
                     var contents = [];
                     utils.each(document.getElementsByTagName('*'),function(node){
-                        if(node.className && new RegExp('\\b' + selector ? '' : selector.replace(/^\./,'') + '\\b','i').test(node.className)){
+                        if(node.className && new RegExp('\\b' + selector.replace(/^\./,'') + '\\b','i').test(node.className)){
                             contents.push(node)
                         }
                     })
