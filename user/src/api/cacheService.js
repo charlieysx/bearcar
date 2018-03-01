@@ -10,7 +10,7 @@ const KEYS = {
   token: 'ak',
   userInfo: 'userInfo',
   currentCity: 'currentCity',
-  userName: 'userName'
+  phone: 'phone'
 }
 
 const nameSpace = 'BEARCAR'
@@ -56,5 +56,5 @@ export function removeAccessToken () {
 }
 
 export const cachedUserInfo = new CommonStorage(KEYS.userInfo, 0)
-export const cachedUserName = new CommonStorage(KEYS.userName, 0)
+export const cachedPhone = new CommonStorage(KEYS.phone, 0)
 export const cachedCurrentCity = new CommonStorage(KEYS.currentCity, 0)

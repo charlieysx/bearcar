@@ -223,10 +223,6 @@ import configList from 'COMMON/configList/configList'
 import carImage from 'COMMON/carImage/carImage'
 import configGrid from 'COMMON/configGrid/configGrid'
 
-import {
-  SET_HEADER_ACTIVE_TAB
-} from 'STORE/mutation-types'
-
 export default {
   name: 'car',
   data () {
@@ -1537,7 +1533,6 @@ export default {
     configGrid
   },
   created () {
-    this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
     this.carId = this.$route.params.carId
   },
   mounted () {
@@ -1597,8 +1592,7 @@ export default {
     width: 100%
     height: 70px
     position: fixed
-    background: $color-white
-    box-shadow: 1px 1px 10px 1px rgba(15, 166, 255, .1)
+    background: #545c64
     z-index: 1000
     text-align: center
     .title-wrap
@@ -1612,7 +1606,7 @@ export default {
         > span
           display: inline-block
           font-size: 20px
-          color: #495056
+          color: $color-white
           height: 70px
           text-align: center
           line-height: 20px
@@ -1623,7 +1617,6 @@ export default {
             color: $color-blue
           &.active
             background: $color-blue
-            color: $color-white
   #title-space
     width: 100%
     height: 70px

@@ -1,5 +1,6 @@
 const myCar = r => require.ensure([], () => r(require('VIEWS/myCar/layout.vue')), 'myCar')
 const waiting = r => require.ensure([], () => r(require('VIEWS/myCar/waiting.vue')), 'waiting')
+const checking = r => require.ensure([], () => r(require('VIEWS/myCar/checking.vue')), 'checking')
 const selling = r => require.ensure([], () => r(require('VIEWS/myCar/selling.vue')), 'selling')
 const ordering = r => require.ensure([], () => r(require('VIEWS/myCar/ordering.vue')), 'ordering')
 const under = r => require.ensure([], () => r(require('VIEWS/myCar/under.vue')), 'under')
@@ -19,6 +20,14 @@ export default [
         path: 'waiting',
         name: 'waiting',
         component: waiting,
+        meta: {
+          requireAuth: true
+        }
+      },
+      {
+        path: 'checking',
+        name: 'checking',
+        component: checking,
         meta: {
           requireAuth: true
         }

@@ -72,7 +72,7 @@
           layout="prev, pager, next"
           :page-size="params.pageSize"
           @current-change="pageChange"
-          :total="sizeAll">
+          :total="count">
         </el-pagination>
       </div>
       <!-- 分页 结束 -->
@@ -93,7 +93,7 @@ export default {
   data () {
     return {
       carList: [],
-      sizeAll: 0,
+      count: 0,
       params: {
         type: 'under',
         page: 0,
@@ -118,7 +118,7 @@ export default {
       this.getMyCar(this.params)
         .then((data) => {
           this.carList = data.list
-          this.sizeAll = data.sizeAll
+          this.count = data.count
         })
         .catch(() => {
           this.carList = []

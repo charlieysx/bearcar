@@ -1,8 +1,8 @@
 <template>
-  <div class="avatar-upload-wrap">
+  <div class="carimg-upload-wrap">
     <el-upload
       ref="upload"
-      class="avatar-uploader"
+      class="carimg-uploader"
       action="http://up-z2.qiniu.com"
       :data="token"
       :show-file-list="false"
@@ -12,14 +12,14 @@
       :on-change="onFileChange"
       :on-progress="onUploadProgress">
       <div class="img-wrap">
-        <img :src="imageUrl" class="avatar" v-if="imageUrl">
+        <img :src="imageUrl" class="carimg" v-if="imageUrl">
         <div class="img-mask-default" v-else>
           <i class="iconfont icon-upload"></i>
-          <div>上传封面图</div>
+          <div>{{ tip }}</div>
         </div>
         <div class="img-mask">
           <i class="iconfont icon-upload"></i>
-          <div>上传封面图</div>
+          <div>{{ tip }}</div>
         </div>
       </div>
     </el-upload>
@@ -39,19 +39,20 @@ import {
 import cropperBox from './cropperBox'
 
 export default {
-  name: 'upNewsImg',
+  name: 'upCarCover',
   components: {
     cropperBox
   },
   props: {
-    defaultImg: String
+    defaultImg: String,
+    tip: String
   },
   data () {
     return {
       cropper: null,
       newFile: null,
       options: {
-        aspectRatio: 127 / 50,
+        aspectRatio: 1.5 / 1,
         preview: '#cropperRes',
         zoomOnWheel: false,
         minCropBoxWidth: 50
@@ -102,11 +103,6 @@ export default {
           this.token = data
           this.$refs.upload.submit()
         })
-        .catch(() => {
-          this.$toast({
-            message: '上传失败'
-          })
-        })
     },
     handleAvatarSuccess (response, file) {
       this.$emit('uploadSuccess', response.imgUrl)
@@ -125,22 +121,20 @@ export default {
 </script>
 <style lang="stylus">
   @import '~STYLUS/color.styl'
-  .avatar-upload-wrap
-    width: 430px
-    height: 169px
+  .carimg-upload-wrap
+    width: 225px
+    height: 150px
     border-radius: 5px
-    .avatar-wrap
-      position: relative
-    .avatar
-      width: 430px
-      height: 169px
+    .carimg
+      width: 225px
+      height: 150px
       border-radius: 5px
-    .avatar-uploader .el-upload {
+    .carimg-uploader .el-upload {
       cursor: pointer
       position: relative
       overflow: hidden
-      width: 430px
-      height: 169px
+      width: 225px
+      height: 150px
       border-radius: 5px
       border: 1px solid #dddddd
     }
@@ -153,8 +147,8 @@ export default {
       position: absolute
       left: 0
       top: 0
-      width: 430px
-      height: 169px
+      width: 225px
+      height: 150px
       z-index: 1
       background: rgba(0, 0, 0, 0.5)
       color: $color-white
@@ -176,8 +170,8 @@ export default {
       position: absolute
       left: 0
       top: 0
-      width: 430px
-      height: 169px
+      width: 225px
+      height: 150px
       z-index: 1
       background: $color-white
       display: flex

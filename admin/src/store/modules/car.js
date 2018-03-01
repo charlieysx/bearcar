@@ -2,13 +2,15 @@ import api from 'API/index'
 import {
     GET_HOT_BRAND,
     GET_ALL_SORT_BRAND,
-    GET_HOT_SERIES
+    GET_HOT_SERIES,
+    GET_FILL_STEP
 } from '../mutation-types'
 
 const state = {
   allSortBrands: [],
   hotBrands: [],
-  hotSeries: []
+  hotSeries: [],
+  fillStep: '1'
 }
 
 const getters = {
@@ -20,6 +22,9 @@ const getters = {
   },
   hotSeries (state) {
     return state.hotSeries
+  },
+  fillStep (state) {
+    return state.fillStep
   }
 }
 
@@ -32,10 +37,17 @@ const mutations = {
   },
   [GET_HOT_SERIES] (state, data) {
     state.hotSeries = data
+  },
+  [GET_FILL_STEP] (state, data) {
+    state.fillStep = data
   }
 }
 
 const actions = {
+
+  setFillStep (store, data) {
+    store.commit(GET_FILL_STEP, data)
+  },
 
   /**
    * 获取按字母排序的车品牌
@@ -113,46 +125,6 @@ const actions = {
       })
   },
   /**
-   * 卖车时获取相关信息
-   * @param seriesId
-   * @return {Promise}
-   */
-  getSellInfo (store) {
-    return api.getSellInfo()
-      .then((response) => {
-        return Promise.resolve(response.data.data)
-      })
-      .catch(({response}) => {
-        return Promise.reject(response)
-      })
-  },
-  /**
-   * 卖车时获取验车时间
-   * @param seriesId
-   * @return {Promise}
-   */
-  getCheckTime (store) {
-    return api.getCheckTime()
-      .then((response) => {
-        return Promise.resolve(response.data.data)
-      })
-      .catch(({response}) => {
-        return Promise.reject(response)
-      })
-  },
-  /**
-   * 提交二手车信息
-   */
-  sellCar (store, params) {
-    return api.sellCar(params)
-      .then((response) => {
-        return Promise.resolve(response.data)
-      })
-      .catch(({response}) => {
-        return Promise.reject(response)
-      })
-  },
-  /**
    * 获取 我的车 列表  type:{waiting, selling, ordering, under}
    */
   getMyCar (store, params) {
@@ -164,8 +136,48 @@ const actions = {
         return Promise.reject(response)
       })
   },
-  underMyCar (store, carId) {
-    return api.underMyCar(carId)
+  underMyCar (store, params) {
+    return api.underMyCar(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  orderCheckCar (store, carId) {
+    return api.orderCheckCar(carId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  getFillStep (store, carId) {
+    return api.getFillStep(carId)
+      .then((response) => {
+        store.commit(GET_FILL_STEP, response.data.data.step)
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  getFillYM () {
+    return api.getFillYM()
+    .then((response) => {
+      return Promise.resolve(response.data.data)
+    })
+    .catch(({response}) => {
+      return Promise.reject(response)
+    })
+  },
+  /**
+   * 获取检测中的二手车的基本信息(客户填写的)
+   */
+  getFillCarInfo (store, carId) {
+    return api.getFillCarInfo(carId)
       .then((response) => {
         return Promise.resolve(response.data.data)
       })

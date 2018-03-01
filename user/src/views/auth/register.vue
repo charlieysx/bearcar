@@ -77,12 +77,12 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-              userName: this.registerForm.phone,
+              phone: this.registerForm.phone,
               password: this.registerForm.password
             }
             this.register(params)
               .then(() => {
-                this.$router.replace({ name: 'home' })
+                window.location.reload()
               })
               .catch((err) => {
                 this.error(err.data.msg)

@@ -21,7 +21,7 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span slot="title">主页</span>
+              <span slot="title">首页</span>
             </template>
           </el-submenu>
           <el-submenu index="2">
@@ -121,7 +121,7 @@ export default {
   height: 100%
   z-index: 1000
   .nav-space
-    width: 260px
+    width: 250px
     height: 1px
   .outer-container
     position: fixed
@@ -136,14 +136,14 @@ export default {
     display: none
   .real
     height: 100%
-    width: 260px
+    width: 250px
     display: flex
     display: -webkit-flex
     flex-direction: column
     .logo
       position: fixed
       z-index: 1000
-      width: 260px
+      width: 250px
       height: 70px
       background: $color-white
       .header-logo
@@ -159,7 +159,7 @@ export default {
       width: 1px
       height: 70px
     .avtar
-      width: 260px
+      width: 250px
       background: #545c64
       padding: 10px
       .img
@@ -177,7 +177,7 @@ export default {
         color: $color-white
         padding: 10px
     .menu
-      width: 261px
+      width: 251px
       flex: 1
 </style>
 

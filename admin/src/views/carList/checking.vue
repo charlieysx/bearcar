@@ -1,6 +1,6 @@
 <template>
   <div id="mycar-checking">
-    <div class="title">二手车-待检测列表</div>
+    <div class="title">二手车-待检测列表  （总数：{{ count }}）</div>
     <div class="content" v-if="carList.length > 0">
       <div class="mycar-info" v-for="(car, index) in carList" :key="index">
         <div class="mycar-info-top">
@@ -12,18 +12,18 @@
                 :class="{'active-detail' : car.status === '3'}">
                 {{ car.brandName }} {{ car.modelName ? car.modelName : car.seriesName }}
               </div>
-              <div class="more" @click="car.moreOpen = !car.moreOpen">
-                {{ car.moreOpen ? '收起' : '展开' }}
-                <i :class="[car.moreOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
+              <div class="more" @click="moreOpen === index ? (moreOpen = '-1') : (moreOpen = index)">
+                {{ moreOpen === index ? '收起' : '展开' }}
+                <i :class="[moreOpen === index ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
               </div>
             </div>
-            <div class="i-time" v-if="car.moreOpen">
+            <div class="i-time">
               <i class="el-icon-date"></i>{{ car.publishTime | time('YYYY-MM-DD HH:mm:ss') }}
               <i class="el-icon-view"></i>{{ car.seeCount }}
             </div>
           </div>
         </div>
-        <div class="info-detail" v-if="car.moreOpen">
+        <div class="info-detail" v-if="moreOpen === index">
           <div class="mycar-info-bottom">
             <div class="info-item">
               上牌时间 :
@@ -40,7 +40,7 @@
             <div class="info-item">
               牌照地 :
               <span>
-                {{ car.cityName }}
+                {{ car.licensedCityName }}
               </span>
             </div>
           </div>
@@ -64,8 +64,40 @@
               </span>
             </div>
           </div>
+          <div class="mycar-info-bottom">
+            <div class="info-item two">
+              联系方式 :
+              <span>
+                {{ car.phone }}  
+              </span>
+            </div>
+            <div class="info-item two">
+              预约检测时间 :
+              <span v-if="car.checkTimeId !== '4'">
+                {{ car.publishTime | time('YYYY-MM-DD') }}
+              </span>
+              -
+              <span>
+                {{ checkTime[car.checkTimeId] }}
+              </span>
+            </div>
+          </div>
+          <div class="mycar-info-bottom">
+            <div class="info-item one">
+              预约检测地址 :
+              <span>
+                {{ car.provinceName }}
+                -
+                {{ car.cityName }}
+                -
+                {{ car.districtName }}
+                -
+                {{ car.inspectAddress }}
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="mycar-button">
+        <div class="mycar-button" v-if="userInfo.userId === car.dealUserId">
           <div class="btn" @click="fill(car.carId)">
             完善信息
           </div>
@@ -78,7 +110,7 @@
           layout="prev, pager, next"
           :page-size="params.pageSize"
           @current-change="pageChange"
-          :total="sizeAll">
+          :total="count">
         </el-pagination>
       </div>
       <!-- 分页 结束 -->
@@ -88,7 +120,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import noData from 'COMMON/noData/noData'
 
 export default {
@@ -96,15 +128,28 @@ export default {
   components: {
     noData
   },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
   data () {
     return {
       carList: [],
-      sizeAll: 0,
+      count: 0,
       params: {
         type: 'checking',
         page: 0,
         pageSize: 15
-      }
+      },
+      checkTime: {
+        '0': '9:00-12:00',
+        '1': '12:00-18:00',
+        '2': '第二天 9:00-12:00',
+        '3': '第二天 12:00-18:00',
+        '4': '客服联系'
+      },
+      moreOpen: -1
     }
   },
   created () {
@@ -118,15 +163,12 @@ export default {
     update () {
       this.getMyCar(this.params)
         .then((data) => {
-          for (var i = 0; i < data.list.length; ++i) {
-            data.list[i]['moreOpen'] = false
-          }
           this.carList = data.list
-          this.sizeAll = data.sizeAll
+          this.count = data.count
         })
         .catch(() => {
           this.carList = []
-          this.sizeAll = 0
+          this.count = 0
         })
     },
     pageChange (currentPage) {
@@ -138,7 +180,12 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     fill (carId) {
-      //
+      this.$router.push({
+        name: 'fillcar',
+        params: {
+          carId: carId
+        }
+      })
     }
   }
 }
@@ -157,6 +204,7 @@ export default {
     height: 70px
     line-height: 18px
     padding: 26px
+    font-weight: bold
   .content
     width: 1000px
     margin: 0 auto
@@ -227,6 +275,20 @@ export default {
           > span
             width: 140px
             margin-left: 5px
+        .two
+          width: 375px
+          > span
+            width: auto
+            max-width: 265px
+            margin-left: 0px
+            &:first-child
+              margin-left: 5px
+        .one
+          width: 750px
+          > span
+            width: auto
+            max-width: 640px
+            margin-left: 0px
       .mycar-button
         width: 100%
         margin-top: 15px

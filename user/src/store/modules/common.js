@@ -73,8 +73,8 @@ const actions = {
   getCitySort (store) {
     return api.getCitySort()
       .then((response) => {
-        store.commit(GET_ALL_CITIES, response.data.data.list)
-        return Promise.resolve(response.data.data.list)
+        store.commit(GET_ALL_CITIES, response.data.data)
+        return Promise.resolve(response.data.data)
       })
       .catch(({response}) => {
         return Promise.reject(response)
@@ -85,8 +85,8 @@ const actions = {
    * @param store
    * @return {Promise}
    */
-  getHotCity (store) {
-    return api.getHotCity()
+  getHotCity (store, count) {
+    return api.getHotCity(count)
       .then((response) => {
         store.commit(GET_HOT_CITIES, response.data.data.list)
         return Promise.resolve(response.data.data.list)

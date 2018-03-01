@@ -53,37 +53,41 @@ export default {
    * 用户登录
    */
   login (params) {
-    return axios.post('user/login', Qs.stringify(params))
+    return axios.post('u/login', Qs.stringify(params))
   },
   /**
   * 用户登录
   */
   register (params) {
-    return axios.post('user/register', Qs.stringify(params))
+    return axios.post('u/register', Qs.stringify(params))
   },
   /**
    * 获取按字母排序的城市
    */
   getCitySort () {
-    return axios.get('common/get_city_sort')
+    return axios.get('c/city/sort')
   },
   /**
    * 获取热门的城市
    */
-  getHotCity () {
-    return axios.get('common/get_hot_city')
+  getHotCity (count) {
+    return axios.get('c/city/hot', {
+      params: {
+        count: count
+      }
+    })
   },
   /**
    * 获取按字母排序的车品牌
    */
   getCarBrandSort () {
-    return axios.get('car/get_brand_sort')
+    return axios.get('c/carinfo/brand/sort')
   },
   /**
    * 获取热门车品牌
    */
   getHotBrand (count) {
-    return axios.get('car/get_hot_brand', {
+    return axios.get('c/carinfo/brand/hot', {
       params: {
         count: count
       }
@@ -93,7 +97,7 @@ export default {
    * 获取热门车系列
    */
   getHotSeries (count) {
-    return axios.get('car/get_hot_series', {
+    return axios.get('c/carinfo/series/hot', {
       params: {
         count: count
       }
@@ -103,7 +107,7 @@ export default {
    * 根据品牌id获取对应的车系列
    */
   getSeriesByBrandId (brandId) {
-    return axios.get('car/get_series_by_brand_id', {
+    return axios.get('c/carinfo/series', {
       params: {
         brandId: brandId
       }
@@ -113,7 +117,7 @@ export default {
    * 根据车系列id获取车型
    */
   getModelBySeriesId (seriesId) {
-    return axios.get('car/get_model_by_series_id', {
+    return axios.get('c/carinfo/model', {
       params: {
         seriesId: seriesId
       }
@@ -123,13 +127,13 @@ export default {
    * 获取省份
    */
   getProvince () {
-    return axios.get('common/get_province')
+    return axios.get('c/city/province')
   },
   /**
    * 根据省份id获取城市
    */
   getCity (provinceId) {
-    return axios.get('common/get_city', {
+    return axios.get('c/city', {
       params: {
         provinceId: provinceId
       }
@@ -139,7 +143,7 @@ export default {
    * 根据城市id获取地区
    */
   getDistrict (cityId) {
-    return axios.get('common/get_district', {
+    return axios.get('c/city/district/by_city', {
       params: {
         cityId: cityId
       }
@@ -149,7 +153,7 @@ export default {
    * 根据城市id获取地区及城市、省份
    */
   getInfoByCity (cityId) {
-    return axios.get('common/get_info_by_city', {
+    return axios.get('c/city/info', {
       params: {
         cityId: cityId
       }
@@ -159,29 +163,60 @@ export default {
    * 卖车时获取相关信息
    */
   getSellInfo () {
-    return axios.get('car/get_sell_info')
+    return axios.get('u/sellcar/sellinfo')
   },
   /**
    * 卖车时获取验车时间
    */
   getCheckTime () {
-    return axios.get('car/get_check_time')
+    return axios.get('u/sellcar/checktime')
   },
   /**
    * 提交二手车信息
    */
   sellCar (params) {
-    return axios.post('car/sell_car', Qs.stringify(params))
+    return axios.post('u/sellcar', Qs.stringify(params))
   },
   /**
    * 获取 我的车 列表  type:{waiting, selling, ordering, under}
    */
   getMyCar (params) {
-    return axios.get('mycar/get_my_car', {
+    return axios.get('u/mycar/list', {
       params: params
     })
   },
+  /**
+   * 下架 我的车
+   */
   underMyCar (carId) {
-    return axios.post('mycar/under', Qs.stringify({ carId: carId }))
+    return axios.post('u/mycar/under', Qs.stringify({ carId: carId }))
+  },
+  /**
+   * 获取资讯列表
+   */
+  getNewsList (params) {
+    return axios.get('u/news/list', {
+      params: params
+    })
+  },
+  /**
+   * 获取热门资讯列表
+   */
+  getHotNewsList (count) {
+    return axios.get('u/news/list/hot', {
+      params: {
+        count: count
+      }
+    })
+  },
+  /**
+   * 获取资讯
+   */
+  getNewsInfo (newsId) {
+    return axios.get('u/news/detail', {
+      params: {
+        newsId: newsId
+      }
+    })
   }
 }

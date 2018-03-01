@@ -52,6 +52,30 @@
             </span>
           </div>
         </div>
+        <div class="mycar-info-bottom">
+          <div class="info-item two">
+            预约检测时间 :
+            <span v-if="car.checkTimeId !== '4'">
+              {{ car.publishTime | time('YYYY-MM-DD') }}
+            </span>
+            -
+            <span>
+              {{ checkTime[car.checkTimeId] }}
+            </span>
+          </div>
+            <div class="info-item one">
+              预约检测地址 :
+              <span>
+                {{ car.provinceName }}
+                -
+                {{ car.cityName }}
+                -
+                {{ car.districtName }}
+                -
+                {{ car.inspectAddress }}
+              </span>
+            </div>
+        </div>
         <div class="mycar-button">
           <div class="btn" @click="under(car.carId)">
             取消上架
@@ -65,7 +89,7 @@
           layout="prev, pager, next"
           :page-size="params.pageSize"
           @current-change="pageChange"
-          :total="sizeAll">
+          :total="count">
         </el-pagination>
       </div>
       <!-- 分页 结束 -->
@@ -86,11 +110,18 @@ export default {
   data () {
     return {
       carList: [],
-      sizeAll: 0,
+      count: 0,
       params: {
         type: 'waiting',
         page: 0,
         pageSize: 15
+      },
+      checkTime: {
+        '0': '9:00-12:00',
+        '1': '12:00-18:00',
+        '2': '第二天 9:00-12:00',
+        '3': '第二天 12:00-18:00',
+        '4': '客服联系'
       }
     }
   },
@@ -106,7 +137,7 @@ export default {
       this.getMyCar(this.params)
         .then((data) => {
           this.carList = data.list
-          this.sizeAll = data.sizeAll
+          this.count = data.count
         })
         .catch(() => {
           this.carList = []
@@ -193,6 +224,20 @@ export default {
           > span
             width: 140px
             margin-left: 5px
+        .two
+          width: 375px
+          > span
+            width: auto
+            max-width: 265px
+            margin-left: 0px
+            &:first-child
+              margin-left: 5px
+        .one
+          width: 750px
+          > span
+            width: auto
+            max-width: 640px
+            margin-left: 0px
       .mycar-button
         width: 100%
         margin-top: 15px

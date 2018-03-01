@@ -1,6 +1,6 @@
 <template>
   <div id="mycar-under">
-    <div class="title">二手车-已完成列表  （总数：{{ sizeAll }}）</div>
+    <div class="title">二手车-已完成列表  （总数：{{ count }}）</div>
     <div class="content" v-if="carList.length > 0">
       <div class="mycar-info" v-for="(car, index) in carList" :key="index">
         <div class="mycar-info-top">
@@ -18,18 +18,18 @@
                   ({{ car.underReason }})
                 </span>
               </div>
-              <div class="more" @click="car.moreOpen = !car.moreOpen">
-                {{ car.moreOpen ? '收起' : '展开' }}
-                <i :class="[car.moreOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
+              <div class="more" @click="moreOpen === index ? (moreOpen = '-1') : (moreOpen = index)">
+                {{ moreOpen === index ? '收起' : '展开' }}
+                <i :class="[moreOpen === index ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
               </div>
             </div>
-            <div class="i-time" v-if="car.moreOpen">
+            <div class="i-time">
               <i class="el-icon-date"></i>{{ car.publishTime | time('YYYY-MM-DD HH:mm:ss') }}
               <i class="el-icon-view"></i>{{ car.seeCount }}
             </div>
           </div>
         </div>
-        <div class="info-detail" v-if="car.moreOpen">
+        <div class="info-detail" v-if="moreOpen === index">
           <div class="mycar-info-bottom">
             <div class="info-item">
               上牌时间 :
@@ -46,7 +46,7 @@
             <div class="info-item">
               牌照地 :
               <span>
-                {{ car.cityName }}
+                {{ car.licensedCityName }}
               </span>
             </div>
           </div>
@@ -79,7 +79,7 @@
           layout="prev, pager, next"
           :page-size="params.pageSize"
           @current-change="pageChange"
-          :total="sizeAll">
+          :total="count">
         </el-pagination>
       </div>
       <!-- 分页 结束 -->
@@ -100,7 +100,8 @@ export default {
   data () {
     return {
       carList: [],
-      sizeAll: 0,
+      count: 0,
+      moreOpen: -1,
       params: {
         type: 'under',
         page: 0,
@@ -124,15 +125,12 @@ export default {
     update () {
       this.getMyCar(this.params)
         .then((data) => {
-          for (var i = 0; i < data.list.length; ++i) {
-            data.list[i]['moreOpen'] = false
-          }
           this.carList = data.list
-          this.sizeAll = data.sizeAll
+          this.count = data.count
         })
         .catch(() => {
           this.carList = []
-          this.sizeAll = 0
+          this.count = 0
         })
     },
     pageChange (currentPage) {
@@ -168,6 +166,7 @@ export default {
     height: 70px
     line-height: 18px
     padding: 26px
+    font-weight: bold
   .content
     width: 1000px
     margin: 0 auto

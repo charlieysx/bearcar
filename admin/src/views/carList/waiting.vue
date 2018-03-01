@@ -1,6 +1,6 @@
 <template>
   <div id="mycar-waiting">
-    <div class="title">二手车-待上架列表  （总数：{{ sizeAll }}）</div>
+    <div class="title">二手车-待上架列表  （总数：{{ count }}）</div>
     <div class="content" v-if="carList.length > 0">
       <div class="mycar-info" v-for="(car, index) in carList" :key="index">
         <div class="mycar-info-top">
@@ -12,18 +12,18 @@
                 :class="{'active-detail' : car.status === '3'}">
                 {{ car.brandName }} {{ car.modelName ? car.modelName : car.seriesName }}
               </div>
-              <div class="more" @click="car.moreOpen = !car.moreOpen">
-                {{ car.moreOpen ? '收起' : '展开' }}
-                <i :class="[car.moreOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
+              <div class="more" @click="moreOpen === index ? (moreOpen = '-1') : (moreOpen = index)">
+                {{ moreOpen === index ? '收起' : '展开' }}
+                <i :class="[moreOpen === index ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
               </div>
             </div>
-            <div class="i-time" v-if="car.moreOpen">
+            <div class="i-time">
               <i class="el-icon-date"></i>{{ car.publishTime | time('YYYY-MM-DD HH:mm:ss') }}
               <i class="el-icon-view"></i>{{ car.seeCount }}
             </div>
           </div>
         </div>
-        <div class="info-detail" v-if="car.moreOpen">
+        <div class="info-detail" v-if="moreOpen === index">
           <div class="mycar-info-bottom">
             <div class="info-item">
               上牌时间 :
@@ -64,13 +64,36 @@
               </span>
             </div>
           </div>
+          <div class="mycar-info-bottom">
+            <div class="info-item two">
+              预约检测时间 :
+              <span v-if="car.checkTimeId !== '4'">
+                {{ car.publishTime | time('YYYY-MM-DD') }}  
+              </span>
+              -
+              <span>
+                {{ checkTime[car.checkTimeId] }}
+              </span>
+            </div>
+            <div class="info-item two">
+              预约检测地址 :
+              <span>
+                {{ car.provinceName }}
+                -
+                {{ car.cityName }}
+                -
+                {{ car.districtName }}
+                (预约检测可查看详细地址和联系方式)
+              </span>
+            </div>
+          </div>
         </div>
         <div class="mycar-button">
           <div class="btn" @click="under(car.carId)">
             下架
           </div>
           <div class="btn" @click="orderCheck(car.carId)">
-            检测
+            预约检测
           </div>
         </div>
       </div>
@@ -81,7 +104,7 @@
           layout="prev, pager, next"
           :page-size="params.pageSize"
           @current-change="pageChange"
-          :total="sizeAll">
+          :total="count">
         </el-pagination>
       </div>
       <!-- 分页 结束 -->
@@ -102,11 +125,19 @@ export default {
   data () {
     return {
       carList: [],
-      sizeAll: 0,
+      count: 0,
+      moreOpen: -1,
       params: {
         type: 'waiting',
         page: 0,
         pageSize: 15
+      },
+      checkTime: {
+        '0': '9:00-12:00',
+        '1': '12:00-18:00',
+        '2': '第二天 9:00-12:00',
+        '3': '第二天 12:00-18:00',
+        '4': '客服联系'
       }
     }
   },
@@ -116,7 +147,8 @@ export default {
   methods: {
     ...mapActions([
       'getMyCar',
-      'underMyCar'
+      'underMyCar',
+      'orderCheckCar'
     ]),
     update () {
       this.getMyCar(this.params)
@@ -125,11 +157,11 @@ export default {
             data.list[i]['moreOpen'] = false
           }
           this.carList = data.list
-          this.sizeAll = data.sizeAll
+          this.count = data.count
         })
         .catch(() => {
           this.carList = []
-          this.sizeAll = 0
+          this.count = 0
         })
     },
     pageChange (currentPage) {
@@ -145,11 +177,57 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        //
+        if (value === null) {
+          this.error('请填写下架原因')
+          return
+        }
+        this.underMyCar({carId: carId, underReason: value})
+          .then((data) => {
+            this.refresh()
+          })
+          .catch((err) => {
+            this.error(err.data.msg)
+            this.refresh()
+          })
       })
     },
+    refresh () {
+      this.params.page = 0
+      this.scrollToTop()
+      this.update()
+    },
     orderCheck (carId) {
-      //
+      this.$confirm('预约检测后，您需要联系卖家', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.orderCheckCar(carId)
+          .then((data) => {
+            this.success(data)
+            this.$router.push({
+              name: 'checking'
+            })
+          })
+          .catch((err) => {
+            this.error(err.data.msg)
+            this.refresh()
+          })
+      })
+    },
+    error (err) {
+      this.$message({
+        showClose: true,
+        message: err,
+        type: 'error'
+      })
+    },
+    success (msg) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: 'success'
+      })
     }
   }
 }
@@ -168,6 +246,7 @@ export default {
     height: 70px
     line-height: 18px
     padding: 26px
+    font-weight: bold
   .content
     width: 1000px
     margin: 0 auto
@@ -238,6 +317,14 @@ export default {
           > span
             width: 140px
             margin-left: 5px
+        .two
+          width: 375px
+          > span
+            width: auto
+            max-width: 265px
+            margin-left: 0px
+            &:first-child
+              margin-left: 5px
       .mycar-button
         width: 100%
         margin-top: 15px

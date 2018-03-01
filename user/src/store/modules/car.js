@@ -45,8 +45,8 @@ const actions = {
   getCarBrandSort (store) {
     return api.getCarBrandSort()
       .then((response) => {
-        store.commit(GET_ALL_SORT_BRAND, response.data.data.list)
-        return Promise.resolve(response.data.data.list)
+        store.commit(GET_ALL_SORT_BRAND, response.data.data)
+        return Promise.resolve(response.data.data)
       })
       .catch(({response}) => {
         return Promise.reject(response)

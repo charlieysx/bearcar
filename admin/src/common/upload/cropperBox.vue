@@ -14,7 +14,19 @@
         </div>
       </div>
       <div class="cropper-btns-wrap">
-        <button type="button" id="cropper-btn" @click="finishCropImage" :disabled="btnTips.disable">{{ btnTips.value }}</button>
+        <el-progress 
+          :text-inside="true" 
+          :stroke-width="30" 
+          :percentage="uploadProgress">
+        </el-progress>
+        <button 
+          type="button" 
+          class="cropper-btn" 
+          @click="finishCropImage" 
+          :disabled="btnTips.disable"
+          :class="{'btn-bg': uploading}">
+          {{ btnTips.value }}
+        </button>
       </div>
     </div>
   </div>
@@ -33,6 +45,9 @@ export default {
         zoomOnWheel: false,
         minCropBoxWidth: 50
       }
+    },
+    uploadProgress: {
+      default: 0
     }
   },
   data () {
@@ -112,14 +127,6 @@ export default {
   @import "~cropperjs/dist/cropper.min.css"
   @import "~STYLUS/color.styl"
 
-  #cropper-btn
-    width: 100%
-    height: 30px
-    background: $color-white
-    border: 1px solid $color-weak-grey
-    color: $color-mid-grey
-    cursor: pointer
-
   .cropper-alert-mask
     position: fixed
     top: 0
@@ -184,5 +191,21 @@ export default {
         overflow: hidden
         border: 1px solid $color-weak-grey
         background-color: $color-white
+.cropper-btns-wrap
+  position: relative
+  margin-top: 20px
+  .cropper-btn
+    position: absolute
+    left: 0
+    top: 0
+    width: 100%
+    height: 30px
+    background: $color-white
+    border: 1px solid $color-weak-grey
+    border-radius: 15px
+    color: $color-mid-grey
+    cursor: pointer
+  .btn-bg
+    background: #FF000000
 </style>
 

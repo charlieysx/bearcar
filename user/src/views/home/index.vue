@@ -111,10 +111,11 @@
           </div>
           <div id="box-right-content">
             <li 
-              v-for="carInfo in carInfoList"
-              :key="carInfo.id">
-              <span class="info-title">• {{ carInfo.title }}</span>
-              <span class="info-time">{{ carInfo.time }}</span>
+              v-for="(news, index) in hotNewsList"
+              :key="index"
+              @click="previewNews(news.newsId)">
+              <span class="info-title">• {{ news.newsTitle }}</span>
+              <span class="info-time">{{ news.newsTime | time('YYYY-MM-DD') }}</span>
             </li>
           </div>
         </div>
@@ -228,48 +229,7 @@ export default {
           text: '20万以上'
         }
       ],
-      carInfoList: [
-        {
-          id: 0,
-          title: '我们不一样！沃尔沃S60L才是绝佳伴侣',
-          time: '2018-1-27'
-        },
-        {
-          id: 1,
-          title: '二手车上的刹车片能看出车主人品 你信吗？',
-          time: '2018-1-27'
-        },
-        {
-          id: 2,
-          title: '曾经100多万，现在只要8000！收一辆不？',
-          time: '2018-1-27'
-        },
-        {
-          id: 3,
-          title: '二手车如何辨别好坏，学会这9点拒绝被坑！',
-          time: '2018-1-27'
-        },
-        {
-          id: 4,
-          title: '征服男人的几款车，有钱也不一定能买到！',
-          time: '2018-1-27'
-        },
-        {
-          id: 5,
-          title: '驾着风情满满的V90 CC 去体会北欧生活',
-          time: '2018-1-27'
-        },
-        {
-          id: 6,
-          title: '美系、日系完爆德系！沃德十佳发动机二手车能买到谁？',
-          time: '2018-1-27'
-        },
-        {
-          id: 7,
-          title: '冬季挡风玻璃起雾、结冰怎么破？老司机教你处理小妙招！',
-          time: '2018-1-27'
-        }
-      ],
+      hotNewsList: [],
       carTabList: [
         {
           id: 0,
@@ -407,6 +367,13 @@ export default {
   },
   created () {
     this.getHotBrand(6)
+    this.getHotNewsList(8)
+      .then((data) => {
+        this.hotNewsList = data
+      })
+      .catch(() => {
+        this.hotNewsList = []
+      })
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 0)
   },
   watch: {
@@ -427,7 +394,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getHotBrand'
+      'getHotBrand',
+      'getHotNewsList'
     ]),
     ...mapMutations({
     }),
@@ -469,7 +437,7 @@ export default {
     freeEstimate () {
     },
     toNews () {
-      this.$router.push({ name: 'news' })
+      this.$router.push({ name: 'newsList' })
     },
     clickCarTab (tab) {
       this.activeCarTab = tab
@@ -490,6 +458,14 @@ export default {
     searchBox (index) {
       this.$router.push({
         name: 'searchCar'
+      })
+    },
+    previewNews (newsId) {
+      this.$router.push({
+        name: 'news',
+        params: {
+          newsId: newsId
+        }
       })
     }
   },

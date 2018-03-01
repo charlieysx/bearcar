@@ -2,18 +2,6 @@ import api from 'API/index'
 
 const actions = {
   /**
-   * 发布资讯
-   */
-  publishNews (store, params) {
-    return api.publishNews(params)
-      .then((response) => {
-        return Promise.resolve(response.data.data)
-      })
-      .catch(({response}) => {
-        return Promise.reject(response)
-      })
-  },
-  /**
    * 获取资讯列表
    */
   getNewsList (store, params) {
@@ -26,10 +14,10 @@ const actions = {
       })
   },
   /**
-   * 获取资讯
+   * 获取热门资讯列表
    */
-  getNewsInfo (store, newsId) {
-    return api.getNewsInfo(newsId)
+  getHotNewsList (store, count) {
+    return api.getHotNewsList(count)
       .then((response) => {
         return Promise.resolve(response.data.data)
       })
@@ -38,10 +26,10 @@ const actions = {
       })
   },
   /**
-   * 删除资讯
+   * 获取资讯
    */
-  deleteNews (store, newsId) {
-    return api.deleteNews(newsId)
+  getNewsInfo (store, newsId) {
+    return api.getNewsInfo(newsId)
       .then((response) => {
         return Promise.resolve(response.data.data)
       })

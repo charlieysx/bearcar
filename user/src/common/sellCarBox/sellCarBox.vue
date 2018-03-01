@@ -90,7 +90,7 @@
                   @click="selectGuohuItem(gh)"
                   :class="[{'gh-active': selectGuohu.id === gh.id}]">
                   {{ gh.value }}
-                  </span>
+                </span>
             </div>
         </div>
         <!-- 过户次数 结束 -->
@@ -280,26 +280,29 @@ export default {
     }
   },
   created () {
-    this.getCitySort()
-    this.getHotBrand(8)
-    this.getCarBrandSort()
-    this.getProvince()
-      .then((list) => {
-        this.provinceList = list
-      })
-    this.getSellInfo()
-      .then((data) => {
-        this.yearData = data.licenseTime
-        this.carStatus = data.condition
-        this.sellDate = data.expireDate
-      })
+    if (this.isLogin) {
+      this.getCitySort()
+      this.getHotBrand(8)
+      this.getCarBrandSort()
+      this.getProvince()
+        .then((list) => {
+          this.provinceList = list
+        })
+      this.getSellInfo()
+        .then((data) => {
+          this.yearData = data.licenseTime
+          this.carStatus = data.condition
+          this.sellDate = data.expireDate
+        })
+    }
   },
   computed: {
     ...mapGetters([
       'allCities',
       'hotBrands',
       'allSortBrands',
-      'currentCity'
+      'currentCity',
+      'isLogin'
     ])
   },
   methods: {
@@ -664,7 +667,5 @@ export default {
         .input-suffix
           font-size: 16px
           margin-top: 2px
-      .city-picker
-        width: 100%
       
 </style>

@@ -121,20 +121,19 @@ export default {
 
 <style lang="stylus">
   #appindex
-    min-width: 1900px
+    min-width: 1180px
     display: flex
     display: -webkit-flex
     flex-direction: row
     background-color: #ffffff
     .viewWrap
       min-height: calc(110vh - 110px)
-      min-width: 1640px
+      min-width: 1170px
       width: 100%
       .viewContent
         min-height: calc(110vh - 110px)
         background: #ffffff
-        max-width: 1660px
-        min-width: 1640px
+        min-width: 1170px
         margin: 0 auto
     .nav-wrap
       position: fixed

@@ -1,8 +1,8 @@
 <template>
-  <div class="avatar-upload-wrap">
+  <div class="carcover-upload-wrap">
     <el-upload
       ref="upload"
-      class="avatar-uploader"
+      class="carcover-uploader"
       action="http://up-z2.qiniu.com"
       :data="token"
       :show-file-list="false"
@@ -12,7 +12,7 @@
       :on-change="onFileChange"
       :on-progress="onUploadProgress">
       <div class="img-wrap">
-        <img :src="imageUrl" class="avatar" v-if="imageUrl">
+        <img :src="imageUrl" class="carcover" v-if="imageUrl">
         <div class="img-mask-default" v-else>
           <i class="iconfont icon-upload"></i>
           <div>上传封面图</div>
@@ -39,7 +39,7 @@ import {
 import cropperBox from './cropperBox'
 
 export default {
-  name: 'upNewsImg',
+  name: 'upCarCover',
   components: {
     cropperBox
   },
@@ -51,7 +51,7 @@ export default {
       cropper: null,
       newFile: null,
       options: {
-        aspectRatio: 127 / 50,
+        aspectRatio: 287 / 192,
         preview: '#cropperRes',
         zoomOnWheel: false,
         minCropBoxWidth: 50
@@ -102,11 +102,6 @@ export default {
           this.token = data
           this.$refs.upload.submit()
         })
-        .catch(() => {
-          this.$toast({
-            message: '上传失败'
-          })
-        })
     },
     handleAvatarSuccess (response, file) {
       this.$emit('uploadSuccess', response.imgUrl)
@@ -125,22 +120,20 @@ export default {
 </script>
 <style lang="stylus">
   @import '~STYLUS/color.styl'
-  .avatar-upload-wrap
-    width: 430px
-    height: 169px
+  .carcover-upload-wrap
+    width: 287px
+    height: 192px
     border-radius: 5px
-    .avatar-wrap
-      position: relative
-    .avatar
-      width: 430px
-      height: 169px
+    .carcover
+      width: 287px
+      height: 192px
       border-radius: 5px
-    .avatar-uploader .el-upload {
+    .carcover-uploader .el-upload {
       cursor: pointer
       position: relative
       overflow: hidden
-      width: 430px
-      height: 169px
+      width: 287px
+      height: 192px
       border-radius: 5px
       border: 1px solid #dddddd
     }
@@ -153,8 +146,8 @@ export default {
       position: absolute
       left: 0
       top: 0
-      width: 430px
-      height: 169px
+      width: 287px
+      height: 192px
       z-index: 1
       background: rgba(0, 0, 0, 0.5)
       color: $color-white
@@ -176,8 +169,8 @@ export default {
       position: absolute
       left: 0
       top: 0
-      width: 430px
-      height: 169px
+      width: 287px
+      height: 192px
       z-index: 1
       background: $color-white
       display: flex

@@ -13,20 +13,20 @@ import {
   MenuItemGroup,
   Input,
   InputNumber,
-  // Radio,
-  // RadioGroup,
-  // RadioButton,
+  Radio,
+  RadioGroup,
+  RadioButton,
   Checkbox,
-  // CheckboxGroup,
-  // Switch,
-  // Select,
-  // Option,
+  CheckboxGroup,
+  Switch,
+  Select,
+  Option,
   // OptionGroup,
   Button,
   // ButtonGroup,
   // Table,
   // TableColumn,
-  // DatePicker,
+  DatePicker,
   // TimeSelect,
   // TimePicker,
   Popover,
@@ -43,15 +43,15 @@ import {
   // Slider,
   // Icon,
   // Row,
-  // Col,
+  Col,
   Upload,
-  // Progress,
+  Progress,
   // Spinner,
   // Badge,
   Card,
   // Rate,
-  // Steps,
-  // Step,
+  Steps,
+  Step,
   // Carousel,
   // Scrollbar,
   // CarouselItem,
@@ -77,20 +77,20 @@ Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Input)
 Vue.use(InputNumber)
-// Vue.use(Radio)
-// Vue.use(RadioGroup)
-// Vue.use(RadioButton)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
 Vue.use(Checkbox)
-// Vue.use(CheckboxGroup)
-// Vue.use(Switch)
-// Vue.use(Select)
-// Vue.use(Option)
+Vue.use(CheckboxGroup)
+Vue.use(Switch)
+Vue.use(Select)
+Vue.use(Option)
 // Vue.use(OptionGroup)
 Vue.use(Button)
 // Vue.use(ButtonGroup)
 // Vue.use(Table)
 // Vue.use(TableColumn)
-// Vue.use(DatePicker)
+Vue.use(DatePicker)
 // Vue.use(TimeSelect)
 // Vue.use(TimePicker)
 Vue.use(Popover)
@@ -107,15 +107,15 @@ Vue.use(FormItem)
 // Vue.use(Slider)
 // Vue.use(Icon)
 // Vue.use(Row)
-// Vue.use(Col)
+Vue.use(Col)
 Vue.use(Upload)
-// Vue.use(Progress)
+Vue.use(Progress)
 // Vue.use(Spinner)
 // Vue.use(Badge)
 Vue.use(Card)
 // Vue.use(Rate)
-// Vue.use(Steps)
-// Vue.use(Step)
+Vue.use(Steps)
+Vue.use(Step)
 // Vue.use(Carousel)
 // Vue.use(Scrollbar)
 // Vue.use(CarouselItem)

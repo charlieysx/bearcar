@@ -5,6 +5,7 @@
         <!-- tab -->
         <ul class="nav-inner">
           <router-link tag="li" :to="{ name: 'waiting' }" class="nav-item">待上架</router-link>
+          <router-link tag="li" :to="{ name: 'checking' }" class="nav-item">待检测</router-link>
           <router-link tag="li" :to="{ name: 'selling' }" class="nav-item">售卖中</router-link>
           <router-link tag="li" :to="{ name: 'ordering' }" class="nav-item">预约中</router-link>
           <router-link tag="li" :to="{ name: 'under' }" class="nav-item">已完成</router-link>
@@ -35,14 +36,18 @@ export default {
         },
         {
           id: 1,
-          name: '售卖中'
+          name: '待检测'
         },
         {
           id: 2,
+          name: '售卖中'
+        },
+        {
+          id: 23,
           name: '预约中'
         },
         {
-          id: 3,
+          id: 4,
           name: '已完成'
         }
       ]

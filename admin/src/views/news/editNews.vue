@@ -5,11 +5,16 @@
       <div class="editor-container">
         <UE :config="config" :id="uEdit" ref="ue"></UE>
       </div>
-      <div class="left">
+      <div class="right">
         <el-input
           class="input-title"
           placeholder="请输入标题"
           v-model="params.title">
+        </el-input>
+        <el-input
+          class="input-title"
+          placeholder="请输入文章来源"
+          v-model="params.from">
         </el-input>
         <el-input
           class="input-title"
@@ -41,8 +46,8 @@ export default {
   data () {
     return {
       config: {
-        initialFrameWidth: null,
-        initialFrameHeight: 800,
+        initialFrameWidth: 720,
+        initialFrameHeight: 760,
         toolbars: [[
           'fullscreen', 'source', '|', 'undo', 'redo', '|',
           'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
@@ -62,7 +67,8 @@ export default {
         title: '',
         info: '',
         imageUrl: '',
-        content: ''
+        content: '',
+        from: ''
       },
       loading: ''
     }
@@ -74,13 +80,17 @@ export default {
     getUEContent () {
       this.params.content = this.$refs.ue.getUEContent()
     },
-    uploadSuccess (src) {
-      this.params.imageUrl = src
+    uploadSuccess (url) {
+      this.params.imageUrl = url
     },
     publish () {
       this.getUEContent()
       if (!this.params.title) {
         this.error('请输入标题')
+        return
+      }
+      if (!this.params.from) {
+        this.error('请输入文章来源')
         return
       }
       if (!this.params.info) {
@@ -99,7 +109,12 @@ export default {
       this.publishNews(this.params)
         .then((data) => {
           this.closeLoading()
-          console.log(data.newsId)
+          this.$router.push({
+            name: 'news',
+            params: {
+              newsId: data.newsId
+            }
+          })
         })
         .catch(() => {
           this.closeLoading()
@@ -144,20 +159,21 @@ export default {
     height: 70px
     line-height: 18px
     padding: 26px
+    font-weight: bold
   .edit-news-wrap
-    width: 100%
     display: flex
     display: -webkit-flex
     flex-direction: row
-    .editor-container
-      fles: 1
-    .left
-      width: 530px
+    justify-content: center
+    margin-top: 20px
+    .right
+      width: 450px
       padding: 10px
+      padding-top: 0px
       .input-title
         margin-bottom: 20px
       .publish-btn
-        width: 510px
+        width: 430px
         padding: 15px
         margin-top: 20px
         font-weight: bold

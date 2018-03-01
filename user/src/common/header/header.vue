@@ -38,7 +38,7 @@
             <div class="header-user" v-else>
               <span class="header-avatar">
                 <img src="~IMAGES/icon_user.png" alt="">
-                <span>{{ userInfo.userName }}</span>
+                <span>{{ userInfo.phone }}</span>
                 <!-- 用户信息下拉 -->
                 <div class="user-info">
                   <ul class="user-info-ul">
@@ -124,7 +124,7 @@ export default {
     }
   },
   created () {
-    this.getHotCity()
+    this.getHotCity(10)
     this.getCitySort()
   },
   mounted () {
@@ -174,7 +174,7 @@ export default {
           this.toSellCar()
           break
         case 3:
-          this.$router.push({ name: 'news' })
+          this.$router.push({ name: 'newsList' })
           break
       }
     },

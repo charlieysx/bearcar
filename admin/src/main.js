@@ -10,6 +10,7 @@ import { sync } from 'vuex-router-sync'
 import validator from 'UTIL/validator'
 import 'UTIL/filters'
 import 'swiper/dist/css/swiper.css'
+import toast from 'COMMON/toast/toast.js'
 import VueScrollLock from 'vue-scroll-lock'
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
@@ -20,6 +21,7 @@ Vue.use(Vuex)
 Vue.use(validator)
 Vue.use(VueAwesomeSwiper)
 Vue.use(VueScrollLock)
+Vue.use(toast)
 
 sync(store, router)
 

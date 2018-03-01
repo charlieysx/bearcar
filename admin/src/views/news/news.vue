@@ -19,10 +19,6 @@
 
 import { mapActions } from 'vuex'
 
-import {
-  SET_HEADER_ACTIVE_TAB
-} from 'STORE/mutation-types'
-
 export default {
   name: 'news',
   data () {
@@ -33,7 +29,6 @@ export default {
     }
   },
   created () {
-    this.$store.commit(SET_HEADER_ACTIVE_TAB, -1)
     let newsId = this.$route.params.newsId
     this.getNewsInfo(newsId)
       .then((data) => {

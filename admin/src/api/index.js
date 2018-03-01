@@ -54,24 +54,33 @@ export default {
    * 用户登录
    */
   login (params) {
-    return axios.post('admin/login', Qs.stringify(params))
+    return axios.post('sysa/login', Qs.stringify(params))
   },
   /**
-   * 获取 我的车 列表  type:{waiting, selling, ordering, under}
+   * 获取 与我相关的车 列表  type:{waiting, selling, ordering, under}
    */
   getMyCar (params) {
-    return axios.get('admin/carlist/get_car', {
+    return axios.get('sysa/mycar/list', {
       params: params
     })
   },
-  underMyCar (carId) {
-    return axios.post('mycar/under', Qs.stringify({ carId: carId }))
+  /**
+   * 下架 与我相关的车
+   */
+  underMyCar (params) {
+    return axios.post('sysa/mycar/under', Qs.stringify(params))
+  },
+  /**
+   * 预约检测二手车
+   */
+  orderCheckCar (carId) {
+    return axios.post('sysa/mycar/ordercheck', Qs.stringify({ carId: carId }))
   },
   /**
    * 获取七牛上传图片token
    */
   getQiniuToken (bucket) {
-    return axios.get('qiniu/get_upload_token', {
+    return axios.get('sysa/qiniu/token', {
       params: {
         bucket: bucket
       }
@@ -81,14 +90,62 @@ export default {
    * 发布资讯
    */
   publishNews (params) {
-    return axios.post('news/publish', Qs.stringify(params))
+    return axios.post('sysa/news/publish', Qs.stringify(params))
   },
   /**
    * 获取资讯列表
    */
   getNewsList (params) {
-    return axios.get('news/get_news_list', {
+    return axios.get('sysa/news/list', {
       params: params
+    })
+  },
+  /**
+   * 获取资讯
+   */
+  getNewsInfo (newsId) {
+    return axios.get('sysa/news/detail', {
+      params: {
+        newsId: newsId
+      }
+    })
+  },
+  /**
+   * 删除资讯
+   */
+  deleteNews (newsId) {
+    return axios.post('sysa/news/delete', Qs.stringify({ newsId: newsId }))
+  },
+  /**
+   * 获取检测完成步骤
+   */
+  getFillStep (carId) {
+    return axios.get('sysa/fillcar/getfillstep', {
+      params: {
+        carId: carId
+      }
+    })
+  },
+  /**
+   * 获取上牌年月列表
+   */
+  getFillYM () {
+    return axios.get('sysa/fillcar/getym')
+  },
+  /**
+   * 获取按字母排序的城市
+   */
+  getCitySort () {
+    return axios.get('c/city/sort')
+  },
+  /**
+   * 获取检测中的二手车的基本信息(客户填写的)
+   */
+  getFillCarInfo (carId) {
+    return axios.get('sysa/fillcar/getfillcarinfo', {
+      params: {
+        carId: carId
+      }
     })
   }
 }

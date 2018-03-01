@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userName'
+      'phone'
     ]),
     btnDisabled () {
       return this.loginForm.phone === '' ||
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted () {
-    this.loginForm.phone = this.userName
+    this.loginForm.phone = this.phone
   },
   methods: {
     changeView (type) {
@@ -81,7 +81,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let loginFormParams = {
-            userName: this.loginForm.phone,
+            phone: this.loginForm.phone,
             password: this.loginForm.password
           }
           if (this.message) {

@@ -15,6 +15,7 @@
   import register from 'VIEWS/auth/register'
   import resetPsw from 'VIEWS/auth/resetPsw'
   import { mapActions, mapGetters } from 'vuex'
+
   export default {
     name: 'auth-layout',
     components: {
