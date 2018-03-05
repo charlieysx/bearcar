@@ -65,7 +65,7 @@ export default {
       hotNewsList: [],
       allNewsList: [],
       count: 0,
-      currentPage: 0,
+      currentPage: 1,
       params: {
         page: 0,
         pageSize: 10

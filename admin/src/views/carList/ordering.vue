@@ -1,6 +1,6 @@
 <template>
   <div id="mycar-ordering">
-    <div class="title">二手车-预约中列表  （总数：{{ count }}）</div>
+    <div class="title">二手车-交易中列表  （总数：{{ count }}）</div>
     <div class="content" v-if="carList.length > 0">
       <div class="mycar-info" v-for="(car, index) in carList" :key="index">
         <div class="mycar-info-top">
@@ -66,8 +66,8 @@
           </div>
         </div>
         <div class="mycar-button">
-          <div class="btn" @click="under(car.carId)">
-            下架
+          <div class="btn" @click="review(car.carId)">
+            恢复上架
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
       </div>
       <!-- 分页 结束 -->
     </div>
-    <no-data text="没有预约中的二手车哦~" v-else></no-data>
+    <no-data text="没有交易中的二手车哦~" v-else></no-data>
   </div>
 </template>
 
@@ -137,21 +137,21 @@ export default {
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
-    under (carId) {
-      this.$confirm('此操作将下架该二手车，是否下架?', '提示', {
+    review (carId) {
+      this.$confirm('此辆车正在交易中，确定恢复上架?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.underMyCar(carId)
-          .then((data) => {
-            this.params.page = 0
-            this.scrollToTop()
-            this.update()
-          })
-          .catch(() => {
-            this.carList = []
-          })
+        // this.underMyCar(carId)
+        //   .then((data) => {
+        //     this.params.page = 0
+        //     this.scrollToTop()
+        //     this.update()
+        //   })
+        //   .catch(() => {
+        //     this.carList = []
+        //   })
       })
     }
   }

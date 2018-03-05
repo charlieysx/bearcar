@@ -45,6 +45,7 @@
                 v-model="baseInfo.checkYear"
                 type="month"
                 id="1"
+                value-format="yyyy-MM"
                 placeholder="年检到期时间">
               </el-date-picker>
             </el-form-item>
@@ -54,6 +55,7 @@
                 v-model="baseInfo.strongRiskYear"
                 type="month"
                 id="2"
+                value-format="yyyy-MM"
                 placeholder="交强险时间">
               </el-date-picker>
             </el-form-item>
@@ -63,6 +65,7 @@
                 v-model="baseInfo.businessRiskYear"
                 type="month"
                 id="3"
+                value-format="yyyy-MM"
                 placeholder="商业险到期时间">
               </el-date-picker>
             </el-form-item>
@@ -108,11 +111,18 @@
               <template slot="append">万公里</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="看车地址" prop="lookCity">
-            <step-one-city-picker
-              :allCities="allCities"
-              @city-click="selectLookCity">
-            </step-one-city-picker>
+          <el-form-item label="看车地址" prop="lookDistrict" style="flex: 1">
+            <el-select
+              style="width: 100%"
+              v-model="baseInfo.lookDistrict" 
+              placeholder="请选择看车地址">
+              <el-option
+                v-for="(district, index) in districtList"
+                :key="index"
+                :label="district.districtName"
+                :value="district.districtId">
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="过户次数" prop="transferTime">
             <div class="transfer-time">
@@ -459,6 +469,7 @@ export default {
         }
       ],
       yearData: [],
+      districtList: [],
       baseInfo: {
         userName: '',
         ownerPrice: '',
@@ -468,7 +479,7 @@ export default {
         licensedYear: '',
         licensedMonth: '',
         licensedCity: '',
-        lookCity: '',
+        lookDistrict: '',
         checkYear: '',
         strongRiskYear: '',
         businessRiskYear: '',
@@ -500,7 +511,7 @@ export default {
         mileage: [
           { required: true, message: '请输入表显里程', trigger: 'blur' }
         ],
-        lookCity: [
+        lookDistrict: [
           { required: true, message: '请选择看车地址', trigger: 'blur' }
         ],
         checkYear: [
@@ -746,7 +757,7 @@ export default {
           name: '定速巡航',
           value: '无'
         },
-        electricSuctionDoor: {
+        airConditioner: {
           name: '空调',
           value: '无'
         },
@@ -774,7 +785,7 @@ export default {
           name: '前排座椅加热',
           value: '无'
         },
-        searHotBehind: {
+        seatHotBehind: {
           name: '后排座椅加热',
           value: '无'
         }
@@ -796,13 +807,17 @@ export default {
   methods: {
     ...mapActions([
       'getFillYM',
-      'getCitySort'
+      'getCitySort',
+      'fillCarFirst',
+      'getDistrict'
     ]),
     selectLicensedCity (city) {
-      this.baseInfo.licensedCity = city
-    },
-    selectLookCity (city) {
-      this.baseInfo.lookCity = city
+      this.baseInfo.licensedCity = city.cityId
+      this.districtList = []
+      this.getDistrict(city.cityId)
+        .then((data) => {
+          this.districtList = data.list
+        })
     },
     selectTransferTime (transferTime) {
       this.baseInfo.transferTime = transferTime
@@ -822,13 +837,47 @@ export default {
           }
         })
       }
-      if (flag) {
+      if (!flag) {
         this.$toast({
-          message: '上传失败'
+          message: '您还有必填参数未填写'
         })
         return
       }
-      this.$emit('next', '2')
+      let baseInfo = {
+        userName: this.baseInfo.userName,
+        ownerPrice: this.baseInfo.ownerPrice,
+        newCarPrice: this.baseInfo.newCarPrice,
+        tax: this.baseInfo.tax,
+        mileage: this.baseInfo.mileage,
+        licensedYear: this.baseInfo.licensedYear.value,
+        licensedMonth: this.baseInfo.licensedMonth,
+        licensedCity: this.baseInfo.licensedCity,
+        lookDistrict: this.baseInfo.lookDistrict,
+        checkYear: this.baseInfo.checkYear,
+        strongRiskYear: this.baseInfo.strongRiskYear,
+        businessRiskYear: this.baseInfo.businessRiskYear,
+        carOptions: this.baseInfo.carOptions,
+        transferTime: this.baseInfo.transferTime.id
+      }
+      let params = {
+        carId: this.carId,
+        baseInfo: baseInfo,
+        configBase: this.configBase,
+        configEngine: this.configEngine,
+        configChassisBrake: this.configChassisBrake,
+        configSafety: this.configSafety,
+        configOut: this.configOut,
+        configIn: this.configIn
+      }
+      this.fillCarFirst(params)
+        .then((data) => {
+          this.$emit('next', '2')
+        })
+        .catch((err) => {
+          this.$toast({
+            message: err.data.msg
+          })
+        })
     },
     changeValue (type) {
       switch (type) {
@@ -854,6 +903,9 @@ export default {
         let c = value[i]
         if (newValue.length === l && c !== '.') {
           break
+        }
+        if (c === '0' && i === l - 1 && pointPos !== -1) {
+          continue
         }
         if (c === '0' && (value.length - 1 === i || (newValue.length === 0 && i + i < value.length && value[i + 1] === '.'))) {
           newValue += c
@@ -884,6 +936,9 @@ export default {
         let c = value[i]
         if (newValue.length === l) {
           break
+        }
+        if (c === '0' && i === l - 1 && pointPos !== -1) {
+          continue
         }
         if (c === '0' && (value.length - 1 === i || (newValue.length === 0 && i + i < value.length && value[i + 1] === '.'))) {
           newValue += c

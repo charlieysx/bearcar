@@ -6,7 +6,7 @@
           :key="index"
           :class="[data.imgList.length > 8 ? (index < 4 ? 'big' : 'small') : 'small']"
           v-if="(data.imgList.length > 8 && index < 8) || (data.imgList.length > 4 && index < 4)"
-          :style="{backgroundImage: 'url(' + image.url + ')'}"
+          :style="{backgroundImage: 'url(' + image + ')'}"
           @click="clickImg(index)">
             <div class="last-img" v-if="(data.imgList.length > 8 && index === 7) || (data.imgList.length > 4 && data.imgList.length < 8 && index === 3)">
               <p>查看{{ data.imgList.length }}张</p>

@@ -12,48 +12,8 @@
             </div>
           </div>
         </div>
-        <div class="mycar-info-bottom">
-          <div class="info-item">
-            上牌时间 :
-            <span>
-              {{ car.licensedYear + car.licensedMonth }}
-            </span>
-          </div>
-          <div class="info-item">
-            里程 :
-            <span>
-              {{ car.mileage }}万公里
-            </span>
-          </div>
-          <div class="info-item">
-            牌照地 :
-            <span>
-              {{ car.cityName }}
-            </span>
-          </div>
-        </div>
-        <div class="mycar-info-bottom">
-          <div class="info-item">
-            过户次数 :
-            <span>
-              {{ car.transferTime === '-1' ? '不清楚' : (car.transferTime === '5' ? '4次以上' : car.transferTime) }}
-            </span>
-          </div>
-          <div class="info-item">
-            车况 :
-            <span>
-              {{ car.conditionName }}
-            </span>
-          </div>
-          <div class="info-item">
-            预期售出时间 :
-            <span>
-              {{ car.expireDateName }}
-            </span>
-          </div>
-        </div>
         <div class="mycar-button">
-          <div class="btn" @click="under(car.carId)">
+          <div class="btn" @click="under(car)">
             下架
           </div>
         </div>
@@ -99,8 +59,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getMyCar',
-      'underMyCar'
+      'getMyCar'
     ]),
     update () {
       this.getMyCar(this.params)
@@ -120,29 +79,18 @@ export default {
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
-    under (carId) {
-      this.$confirm('此操作将下架该二手车，用户将不能搜索到该车，是否下架?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.underMyCar(carId)
-          .then((data) => {
-            this.params.page = 0
-            this.scrollToTop()
-            this.update()
-          })
-          .catch(() => {
-            this.carList = []
-          })
-      })
-    },
     toDetail (carId) {
       this.$router.push({
         name: 'cardetail',
         params: {
           carId: carId
         }
+      })
+    },
+    under (car) {
+      this.$toast({
+        message: '售卖中的车辆您不能下架，已通知评估师：' + car.appraiserName + '，他将会电话联系您进行下架相关操作',
+        duration: 5000
       })
     }
   }

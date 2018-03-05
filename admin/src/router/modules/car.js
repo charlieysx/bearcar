@@ -1,12 +1,21 @@
-/**
- * 二手车详情页面
- */
-const car = r => require.ensure([], () => r(require('VIEWS/car/car.vue')), 'car')
+const carDetail = r => require.ensure([], () => r(require('VIEWS/car/myCarDetail.vue')), 'carDetail')
+const fillCar = r => require.ensure([], () => r(require('VIEWS/car/fillCar.vue')), 'fillCar')
 
 export default [
   {
-    path: '/car/:carId',
-    name: 'car',
-    component: car
+    path: '/carDetail/:carId',
+    name: 'cardetail',
+    component: carDetail,
+    meta: {
+      requireAuth: true
+    }
+  },
+  {
+    path: '/fillCar/:carId',
+    name: 'fillcar',
+    component: fillCar,
+    meta: {
+      requireAuth: true
+    }
   }
 ]

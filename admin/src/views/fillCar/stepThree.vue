@@ -62,6 +62,9 @@
 
 <script>
 
+import {
+  mapActions
+} from 'vuex'
 import upCarCover from 'COMMON/upload/upCarCover.vue'
 import upCarImg from 'COMMON/upload/upCarImg.vue'
 
@@ -76,6 +79,7 @@ export default {
     return {
       submit: false,
       params: {
+        carId: '',
         coverImgUrl: '',
         outImgUrl: [],
         inImgUrl: [],
@@ -83,7 +87,13 @@ export default {
       }
     }
   },
+  mounted () {
+    this.params.carId = this.carId
+  },
   methods: {
+    ...mapActions([
+      'fillCarThird'
+    ]),
     uploadCoverSuccess (url) {
       this.params.coverImgUrl = url
     },
@@ -122,7 +132,20 @@ export default {
         this.error('请上传发动机、底盘图')
         return
       }
-      console.log(this.params)
+      this.fillCarThird(this.params)
+        .then((data) => {
+          this.$toast({
+            message: '提交全部信息完成，车辆已上架售卖'
+          })
+          this.$router.push({
+            name: 'selling'
+          })
+        })
+        .catch((err) => {
+          this.$toast({
+            message: err.data.msg
+          })
+        })
     },
     error (err) {
       this.$toast({

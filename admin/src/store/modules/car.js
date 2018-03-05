@@ -184,6 +184,51 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  /**
+   * 提交检测信息-第一步
+   */
+  fillCarFirst (store, params) {
+    return api.fillCarFirst(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 提交检测信息-第二步
+   */
+  fillCarSecond (store, params) {
+    return api.fillCarSecond(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 提交检测信息-第三步
+   */
+  fillCarThird (store, params) {
+    return api.fillCarThird(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  getCarInfo (store, carId) {
+    return api.getCarInfo(carId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

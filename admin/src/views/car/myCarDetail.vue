@@ -20,11 +20,14 @@
         <!-- 二手车基础信息 -->
         <div id="car-base-info">
             <div class="car-base-image">
-                <image-preview-list>
+                <image-preview-list :imageData="previewImage.list" :isLoad="previewImage.is">
                 </image-preview-list>
             </div>
             <div class="car-info">
-                <p>长安悦翔V3 2015款 1.4L 手动美满型 国V</p>
+                <p>
+                  {{ info.brandName }} 
+                  {{ info.modelName ? info.modelName : info.seriesName }}
+                </p>
                 <!-- 报价 -->
                 <div class="car-price">
                     <div class="car-sell-price">
@@ -32,10 +35,10 @@
                             车主报价&nbsp;:
                         </span>
                         <span class="sell-price">
-                            ￥10.20万
+                            ￥{{ info.price }}万
                         </span>
                         <s class="guide-price">
-                            新车指导价37.12万
+                            新车指导价{{ info.newCarPrice }}万(含税)
                         </s>
                         <el-popover
                             ref="guide"
@@ -43,10 +46,7 @@
                             width="270"
                             trigger="hover">
                             <div class="guide-tip">
-                                <p>厂商新车指导价：34.2万</p>
-                                <p>车辆购置税：2.92万</p>
-                                <div></div>
-                                <p class="tip">"新车指导价"是厂商公布的指导价，不是零售价，亦不是该车购入价。</p>
+                                <p class="tip">"新车指导价(含税) = 厂商公布的指导价 + 购置税费，该价格仅供参考。</p>
                             </div>
                         </el-popover>
                         <i class="el-icon-info" v-popover:guide></i>
@@ -89,7 +89,7 @@
                             服&nbsp;务&nbsp;费&nbsp;&nbsp;:
                         </span>
                         <span class="server-price">
-                            4080元 (车价×4%)
+                            {{ info.price | serverPirce }}元 (车价×4%)
                         </span>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                 <!-- 部分参数 结束 -->
                 <div class="car-source-number">
                     <span>车源号:</span>
-                    <span>HC-26469924</span>
+                    <span>{{ info.carOptions }}</span>
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
             </div>
             <!-- 评估项 结束 -->
             <div class="time-tip">
-              ※以上为2018年01月21日车况，交易以复检结果为准
+              ※以上为{{ info.checkTime | time('YYYY年MM月DD日') }}车况，交易以复检结果为准
             </div>
           </div>
         </div>
@@ -175,7 +175,7 @@
         <div id="car-basic-info" ref="baseInfo">
           <p>基本信息</p>
           <div class="car-owner">
-            车主：郭先生
+            车主：{{ info.userName }}
           </div>
           <!-- 部分参数 -->
           <ul class="car-assort">
@@ -223,6 +223,8 @@ import configList from 'COMMON/configList/configList'
 import carImage from 'COMMON/carImage/carImage'
 import configGrid from 'COMMON/configGrid/configGrid'
 
+import { mapActions } from 'vuex'
+
 export default {
   name: 'car',
   data () {
@@ -246,1243 +248,518 @@ export default {
         name: '基本信息'
       },
       carId: '',
+      carInfo: {},
+      info: {},
       carAssort: {
         licensedTime: {
           title: '上牌时间',
-          value: '2016-11'
+          value: ''
         },
         mileage: {
           title: '表显里程',
-          value: '1.4万公里'
+          value: ''
         },
         licensedCity: {
           title: '上牌地',
-          value: '南京'
+          value: ''
         },
         emissionStandards: {
           title: '排放标准',
-          value: '国五'
+          value: ''
         },
         displacement: {
           title: '排量',
-          value: '2L'
+          value: ''
         }
       },
       assessmentList: [
         {
           title: '事故排查检测',
-          item: [
-            {
+          item: {
+            checkAccident: {
               name: '排除重大事故',
               count: 20,
-              exception: 10
+              exception: 0
             },
-            {
+            checkWaterFire: {
               name: '排除泡水火烧',
               count: 9,
               exception: 0
             }
-          ]
+          }
         },
         {
           title: '轻微碰撞',
-          item: [
-            {
+          item: {
+            checkCrash: {
               name: '轻微碰撞',
               count: 14,
               exception: 0
             },
-            {
+            checkBreakablePart: {
               name: '易损耗部件',
               count: 18,
               exception: 0
             }
-          ]
+          }
         },
         {
           title: '常用功能检测',
-          item: [
-            {
+          item: {
+            checkSafetySystem: {
               name: '安全系统',
               count: 15,
-              exception: 1
+              exception: 0
             },
-            {
+            checkOutConfig: {
               name: '外部配置',
               count: 22,
               exception: 0
             },
-            {
+            checkInConfig: {
               name: '内部配置',
               count: 14,
               exception: 0
             },
-            {
+            checkLightSystem: {
               name: '灯光系统',
               count: 15,
               exception: 0
             },
-            {
+            checkHighTech: {
               name: '高科技配置',
               count: 5,
               exception: 0
             },
-            {
+            checkTool: {
               name: '随车工具',
               count: 5,
               exception: 0
             }
-          ]
+          }
         },
         {
           title: '启动驾驶检测',
-          item: [
-            {
+          item: {
+            checkInstrumentDesk: {
               name: '仪表台指示灯',
               count: 6,
               exception: 0
             },
-            {
+            checkEngineStatus: {
               name: '发动机状态',
               count: 5,
-              exception: 1
+              exception: 0
             },
-            {
+            checkSpeed: {
               name: '变速箱及转向',
               count: 3,
               exception: 0
             }
-          ]
+          }
         },
         {
           title: '外观内饰检测',
-          item: [
-            {
+          item: {
+            '0': {
               name: '缺陷项检测',
               count: 67,
               exception: 0
             },
-            {
+            '1': {
               name: '漆面修复检测',
               count: 21,
               exception: 0
             },
-            {
+            '2': {
               name: '钣金修复检测',
               count: 21,
               exception: 0
             },
-            {
+            '3': {
               name: '外观件更换检测',
               count: 21,
               exception: 0
             }
-          ]
+          }
         }
       ],
       carAssort2: {
         licensedTime: {
           title: '上牌时间',
-          value: '2016-11'
+          value: ''
         },
         mileage: {
           title: '表显里程',
-          value: '1.4万公里'
+          value: ''
         },
         licensedCity: {
           title: '上牌地',
-          value: '南京'
+          value: ''
         },
         emissionStandards: {
           title: '排放标准',
-          value: '国五'
+          value: ''
         },
         displacement: {
           title: '排量',
-          value: '2L'
+          value: ''
         },
-        guohu: {
+        transferTime: {
           title: '过户次数',
-          value: '0'
+          value: ''
         },
         speed: {
           title: '变速箱',
-          value: '手动'
+          value: ''
         },
         address: {
           title: '看车地址',
-          value: '广州'
+          value: ''
         },
         checkYear: {
           title: '年检到期',
-          value: '2018-03'
+          value: ''
         },
-        qx: {
+        strongRisk: {
           title: '交强险',
-          value: '2018-03'
+          value: ''
         },
-        syx: {
+        businessRisk: {
           title: '商业险到期',
-          value: '2018-03'
+          value: ''
         }
       },
-      configList: [
-        {
+      configList: {
+        configBase: {
           name: '基本参数',
-          list: [
-            {
+          list: {
+            credentials: {
               name: '证件品牌型号',
-              value: 'SGM7169MTA'
+              value: ''
             },
-            {
+            vendor: {
               name: '厂商',
-              value: '上汽通用雪佛兰'
+              value: ''
             },
-            {
+            level: {
               name: '级别',
-              value: '紧凑型车'
+              value: ''
             },
-            {
+            engine: {
               name: '发动机',
-              value: '1.6L 117马力 L4'
+              value: ''
             },
-            {
+            speed: {
               name: '变速箱',
-              value: '5档手动变速箱(MT)'
+              value: ''
             },
-            {
+            structure: {
               name: '车身结构',
-              value: '4门5座三厢车'
+              value: ''
             },
-            {
+            length: {
               name: '长*宽*高(mm)',
-              value: '4598/1797/1477'
+              value: ''
             },
-            {
+            wheelbase: {
               name: '轴距(mm)',
-              value: '2685'
+              value: ''
             },
-            {
+            trunk: {
               name: '行李箱容积(L)',
-              value: '400'
+              value: ''
             },
-            {
+            quality: {
               name: '整备质量(kg)',
-              value: '1360'
+              value: ''
             }
-          ]
+          }
         },
-        {
+        configEngine: {
           name: '发动机参数',
-          list: [
-            {
+          list: {
+            displacement: {
               name: '排量(L)',
-              value: '1.6'
+              value: ''
             },
-            {
+            airIntake: {
               name: '进气形式',
-              value: '自然吸气'
+              value: ''
             },
-            {
+            cylinder: {
               name: '气缸',
-              value: 'L4'
+              value: ''
             },
-            {
+            maxHorsePower: {
               name: '最大马力(Ps)',
-              value: '117'
+              value: ''
             },
-            {
+            maxTorque: {
               name: '最大扭矩(N*m)',
-              value: '150'
+              value: ''
             },
-            {
+            fuelType: {
               name: '燃料类型',
-              value: '汽油'
+              value: ''
             },
-            {
+            fuelLabel: {
               name: '燃油标号',
-              value: '92号'
+              value: ''
             },
-            {
+            oilSupplyWay: {
               name: '供油方式',
-              value: '多点电喷'
+              value: ''
             },
-            {
+            emissionStandards: {
               name: '排放标准',
-              value: '国四'
+              value: ''
             },
-            {
+            space: {
               name: '',
               value: ''
             }
-          ]
+          }
         },
-        {
+        configChassisBrake: {
           name: '底盘及制动',
-          list: [
-            {
+          list: {
+            driveMode: {
               name: '驱动方式',
-              value: '前置前驱'
+              value: ''
             },
-            {
+            powerType: {
               name: '助力类型',
-              value: '机械液压助力'
+              value: ''
             },
-            {
+            suspensionFront: {
               name: '前悬挂类型',
-              value: '麦弗逊式独立悬架'
+              value: ''
             },
-            {
+            suspensionBehind: {
               name: '后悬挂类型',
-              value: '扭力梁式非独立悬架'
+              value: ''
             },
-            {
+            brakeFront: {
               name: '前制动类型',
-              value: '通风盘式'
+              value: ''
             },
-            {
+            brakeBehind: {
               name: '后制动类型',
-              value: '盘式'
+              value: ''
             },
-            {
+            parkingBrake: {
               name: '驻车制动类型',
-              value: '-'
+              value: ''
             },
-            {
+            tireSizeFront: {
               name: '前轮胎规格',
-              value: '205/60 R16'
+              value: ''
             },
-            {
+            tireSizeBehind: {
               name: '后轮胎规格',
-              value: '205/60 R16'
+              value: ''
             },
-            {
+            space: {
               name: '',
               value: ''
             }
-          ]
+          }
         },
-        {
+        configSafety: {
           name: '安全配置',
-          list: [
-            {
+          list: {
+            safetyAirbag: {
               name: '主副驾驶安全气囊',
-              value: '标配/标配'
+              value: ''
             },
-            {
+            sideAirbag: {
               name: '前后排侧气囊',
-              value: '标配/无'
+              value: ''
             },
-            {
+            headAirbag: {
               name: '前后排头部气囊',
-              value: '无/无'
+              value: ''
             },
-            {
+            tirePressureMonitoring: {
               name: '胎压检测',
-              value: '无'
+              value: ''
             },
-            {
+            inControlLock: {
               name: '车内中控锁',
-              value: '标配'
+              value: ''
             },
-            {
+            childSeatInterface: {
               name: '儿童座椅接口',
-              value: '标配'
+              value: ''
             },
-            {
+            keylessStart: {
               name: '无钥匙启动',
-              value: '无'
+              value: ''
             },
-            {
+            abs: {
               name: '防抱死系统(ABS)',
-              value: '标配'
+              value: ''
             },
-            {
+            esp: {
               name: '车身稳定控制(ESP)',
-              value: '无'
+              value: ''
             }
-          ]
+          }
         },
-        {
+        configOut: {
           name: '外部配置',
-          list: [
-            {
+          list: {
+            skylightElectric: {
               name: '电动天窗',
-              value: '标配'
+              value: ''
             },
-            {
+            skylightFullView: {
               name: '全景天窗',
-              value: '无'
+              value: ''
             },
-            {
+            electricSuctionDoor: {
               name: '电动吸合门',
-              value: '无'
+              value: ''
             },
-            {
+            inductionTrunk: {
               name: '感应后备箱',
-              value: '无'
+              value: ''
             },
-            {
+            windshieldWiperSensing: {
               name: '感应雨刷',
-              value: '无'
+              value: ''
             },
-            {
+            windshieldWiperBehind: {
               name: '后雨刷',
-              value: '无'
+              value: ''
             },
-            {
+            electricWindow: {
               name: '前后电动车窗',
-              value: '标配/标配'
+              value: ''
             },
-            {
+            rearViewMirrorElectric: {
               name: '后视镜电动调节',
-              value: '标配'
+              value: ''
             },
-            {
+            rearViewMirrorHot: {
               name: '后视镜加热',
-              value: '无'
+              value: ''
             }
-          ]
+          }
         },
-        {
+        configIn: {
           name: '内部配置',
-          list: [
-            {
+          list: {
+            multiSteeringWheel: {
               name: '多功能方向盘',
-              value: '无'
+              value: ''
             },
-            {
+            cruiseControl: {
               name: '定速巡航',
-              value: '无'
+              value: ''
             },
-            {
+            airConditioner: {
               name: '空调',
-              value: '标配'
+              value: ''
             },
-            {
+            airConditionerAuto: {
               name: '自动空调',
-              value: '无'
+              value: ''
             },
-            {
+            gps: {
               name: 'GPS导航',
-              value: '无'
+              value: ''
             },
-            {
+            reversingRadar: {
               name: '倒车雷达',
-              value: '标配'
+              value: ''
             },
-            {
+            reversingImageSystem: {
               name: '倒车影像系统',
-              value: '无'
+              value: ''
             },
-            {
+            leatherSeat: {
               name: '真皮座椅',
-              value: '无'
+              value: ''
             },
-            {
+            seatHot: {
               name: '前后排座椅加热',
-              value: '无/无'
+              value: ''
             }
-          ]
+          }
         }
-      ],
+      },
       carImage: [
         {
           title: '车辆外观',
-          imgList: [
-            {
-              url: 'https://image1.guazistatic.com/qn1711301305487aa7df3106a288f3dcbeabf4d3e07288.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301305508b0775e94c0db3ab0cb2157339b4ae3a.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130130552d1617866399f257eaac9098a65bb7b61.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130130554b9a61081728a96691111ed67c6fd7d3b.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301305554cc2b394c6951261e8d941c01289a92b.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301305564c3b495f18bf450db5e27f2e2e2ccd31.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130130558c0d5f1e4829e430251549f43e3099c9a.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn17113012333349b56b56f287d7f3907559a9fe0bc732.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn17113012333389780cd60395273ca8d468293585584e.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333ecb5e44f9b20a2d4d85a8ded96347b2b.jpg?imageView2/1/w/1200/h/800/q/88'
-            }
-          ]
+          imgList: []
         },
         {
           title: '中控内饰',
-          imgList: [
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233336723441c733bac299dd0019c03a88dec.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233331dc02051c289d9949726f0cba929c528.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333767ba7e7ec1d5894ad20795b8cbe840b.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333d57495713dba5bd52b4c76fcab937542.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233332853ecce69cc3e3bad1aadb4d1e9e955.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333456fe49cd9b0ef8570670835114f9df9.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn17113012333381f98f2e3da23d10555cc24246e9ef86.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333947df8ac390fe9c21f3331fd6e54596f.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333a39fbe31215c1a96a0376aa64bbc8bb2.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333caef633d69f4e4c07c1ebafefdafd00d.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233334bf9bd71cb926cfbb64f4b8b7ee45374.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn17113012333381dd6f1e0e51fc136e0546f1fb32282d.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233332dbd8670514a13ed8ee6571595c110eb.jpg?imageView2/1/w/1200/h/800/q/88'
-            }
-          ]
+          imgList: []
         },
         {
           title: '发动机、底盘',
-          imgList: [
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333989f6980b641625cfa755c448640f2a7.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233330c87616efb382b3dea24cfa6db1731be.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn1711301233336256d29d13ed0f60b3772c58c30fc7f7.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333a2a1e23ff92f5f98363c49269e278b61.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333cea4d651ffa1160b1502f131c9666419.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333dafcaa1e974c448392ab0bd6e087db0c.jpg?imageView2/1/w/1200/h/800/q/88'
-            },
-            {
-              url: 'https://image1.guazistatic.com/qn171130123333eecda72f7b7dc11656ea83a5f476dbfa.jpg?imageView2/1/w/1200/h/800/q/88'
-            }
-          ]
+          imgList: []
         }
       ],
       carReport: {
-        accident: {
+        checkAccident: {
           name: '20项排除重大事故检测',
-          list: [
-            {
-              name: '左前减震器座',
-              value: true
-            },
-            {
-              name: '右前减震器座',
-              value: true
-            },
-            {
-              name: '左前纵梁',
-              value: true
-            },
-            {
-              name: '右前纵梁',
-              value: true
-            },
-            {
-              name: '防火墙',
-              value: true
-            },
-            {
-              name: '右A柱',
-              value: true
-            },
-            {
-              name: '右B柱',
-              value: true
-            },
-            {
-              name: '右侧顶边梁',
-              value: true
-            },
-            {
-              name: '右C柱',
-              value: true
-            },
-            {
-              name: '右D柱',
-              value: true
-            },
-            {
-              name: '右后翼子板内衬',
-              value: true
-            },
-            {
-              name: '左后翼子板内衬',
-              value: true
-            },
-            {
-              name: '后备箱底板',
-              value: true
-            },
-            {
-              name: '右后纵梁',
-              value: true
-            },
-            {
-              name: '左后纵梁',
-              value: true
-            },
-            {
-              name: '左D柱',
-              value: true
-            },
-            {
-              name: '左C柱',
-              value: true
-            },
-            {
-              name: '左侧顶边梁',
-              value: true
-            },
-            {
-              name: '左B柱',
-              value: true
-            },
-            {
-              name: '左A柱',
-              value: true
-            }
-          ]
+          list: []
         },
-        waterFire: {
+        checkWaterFire: {
           name: '10项排除泡水火烧检测',
-          list: [
-            {
-              name: '机舱保险盒',
-              value: true
-            },
-            {
-              name: '防火墙隔音棉',
-              value: true
-            },
-            {
-              name: '发动机主线束',
-              value: true
-            },
-            {
-              name: '座椅滑轨及固定螺丝',
-              value: true
-            },
-            {
-              name: '车内线束',
-              value: true
-            },
-            {
-              name: '安全带底部',
-              value: true
-            },
-            {
-              name: '全车座椅座垫',
-              value: true
-            },
-            {
-              name: '全车地毯地胶',
-              value: true
-            },
-            {
-              name: '烟灰缸底座',
-              value: true
-            },
-            {
-              name: '转向柱',
-              value: true
-            }
-          ]
+          list: []
         },
-        crash: {
+        checkCrash: {
           name: '14项轻微碰撞检测',
-          list: [
-            {
-              name: '前防撞梁',
-              value: true
-            },
-            {
-              name: '水箱框架',
-              value: true
-            },
-            {
-              name: '左前大灯框架',
-              value: true
-            },
-            {
-              name: '右前大灯框架',
-              value: true
-            },
-            {
-              name: '左前翼子板内衬',
-              value: true
-            },
-            {
-              name: '右前翼子板内衬',
-              value: true
-            },
-            {
-              name: '右侧底大边',
-              value: true
-            },
-            {
-              name: '右侧驾驶舱底板',
-              value: true
-            },
-            {
-              name: '右侧尾灯框架',
-              value: true
-            },
-            {
-              name: '左侧尾灯框架',
-              value: true
-            },
-            {
-              name: '后防撞梁',
-              value: true
-            },
-            {
-              name: '左侧底大边',
-              value: true
-            },
-            {
-              name: '左侧驾驶舱底板',
-              value: true
-            }
-          ]
+          list: []
         },
-        loss: {
+        checkBreakablePart: {
           name: '18项易损耗部件检测',
-          list: [
-            {
-              name: '左前减震器',
-              value: true
-            },
-            {
-              name: '气门室盖垫',
-              value: true
-            },
-            {
-              name: '发动机油底壳',
-              value: true
-            },
-            {
-              name: '防冻液液面',
-              value: true
-            },
-            {
-              name: '机油液面',
-              value: true
-            },
-            {
-              name: '电瓶（极柱）',
-              value: true
-            },
-            {
-              name: '制动油壶',
-              value: true
-            },
-            {
-              name: '助力油壶',
-              value: true
-            },
-            {
-              name: '转向助力泵',
-              value: true
-            },
-            {
-              name: '水箱水管',
-              value: true
-            },
-            {
-              name: '水箱',
-              value: true
-            },
-            {
-              name: '冷凝器',
-              value: true
-            },
-            {
-              name: '发动机外围皮带',
-              value: true
-            },
-            {
-              name: '发动机缸垫',
-              value: true
-            },
-            {
-              name: '变速箱油底壳',
-              value: true
-            },
-            {
-              name: '右前减震器',
-              value: true
-            },
-            {
-              name: '右后减震器',
-              value: true
-            },
-            {
-              name: '左后减震器',
-              value: true
-            }
-          ]
+          list: []
         },
-        safety: {
+        checkSafetySystem: {
           name: '15项安全系统检测',
-          list: [
-            {
-              name: '驾驶座安全气囊',
-              value: true
-            },
-            {
-              name: '副驾驶安全气囊',
-              value: true
-            },
-            {
-              name: '前排侧气囊',
-              value: true
-            },
-            {
-              name: '后排侧气囊',
-              value: false
-            },
-            {
-              name: '前排头部气囊',
-              value: true
-            },
-            {
-              name: '后排头部气囊',
-              value: true
-            },
-            {
-              name: '胎压监测',
-              value: false
-            },
-            {
-              name: '中控锁',
-              value: true
-            },
-            {
-              name: '儿童座椅接口',
-              value: true
-            },
-            {
-              name: '无钥匙启动',
-              value: false
-            },
-            {
-              name: '无钥匙进入系统',
-              value: false
-            },
-            {
-              name: '遥控钥匙',
-              value: true
-            },
-            {
-              name: '防抱死系统(ABS)',
-              value: true
-            },
-            {
-              name: '车身稳定控制(ESP)',
-              value: true
-            },
-            {
-              name: '电子驻车制动',
-              value: false
-            }
-          ]
+          list: []
         },
-        outConfig: {
+        checkOutConfig: {
           name: '22项外部配置检测',
-          list: [
-            {
-              name: '左前轮毂',
-              value: true
-            },
-            {
-              name: '左前轮胎',
-              value: true
-            },
-            {
-              name: '前挡风玻璃',
-              value: true
-            },
-            {
-              name: '右前轮毂',
-              value: true
-            },
-            {
-              name: '右前轮胎',
-              value: true
-            },
-            {
-              name: '右后轮毂',
-              value: true
-            },
-            {
-              name: '右后轮胎',
-              value: true
-            },
-            {
-              name: '后挡风玻璃',
-              value: true
-            },
-            {
-              name: '左后轮毂',
-              value: true
-            },
-            {
-              name: '左后轮胎',
-              value: true
-            },
-            {
-              name: '全景天窗',
-              value: false
-            },
-            {
-              name: '感应雨刷',
-              value: false
-            },
-            {
-              name: '后雨刷',
-              value: false
-            },
-            {
-              name: '前电动车窗',
-              value: true
-            },
-            {
-              name: '后电动车窗',
-              value: true
-            },
-            {
-              name: '后视镜电动调节',
-              value: true
-            },
-            {
-              name: '后视镜电动折叠',
-              value: false
-            },
-            {
-              name: '后视镜加热',
-              value: false
-            },
-            {
-              name: '电动吸合门',
-              value: false
-            },
-            {
-              name: '后排侧遮阳帘',
-              value: false
-            },
-            {
-              name: '感应后备箱',
-              value: false
-            },
-            {
-              name: '电动天窗',
-              value: true
-            }
-          ]
+          list: []
         },
-        inConfig: {
+        checkInConfig: {
           name: '14项内部配置检测',
-          list: [
-            {
-              name: '皮质座椅',
-              value: false
-            },
-            {
-              name: '前排座椅加热',
-              value: false
-            },
-            {
-              name: '座椅通风',
-              value: false
-            },
-            {
-              name: '驾驶座座椅电动调节',
-              value: false
-            },
-            {
-              name: '多功能方向盘',
-              value: true
-            },
-            {
-              name: '定速巡航',
-              value: false
-            },
-            {
-              name: 'GPS导航',
-              value: true
-            },
-            {
-              name: '倒车雷达',
-              value: true
-            },
-            {
-              name: '倒车影像系统',
-              value: true
-            },
-            {
-              name: '手动空调',
-              value: true
-            },
-            {
-              name: '自动空调',
-              value: false
-            },
-            {
-              name: 'HUD抬头显示',
-              value: false
-            },
-            {
-              name: '后排座椅加热',
-              value: false
-            },
-            {
-              name: '空调',
-              value: true
-            }
-          ]
+          list: []
         },
-        lightConfig: {
+        checkLightSystem: {
           name: '15项灯光系统检测',
-          list: [
-            {
-              name: '近光灯',
-              value: true
-            },
-            {
-              name: '远光灯',
-              value: true
-            },
-            {
-              name: '前转向灯',
-              value: true
-            },
-            {
-              name: '前雾灯',
-              value: true
-            },
-            {
-              name: '后转向灯',
-              value: true
-            },
-            {
-              name: '刹车灯',
-              value: true
-            },
-            {
-              name: '倒车灯',
-              value: true
-            },
-            {
-              name: '后雾灯',
-              value: true
-            },
-            {
-              name: '室内顶灯',
-              value: true
-            },
-            {
-              name: '氙气大灯',
-              value: false
-            },
-            {
-              name: 'LED大灯',
-              value: false
-            },
-            {
-              name: '自动头灯',
-              value: false
-            },
-            {
-              name: '前雾灯',
-              value: true
-            },
-            {
-              name: '大灯高度可调',
-              value: true
-            },
-            {
-              name: '大灯清洗',
-              value: false
-            }
-          ]
+          list: []
         },
-        highTechConfig: {
+        checkHighTech: {
           name: '5项高科技配置检测',
-          list: [
-            {
-              name: '车道偏离预警系统',
-              value: false
-            },
-            {
-              name: '自动泊车',
-              value: false
-            },
-            {
-              name: '盲点辅助系统',
-              value: false
-            },
-            {
-              name: '全景摄像头',
-              value: false
-            },
-            {
-              name: '发动机自动启停',
-              value: false
-            }
-          ]
+          list: []
         },
-        carToolConfig: {
+        checkTool: {
           name: '5项随车工具检测',
-          list: [
-            {
-              name: '千斤顶',
-              value: false
-            },
-            {
-              name: '灭火器',
-              value: false
-            },
-            {
-              name: '三角警示标',
-              value: false
-            },
-            {
-              name: '维修工具包',
-              value: false
-            },
-            {
-              name: '备胎',
-              value: false
-            }
-          ]
+          list: []
         },
-        instrumentConfig: {
+        checkInstrumentDesk: {
           name: '6项仪表台指示灯检测',
-          list: [
-            {
-              name: '调表车',
-              value: true
-            },
-            {
-              name: '制动系统指示灯',
-              value: true
-            },
-            {
-              name: '安全气囊故障灯',
-              value: true
-            },
-            {
-              name: '车身稳定系统故障灯',
-              value: true
-            },
-            {
-              name: '发动机故障灯',
-              value: true
-            },
-            {
-              name: '变速箱故障灯',
-              value: true
-            }
-          ]
+          list: []
         },
-        engineConfig: {
+        checkEngineStatus: {
           name: '5项发动机状态检测',
-          list: [
-            {
-              name: '发动机总成',
-              value: true
-            },
-            {
-              name: '启动',
-              value: true
-            },
-            {
-              name: '怠速',
-              value: true
-            },
-            {
-              name: '发动机抖动',
-              value: true
-            },
-            {
-              name: '尾气',
-              value: true
-            }
-          ]
+          list: []
         },
-        transmissionConfig: {
+        checkSpeed: {
           name: '3项变速箱及转向检测',
-          list: [
-            {
-              name: '变速箱总成',
-              value: true
-            },
-            {
-              name: '变速箱挂挡',
-              value: true
-            },
-            {
-              name: '转向',
-              value: true
-            }
-          ]
+          list: []
         },
-        outInConfig: {
+        checkAppearance: {
           name: '外观内饰检测',
-          list: [
-            {
-              name: '67项 缺陷项检测',
-              value: true
-            },
-            {
-              name: '21项 漆面修复检测',
-              value: true
-            },
-            {
-              name: '21项 钣金修复检测',
-              value: true
-            },
-            {
-              name: '21项 外观件更换检测',
-              value: true
-            }
-          ]
+          list: []
         }
       },
       searchResultList: [
@@ -1522,7 +799,11 @@ export default {
           price: '8.00',
           carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
         }
-      ]
+      ],
+      previewImage: {
+        'is': false,
+        'list': []
+      }
     }
   },
   components: {
@@ -1534,6 +815,20 @@ export default {
   },
   created () {
     this.carId = this.$route.params.carId
+    this.getCarInfo(this.carId)
+      .then((data) => {
+        this.carInfo = data
+        this.info = this.carInfo.carBaseInfo
+        this.show()
+      })
+      .catch((err) => {
+        this.$toast({
+          message: err.data.msg
+        })
+        this.$router.push({
+          path: '/'
+        })
+      })
   },
   mounted () {
     window.addEventListener('scroll', this.handelFixedTitle)
@@ -1542,6 +837,9 @@ export default {
     window.removeEventListener('scroll', this.handelFixedTitle)
   },
   methods: {
+    ...mapActions([
+      'getCarInfo'
+    ]),
     handelFixedTitle () {
       const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
       this.style.left = `-${scrollLeft}px`
@@ -1578,6 +876,143 @@ export default {
           break
       }
       document.body.scrollTop = document.documentElement.scrollTop = scrollTop
+    },
+    show () {
+      this.dealImage()
+      this.dealCheck()
+      this.dealBaseInfo()
+      this.dealConfigInfo()
+      this.dealCarReport()
+    },
+    dealImage () {
+      // 图片
+      this.carImage[0].imgList = this.carInfo.carImage.imgOut
+      this.carImage[1].imgList = this.carInfo.carImage.imgIn
+      this.carImage[2].imgList = this.carInfo.carImage.imgEngineChassis
+      for (let i = 0, len = this.carImage.length; i < len; ++i) {
+        this.previewImage.list = this.previewImage.list.concat(this.carImage[i].imgList)
+      }
+      this.previewImage.is = true
+    },
+    dealCheck () {
+      // 专项检测
+      for (let i = 0, len = this.assessmentList.length; i < len; ++i) {
+        let assessment = this.assessmentList[i].item
+        for (let key in assessment) {
+          if (key === '0' || key === '1' || key === '2' || key === '3') {
+            let unusual = this.carInfo.checkAppearance.value[key].unusual
+            let count = unusual.split('-').length
+            assessment[key].exception = unusual === '' ? 0 : count
+          } else {
+            assessment[key].exception = parseInt(this.carInfo[key].abnormal)
+          }
+        }
+      }
+    },
+    dealBaseInfo () {
+      // 基本信息
+      this.carAssort.licensedTime.value = this.info.licensedYear + this.info.licenedMonth
+      this.carAssort.licensedTime.value = this.carAssort.licensedTime.value.replace('年', '-').replace('月', '')
+      this.carAssort.mileage.value = this.info.mileage + '万公里'
+      this.carAssort.licensedCity.value = this.info.licensedCityName
+      this.carAssort.emissionStandards.value = this.carInfo.configEngine.emissionStandards
+      this.carAssort.displacement.value = this.carInfo.configEngine.displacement + 'L'
+      this.carAssort2.licensedTime.value = this.carAssort.licensedTime.value
+      this.carAssort2.mileage.value = this.info.mileage + '万公里'
+      this.carAssort2.licensedCity.value = this.info.licensedCityName
+      this.carAssort2.emissionStandards.value = this.carInfo.configEngine.emissionStandards
+      this.carAssort2.displacement.value = this.carInfo.configEngine.displacement + 'L'
+      this.carAssort2.transferTime.value = this.info.transferTime === '-1' ? '不清楚' : (this.info.transferTime === '5' ? '4次以上' : this.info.transferTime)
+      this.carAssort2.speed.value = this.carInfo.configBase.speed.indexOf('自') ? '自动' : (this.carInfo.configBase.speed.indexOf('手') ? '手动' : '自动')
+      this.carAssort2.address.value = this.info.lookDistrictName
+      this.carAssort2.checkYear.value = this.info.yearCheck
+      this.carAssort2.strongRisk.value = this.info.strongRisk
+      this.carAssort2.businessRisk.value = this.info.businessRisk
+    },
+    dealConfigInfo () {
+      // 基本参数
+      let configBase = this.configList.configBase.list
+      let netConfigBase = this.carInfo.configBase
+      configBase.credentials.value = netConfigBase.credentials
+      configBase.vendor.value = netConfigBase.vendor
+      configBase.level.value = netConfigBase.level
+      configBase.engine.value = netConfigBase.engine
+      configBase.speed.value = netConfigBase.speed
+      configBase.structure.value = netConfigBase.structure
+      configBase.length.value = netConfigBase.length + '/' + netConfigBase.width + '/' + netConfigBase.height
+      configBase.wheelbase.value = netConfigBase.wheelbase
+      configBase.trunk.value = netConfigBase.trunk
+      configBase.quality.value = netConfigBase.quality
+
+      // 发动机参数
+      let configEngine = this.configList.configEngine.list
+      let netConfigEngine = this.carInfo.configEngine
+      configEngine.displacement.value = netConfigEngine.displacement
+      configEngine.airIntake.value = netConfigEngine.airIntake
+      configEngine.cylinder.value = netConfigEngine.cylinder
+      configEngine.maxHorsePower.value = netConfigEngine.maxHorsePower
+      configEngine.maxTorque.value = netConfigEngine.maxTorque
+      configEngine.fuelType.value = netConfigEngine.fuelType
+      configEngine.fuelLabel.value = netConfigEngine.fuelLabel
+      configEngine.oilSupplyWay.value = netConfigEngine.oilSupplyWay
+      configEngine.emissionStandards.value = netConfigEngine.emissionStandards
+
+      // 底盘与制动参数
+      let configChassisBrake = this.configList.configChassisBrake.list
+      let netConfigChassisBrake = this.carInfo.configChassisBrake
+      configChassisBrake.driveMode.value = netConfigChassisBrake.driveMode
+      configChassisBrake.powerType.value = netConfigChassisBrake.powerType
+      configChassisBrake.suspensionFront.value = netConfigChassisBrake.suspensionFront
+      configChassisBrake.suspensionBehind.value = netConfigChassisBrake.suspensionBehind
+      configChassisBrake.brakeFront.value = netConfigChassisBrake.brakeFront
+      configChassisBrake.brakeBehind.value = netConfigChassisBrake.brakeBehind
+      configChassisBrake.parkingBrake.value = netConfigChassisBrake.parkingBrake
+      configChassisBrake.tireSizeFront.value = netConfigChassisBrake.tireSizeFront
+      configChassisBrake.tireSizeBehind.value = netConfigChassisBrake.tireSizeBehind
+
+      // 安全配置
+      let configSafety = this.configList.configSafety.list
+      let netConfigSafety = this.carInfo.configSafety
+      configSafety.safetyAirbag.value = netConfigSafety.safetyAirbagMain + '/' + netConfigSafety.safetyAirbagVic
+      configSafety.sideAirbag.value = netConfigSafety.sideAirbagFront + '/' + netConfigSafety.sideAirbagBehind
+      configSafety.headAirbag.value = netConfigSafety.headAirbagFront + '/' + netConfigSafety.headAirbagBehind
+      configSafety.tirePressureMonitoring.value = netConfigSafety.tirePressureMonitoring
+      configSafety.inControlLock.value = netConfigSafety.inControlLock
+      configSafety.childSeatInterface.value = netConfigSafety.childSeatInterface
+      configSafety.keylessStart.value = netConfigSafety.keylessStart
+      configSafety.abs.value = netConfigSafety.abs
+      configSafety.esp.value = netConfigSafety.esp
+
+      // 外部配置
+      let configOut = this.configList.configOut.list
+      let netConfigOut = this.carInfo.configOut
+      configOut.skylightElectric.value = netConfigOut.skylightElectric
+      configOut.skylightFullView.value = netConfigOut.skylightFullView
+      configOut.electricSuctionDoor.value = netConfigOut.electricSuctionDoor
+      configOut.inductionTrunk.value = netConfigOut.inductionTrunk
+      configOut.windshieldWiperSensing.value = netConfigOut.windshieldWiperSensing
+      configOut.windshieldWiperBehind.value = netConfigOut.windshieldWiperBehind
+      configOut.electricWindow.value = netConfigOut.electricWindowFront + '/' + netConfigOut.electricWindowBehind
+      configOut.rearViewMirrorElectric.value = netConfigOut.rearViewMirrorElectric
+      configOut.rearViewMirrorHot.value = netConfigOut.rearViewMirrorHot
+
+      // 内部配置
+      let configIn = this.configList.configIn.list
+      let netConfigIn = this.carInfo.configIn
+      configIn.multiSteeringWheel.value = netConfigIn.multiSteeringWheel
+      configIn.cruiseControl.value = netConfigIn.cruiseControl
+      configIn.airConditioner.value = netConfigIn.airConditioner
+      configIn.airConditionerAuto.value = netConfigIn.airConditionerAuto
+      configIn.gps.value = netConfigIn.gps
+      configIn.reversingRadar.value = netConfigIn.reversingRadar
+      configIn.reversingImageSystem.value = netConfigIn.reversingImageSystem
+      configIn.leatherSeat.value = netConfigIn.leatherSeat
+      configIn.seatHot.value = netConfigIn.seatHotFront + '/' + netConfigIn.seatHotBehind
+    },
+    dealCarReport () {
+      for (let key in this.carReport) {
+        this.carReport[key].list = this.carInfo[key].value
+      }
     }
   }
 }
@@ -1593,12 +1028,11 @@ export default {
     height: 70px
     position: fixed
     background: #545c64
-    z-index: 1000
+    z-index: 600
     text-align: center
     .title-wrap
       position: relative
       height 70px
-      width: 1170px
       margin: 0 auto
       .title-left
         font-size: 0px

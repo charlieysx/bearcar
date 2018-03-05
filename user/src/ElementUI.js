@@ -59,7 +59,7 @@ import {
   // CollapseItem,
   // Cascader,
   // ColorPicker,
-  // Loading,
+  Loading,
   MessageBox,
   Message
   // Notification
@@ -124,7 +124,7 @@ Vue.use(Card)
 // Vue.use(Cascader)
 // Vue.use(ColorPicker)
 
-// Vue.use(Loading.directive)
+Vue.use(Loading.directive)
 
 // Vue.prototype.$loading = Loading.service
 // Vue.prototype.$msgbox = MessageBox

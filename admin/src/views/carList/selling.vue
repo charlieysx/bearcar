@@ -8,8 +8,7 @@
           <div class="info-name">
             <div class="info-name-top">
               <div class="name" 
-                @click="car.status === '3' ? toDetail(car.carId) : ''"
-                :class="{'active-detail' : car.status === '3'}">
+                @click="toDetail(car.carId)">
                 {{ car.brandName }} {{ car.modelName ? car.modelName : car.seriesName }}
               </div>
               <div class="more" @click="car.moreOpen = !car.moreOpen">
@@ -138,20 +137,35 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     under (carId) {
-      this.$confirm('此操作将下架该二手车，是否下架?', '提示', {
+      this.$prompt('请输入下架理由', '下架', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.underMyCar(carId)
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        if (value === null) {
+          this.error('请填写下架原因')
+          return
+        }
+        this.underMyCar({carId: carId, underReason: value})
           .then((data) => {
-            this.params.page = 0
-            this.scrollToTop()
-            this.update()
+            this.refresh()
           })
-          .catch(() => {
-            this.carList = []
+          .catch((err) => {
+            this.error(err.data.msg)
+            this.refresh()
           })
+      })
+    },
+    refresh () {
+      this.params.page = 0
+      this.scrollToTop()
+      this.update()
+    },
+    toDetail (carId) {
+      this.$router.push({
+        name: 'cardetail',
+        params: {
+          carId: carId
+        }
       })
     }
   }
@@ -203,10 +217,9 @@ export default {
               margin-bottom: 10px
               font-weight: bold
               flex-grow: 1
-              &.active-detail
-                &:hover
-                  cursor: pointer
-                  color: $color-blue
+              &:hover
+                cursor: pointer
+                color: $color-blue
             .more
               width: 70px
               color: $color-black

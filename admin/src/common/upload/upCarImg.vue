@@ -92,8 +92,9 @@ export default {
           return false
         }
 
-        this.$refs.cropperBox.show()
-        this.$refs.cropperBox.loadCropper(file.raw)
+        // this.$refs.cropperBox.show()
+        // this.$refs.cropperBox.loadCropper(file.raw)
+        this.finishCropImage(file.raw)
       }
     },
     finishCropImage (newFile) {

@@ -84,6 +84,11 @@
               </span>
             </div>
         </div>
+        <div class="mycar-button">
+          <div class="btn" @click="under(car)">
+            下架
+          </div>
+        </div>
       </div>
       <!-- 分页 -->
       <div class="search-page">
@@ -154,21 +159,10 @@ export default {
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
-    under (carId) {
-      this.$confirm('此操作将下架该二手车，重新上架需重新填写信息，是否下架?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.underMyCar(carId)
-          .then((data) => {
-            this.params.page = 0
-            this.scrollToTop()
-            this.update()
-          })
-          .catch(() => {
-            this.carList = []
-          })
+    under (car) {
+      this.$toast({
+        message: '检测中的车辆您不能下架，已通知评估师：' + car.appraiserName + '，他将会电话联系您进行下架相关操作',
+        duration: 5000
       })
     }
   }

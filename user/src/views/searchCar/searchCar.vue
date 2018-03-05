@@ -72,8 +72,31 @@
                       {{ series.seriesName }}
                     </span>
                   </div>
+                  <div class="more" @click="openMoreSeries()">
+                      {{ moreSeriesOpen ? '收起' : '全部' }}
+                      <i :class="[moreSeriesOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
+                  </div>
                 </div>
                 <!-- 热门车系 结束 -->
+                <!-- 全部品牌 -->
+                <div class="more-brand" :class="{ 'show-more': moreSeriesOpen && innerAllSeries.All.length > 0 }">
+                  <div class="more-brand-wrap">
+                    <ul class="more-brand-list">
+                      <li class="clearfix" v-for="(group, key) in innerAllSeries" :key="key">
+                        <div class="letter">{{ key }}</div>
+                        <div class="series-list clearfix">
+                          <span 
+                            v-for="(series, index) in group" 
+                            :key="index"
+                            @click="selectSeries(series),moreBrandOpen = false">
+                            {{ series.seriesName }}
+                          </span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- 全部品牌 结束 -->
               </div>
             </li>
             <!-- 车系筛选 结束 -->
@@ -126,7 +149,7 @@
                       </select-list>
                     </div>
                   </div>
-                  <div class="more" @click="openMore()">
+                  <div class="more" @click="openMore()" v-if="false">
                     {{ moreOpen ? '收起' : '全部' }}
                     <i :class="[moreOpen ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
                   </div>
@@ -160,10 +183,10 @@
                     <i class="el-icon-close"></i>
                 </div>
             </div>
-            <p @click="resetCriteria">重置条件</p>
+            <p @click="resetCriteria(true)">重置条件</p>
           </div>
           <!-- 筛选条件 结束 -->
-          <span>在 "全国二手车" 中共为您找到53498辆好车</span>
+          <span>在 "{{ currentCity.cityName }}二手车" 中共为您找到{{ carTotal }}辆好车</span>
         </div>
         <!-- 筛选结果 结束 -->
         <!-- 结果排序 -->
@@ -193,17 +216,20 @@
         </div>
         <!-- 结果排序 结束 -->
         <!-- 搜索结果 -->
-        <div id="car-result-list">
-          <ul class="car-list-wrap" v-show="searchResultList.length > 0">
+        <div 
+          id="car-result-list"
+          v-loading="loading"
+          v-show="loading || searchResultList.length > 0">
+          <ul class="car-list-wrap">
             <li class="car-list" v-for="(item, index) in searchResultList" :key="index" @click="toCarInfo(item)">
               <div class="car-img">
-                <div class="icon-guazi icon-sell" v-if="true">急售</div>
-                <div class="icon-guazi icon-new" v-else-if="false">新上架</div>
-                <img :src="item.carImg" alt="">
+                <div class="icon-guazi icon-sell" v-if="item.expireDateId === '0'">急售</div>
+                <div class="icon-guazi icon-new" v-else-if="isNew(item.time)">新上架</div>
+                <img :src="item.coverImg" alt="">
               </div>
               <div class="car-info">
-                <p class="car-name">{{item.carName}}</p>
-                <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
+                <p class="car-name">{{ item.brandName }} {{ item.modelName ? item.modelName : item.seriesName }}</p>
+                <p class="car-info-p">{{ item.licensedYear }}<em>|</em>{{ item.mileage }}万公里<em>|</em>{{ item.cityName }}</p>
                 <p class="car-info-price">
                   {{item.price}}
                   <span>万</span>
@@ -216,15 +242,16 @@
             <el-pagination
               background
               layout="prev, pager, next"
-              :page-size="40"
+              :page-size="searchParams.pageSize"
               @current-change="pageChange"
-              :total="1000">
+              :current-page="currentPage"
+              :total="carTotal">
             </el-pagination>
           </div>
           <!-- 分页 结束 -->
         </div>
         <!-- 搜索不到 -->
-        <div id="car-empty" v-show="searchResultList.length === 0">
+        <div id="car-empty" v-show="!loading && searchResultList.length === 0">
             <img src="~IMAGES/car_empty.png"  alt="">
             <p>
               没有您想要的车?
@@ -267,6 +294,7 @@ import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
 import selectList from 'COMMON/selectList/selectList'
 
 import searchCarData from 'DATA/searchCar'
+import moment from 'moment'
 
 import {
   SET_HEADER_ACTIVE_TAB
@@ -291,10 +319,14 @@ export default {
       currentSeries: { seriesId: -1, seriesName: '不限' },
       currentPrice: { priceId: -1, priceName: '不限' },
       moreBrandOpen: false,
+      moreSeriesOpen: false,
       moreOpen: false,
       innerHotBrands: [],
       innerAllBrands: [],
       innerHotSeries: [],
+      innerAllSeries: {
+        'All': []
+      },
       innerPrice: [
         {
           priceId: -1,
@@ -302,31 +334,45 @@ export default {
         },
         {
           priceId: 0,
-          priceName: '3万以下'
+          priceName: '3万以下',
+          from: 0,
+          to: 3
         },
         {
           priceId: 1,
-          priceName: '3-6万'
+          priceName: '3-6万',
+          from: 3,
+          to: 6
         },
         {
           priceId: 2,
-          priceName: '6-9万'
+          priceName: '6-9万',
+          from: 6,
+          to: 9
         },
         {
           priceId: 3,
-          priceName: '9-12万'
+          priceName: '9-12万',
+          from: 9,
+          to: 12
         },
         {
           priceId: 4,
-          priceName: '12-16万'
+          priceName: '12-16万',
+          from: 12,
+          to: 16
         },
         {
           priceId: 5,
-          priceName: '16-20万'
+          priceName: '16-20万',
+          from: 16,
+          to: 20
         },
         {
           priceId: 7,
-          priceName: '20万以上'
+          priceName: '20万以上',
+          from: 20,
+          to: 10000
         }
       ],
       searchPrice1: '',
@@ -339,368 +385,36 @@ export default {
         type: 'default',
         sort: 0
       },
-      searchResultList: [
-        {
-          id: 0,
-          carName: '大众捷达 2015款 1.6L 手动时尚型',
-          year: '2015年',
-          mileage: '1.4万公里',
-          place: '哈尔滨',
-          price: '5.46',
-          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
+      searchResultList: [],
+      searchParams: {
+        page: 0,
+        pageSize: 40,
+        cityId: '',
+        searchValue: '',
+        brandId: '',
+        seeriesId: '',
+        price: {
+          from: '',
+          to: ''
         },
-        {
-          id: 1,
-          carName: '别克凯越 2013款 1.5L 自动经典型',
-          year: '2014年',
-          mileage: '3.4万公里',
-          place: '大连',
-          price: '5.13',
-          carImg: 'https://image1.guazistatic.com/qn180129113256f5bf1b87ff1677d04c16b8a9fd5c2216.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 2,
-          carName: '本田锋范经典 2014款 风尚 1.5L 手动精英版',
-          year: '2015年',
-          mileage: '2.3万公里',
-          place: '昆明',
-          price: '6.20',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/03d8925ef2f2478153f64eac8efec106.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 3,
-          carName: '丰田卡罗拉 2013款 特装版 1.6L 自动至酷型GL',
-          year: '2013年',
-          mileage: '4.4万公里',
-          place: '曲靖',
-          price: '8.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 4,
-          carName: '别克GL8 2014款 3.0L GT豪华商务豪雅版',
-          year: '2015年',
-          mileage: '3.4万公里',
-          place: '呼和浩特',
-          price: '27.70',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/758204d8085be3b30c0114abfddefb82.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 5,
-          carName: '雪佛兰迈锐宝 2013款 2.0L 自动豪华版',
-          year: '2013年',
-          mileage: '5.0万公里',
-          place: '大连',
-          price: '9.38',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3328539214f793b76b288d71ae2b2da3.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 6,
-          carName: '开瑞优胜 2010款 1.0L基本型',
-          year: '2010年',
-          mileage: '6.6万公里',
-          place: '泸州',
-          price: '0.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/60ebe74b3ff36875a0719abfb954a3fe.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 7,
-          carName: '大众迈腾 2018款 330TSI DSG 豪华型',
-          year: '2018年',
-          mileage: '0.1万公里',
-          place: '汕头',
-          price: '23.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/d4db7f310badfdd892264bbd533ddd9d.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 8,
-          carName: '凯迪拉克ATS-L 2014款 25T 舒适型',
-          year: '2015年',
-          mileage: '5.9万公里',
-          place: '洛阳',
-          price: '17.30',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/8ac0527f50de490ecec298ddf3faece4.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 9,
-          carName: '标致3008 2015款 2.0L 手动经典版',
-          year: '2015年',
-          mileage: '4.0万公里',
-          place: '石家庄',
-          price: '10.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/6d056ae1311079c3002b7e43065519ab.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 10,
-          carName: '大众速腾 2010款 1.4TSI 自动豪华型',
-          year: '2010年',
-          mileage: '7.5万公里',
-          place: '盐城',
-          price: '5.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/19907410cc26baf7da4ed6af0c1e7bb2.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 11,
-          carName: '宝骏730 2014款 1.5L 手动舒适型 7座',
-          year: '2015年',
-          mileage: '3.6万公里',
-          place: '上海',
-          price: '5.50',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 12,
-          carName: '大众捷达 2015款 1.6L 手动时尚型',
-          year: '2015年',
-          mileage: '1.4万公里',
-          place: '哈尔滨',
-          price: '5.46',
-          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 13,
-          carName: '别克凯越 2013款 1.5L 自动经典型',
-          year: '2014年',
-          mileage: '3.4万公里',
-          place: '大连',
-          price: '5.13',
-          carImg: 'https://image1.guazistatic.com/qn180129113256f5bf1b87ff1677d04c16b8a9fd5c2216.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 14,
-          carName: '本田锋范经典 2014款 风尚 1.5L 手动精英版',
-          year: '2015年',
-          mileage: '2.3万公里',
-          place: '昆明',
-          price: '6.20',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/03d8925ef2f2478153f64eac8efec106.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 15,
-          carName: '丰田卡罗拉 2013款 特装版 1.6L 自动至酷型GL',
-          year: '2013年',
-          mileage: '4.4万公里',
-          place: '曲靖',
-          price: '8.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 16,
-          carName: '别克GL8 2014款 3.0L GT豪华商务豪雅版',
-          year: '2015年',
-          mileage: '3.4万公里',
-          place: '呼和浩特',
-          price: '27.70',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/758204d8085be3b30c0114abfddefb82.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 17,
-          carName: '雪佛兰迈锐宝 2013款 2.0L 自动豪华版',
-          year: '2013年',
-          mileage: '5.0万公里',
-          place: '大连',
-          price: '9.38',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3328539214f793b76b288d71ae2b2da3.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 18,
-          carName: '开瑞优胜 2010款 1.0L基本型',
-          year: '2010年',
-          mileage: '6.6万公里',
-          place: '泸州',
-          price: '0.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/60ebe74b3ff36875a0719abfb954a3fe.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 19,
-          carName: '大众迈腾 2018款 330TSI DSG 豪华型',
-          year: '2018年',
-          mileage: '0.1万公里',
-          place: '汕头',
-          price: '23.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/d4db7f310badfdd892264bbd533ddd9d.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 20,
-          carName: '凯迪拉克ATS-L 2014款 25T 舒适型',
-          year: '2015年',
-          mileage: '5.9万公里',
-          place: '洛阳',
-          price: '17.30',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/8ac0527f50de490ecec298ddf3faece4.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 21,
-          carName: '标致3008 2015款 2.0L 手动经典版',
-          year: '2015年',
-          mileage: '4.0万公里',
-          place: '石家庄',
-          price: '10.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/6d056ae1311079c3002b7e43065519ab.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 22,
-          carName: '大众速腾 2010款 1.4TSI 自动豪华型',
-          year: '2010年',
-          mileage: '7.5万公里',
-          place: '盐城',
-          price: '5.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/19907410cc26baf7da4ed6af0c1e7bb2.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 23,
-          carName: '宝骏730 2014款 1.5L 手动舒适型 7座',
-          year: '2015年',
-          mileage: '3.6万公里',
-          place: '上海',
-          price: '5.50',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 24,
-          carName: '大众捷达 2015款 1.6L 手动时尚型',
-          year: '2015年',
-          mileage: '1.4万公里',
-          place: '哈尔滨',
-          price: '5.46',
-          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 25,
-          carName: '别克凯越 2013款 1.5L 自动经典型',
-          year: '2014年',
-          mileage: '3.4万公里',
-          place: '大连',
-          price: '5.13',
-          carImg: 'https://image1.guazistatic.com/qn180129113256f5bf1b87ff1677d04c16b8a9fd5c2216.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 26,
-          carName: '本田锋范经典 2014款 风尚 1.5L 手动精英版',
-          year: '2015年',
-          mileage: '2.3万公里',
-          place: '昆明',
-          price: '6.20',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/03d8925ef2f2478153f64eac8efec106.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 27,
-          carName: '丰田卡罗拉 2013款 特装版 1.6L 自动至酷型GL',
-          year: '2013年',
-          mileage: '4.4万公里',
-          place: '曲靖',
-          price: '8.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 28,
-          carName: '别克GL8 2014款 3.0L GT豪华商务豪雅版',
-          year: '2015年',
-          mileage: '3.4万公里',
-          place: '呼和浩特',
-          price: '27.70',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/758204d8085be3b30c0114abfddefb82.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 29,
-          carName: '雪佛兰迈锐宝 2013款 2.0L 自动豪华版',
-          year: '2013年',
-          mileage: '5.0万公里',
-          place: '大连',
-          price: '9.38',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3328539214f793b76b288d71ae2b2da3.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 30,
-          carName: '开瑞优胜 2010款 1.0L基本型',
-          year: '2010年',
-          mileage: '6.6万公里',
-          place: '泸州',
-          price: '0.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/60ebe74b3ff36875a0719abfb954a3fe.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 31,
-          carName: '大众迈腾 2018款 330TSI DSG 豪华型',
-          year: '2018年',
-          mileage: '0.1万公里',
-          place: '汕头',
-          price: '23.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/d4db7f310badfdd892264bbd533ddd9d.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 32,
-          carName: '凯迪拉克ATS-L 2014款 25T 舒适型',
-          year: '2015年',
-          mileage: '5.9万公里',
-          place: '洛阳',
-          price: '17.30',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/8ac0527f50de490ecec298ddf3faece4.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 33,
-          carName: '标致3008 2015款 2.0L 手动经典版',
-          year: '2015年',
-          mileage: '4.0万公里',
-          place: '石家庄',
-          price: '10.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/6d056ae1311079c3002b7e43065519ab.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 34,
-          carName: '大众速腾 2010款 1.4TSI 自动豪华型',
-          year: '2010年',
-          mileage: '7.5万公里',
-          place: '盐城',
-          price: '5.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/19907410cc26baf7da4ed6af0c1e7bb2.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 35,
-          carName: '宝骏730 2014款 1.5L 手动舒适型 7座',
-          year: '2015年',
-          mileage: '3.6万公里',
-          place: '上海',
-          price: '5.50',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 36,
-          carName: '凯迪拉克ATS-L 2014款 25T 舒适型',
-          year: '2015年',
-          mileage: '5.9万公里',
-          place: '洛阳',
-          price: '17.30',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/8ac0527f50de490ecec298ddf3faece4.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 37,
-          carName: '标致3008 2015款 2.0L 手动经典版',
-          year: '2015年',
-          mileage: '4.0万公里',
-          place: '石家庄',
-          price: '10.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/6d056ae1311079c3002b7e43065519ab.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 38,
-          carName: '大众速腾 2010款 1.4TSI 自动豪华型',
-          year: '2010年',
-          mileage: '7.5万公里',
-          place: '盐城',
-          price: '5.80',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/38/19907410cc26baf7da4ed6af0c1e7bb2.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 39,
-          carName: '宝骏730 2014款 1.5L 手动舒适型 7座',
-          year: '2015年',
-          mileage: '3.6万公里',
-          place: '上海',
-          price: '5.50',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/34/c0cbbcf60539fdfec2b4fc49b580e11a.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
+        carAge: '',
+        speed: '',
+        model: '',
+        mileage: '',
+        displacement: '',
+        emissionStandards: '',
+        seating: '',
+        fuelType: '',
+        drivingType: '',
+        sort: {
+          type: 'default',
+          value: ''
         }
-      ]
+      },
+      carTotal: 0,
+      refresh: true,
+      currentPage: 1,
+      loading: false
     }
   },
   components: {
@@ -720,6 +434,7 @@ export default {
     this.getHotBrand(15)
     this.getHotSeries(10)
     this.getCarBrandSort()
+    this.startSearch()
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 1)
     this.breadCrumbItems[1].text = this.currentCity.cityName + '二手车'
     this.moreList = searchCarData.moreSelectList
@@ -738,7 +453,7 @@ export default {
     hotBrands (list) {
       if (list.length > 0) {
         this.innerHotBrands = []
-        var i = 1
+        let i = 1
         this.innerHotBrands[0] = this.currentBrand
         for (; i < 16 && list.length > i - 1; ++i) {
           this.innerHotBrands[i] = list[i - 1]
@@ -746,23 +461,16 @@ export default {
       }
     },
     hotSeries (list) {
-      if (list.length > 0) {
-        this.innerHotSeries = []
-        var i = 1
-        this.innerHotSeries[0] = this.currentSeries
-        for (; i < 16 && list.length > i - 1; ++i) {
-          this.innerHotSeries[i] = list[i - 1]
-        }
-      }
+      this.reSetHotSeries()
     },
     allSortBrands (list) {
       this.innerAllBrands = {}
-      var i = 0
-      var j = 0
+      let i = 0
+      let j = 0
       this.innerAllBrands[0] = {}
       this.innerAllBrands[1] = {}
       this.innerAllBrands[2] = {}
-      var letter = [
+      let letter = [
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
         'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
       ]
@@ -778,35 +486,68 @@ export default {
         }
       }
     },
-    filterCount (value) {
-      for (var key in this.filterCriteriaList) {
-        var item = this.filterCriteriaList[key]
-        if (item.value) {
-          // console.log(item)
-        }
-      }
+    refresh (value) {
+      this.sortResult('default')
     }
   },
   methods: {
     ...mapActions([
       'getHotBrand',
       'getCarBrandSort',
-      'getHotSeries'
+      'getHotSeries',
+      'getCarList',
+      'getSeriesByBrandId'
     ]),
+    startSearch () {
+      this.loading = true
+      if (this.currentCity.cityId === '-1') {
+        this.searchParams.cityId = ''
+      } else {
+        this.searchParams.cityId = this.currentCity.cityId
+      }
+      this.getCarList(this.searchParams)
+        .then((data) => {
+          this.searchResultList = data.list
+          this.carTotal = data.count
+          this.loading = false
+        })
+        .catch(() => {
+          this.searchResultList = []
+          this.carTotal = 0
+          this.loading = false
+        })
+    },
     toSearch (value) {
-      this.resetCriteria()
+      this.resetCriteria(false)
       this.filterCriteriaList['sv'].value = value
+      this.searchParams.searchValue = value
       this.filterCount++
+      this.refresh = !this.refresh
+    },
+    reSetHotSeries () {
+      this.innerAllSeries.All = []
+      let list = this.hotSeries
+      if (list.length > 0) {
+        this.innerHotSeries = []
+        let i = 1
+        this.innerHotSeries[0] = { seriesId: -1, seriesName: '不限' }
+        for (; i < 16 && list.length > i - 1; ++i) {
+          this.innerHotSeries[i] = list[i - 1]
+        }
+      }
     },
     selectBrand (brand) {
       this.currentBrand = brand
-      var f = 0
+      let f = 0
       if (brand.brandName === '不限') {
         if (this.filterCriteriaList['br'].value) {
           f = -1
         } else {
           f = 0
         }
+        this.searchParams.brandId = ''
+        this.searchParams.seriesId = ''
+        this.reSetHotSeries()
         this.filterCriteriaList['br'].value = ''
         this.filterCriteriaList['br'].item = ''
       } else {
@@ -815,20 +556,37 @@ export default {
         } else {
           f = 1
         }
+        this.searchParams.brandId = brand.brandId
+        this.searchParams.seriesId = ''
+        this.getSeriesByBrandId(brand.brandId)
+          .then((data) => {
+            this.innerAllSeries.All = data
+            this.innerHotSeries = []
+            this.innerHotSeries.push({ seriesId: -1, seriesName: '不限' })
+            for (let i = 0, len = data.length; i < len && i < 8; ++i) {
+              this.innerHotSeries.push(data[i])
+            }
+          })
+          .catch(() => {
+            this.innerAllSeries.All = []
+            this.reSetHotSeries()
+          })
         this.filterCriteriaList['br'].value = brand.brandName
         this.filterCriteriaList['br'].item = brand
       }
       this.filterCount += f
+      this.refresh = !this.refresh
     },
     selectSeries (series) {
       this.currentSeries = series
-      var f = 0
+      let f = 0
       if (series.seriesName === '不限') {
         if (this.filterCriteriaList['se'].value) {
           f = -1
         } else {
           f = 0
         }
+        this.searchParams.seriesId = ''
         this.filterCriteriaList['se'].value = ''
         this.filterCriteriaList['se'].item = ''
       } else {
@@ -837,20 +595,24 @@ export default {
         } else {
           f = 1
         }
+        this.searchParams.seriesId = series.seriesId
         this.filterCriteriaList['se'].value = series.seriesName
         this.filterCriteriaList['se'].item = series
       }
       this.filterCount += f
+      this.refresh = !this.refresh
     },
     selectPrice (price) {
       this.currentPrice = price
-      var f = 0
+      let f = 0
       if (price.priceName === '不限') {
         if (this.filterCriteriaList['pi'].value) {
           f = -1
         } else {
           f = 0
         }
+        this.searchParams.price.from = ''
+        this.searchParams.price.to = ''
         this.filterCriteriaList['pi'].value = ''
         this.filterCriteriaList['pi'].item = ''
       } else {
@@ -859,10 +621,13 @@ export default {
         } else {
           f = 1
         }
+        this.searchParams.price.from = price.from
+        this.searchParams.price.to = price.to
         this.filterCriteriaList['pi'].value = price.priceName
         this.filterCriteriaList['pi'].item = price
       }
       this.filterCount += f
+      this.refresh = !this.refresh
     },
     searchPrice () {
       if (this.searchPrice1 || this.searchPrice2) {
@@ -872,16 +637,19 @@ export default {
         if (this.searchPrice2 === '') {
           this.searchPrice2 = 999
         }
-        var p1 = parseInt(this.searchPrice1)
-        var p2 = parseInt(this.searchPrice2)
+        let p1 = parseInt(this.searchPrice1)
+        let p2 = parseInt(this.searchPrice2)
         if (p1 > p2) {
-          var temp = this.searchPrice1
+          let temp = this.searchPrice1
           this.searchPrice1 = this.searchPrice2
           this.searchPrice2 = temp
         }
+        this.searchParams.price.from = this.searchPrice1
+        this.searchParams.price.to = this.searchPrice2
         if (!this.filterCriteriaList['pi'].value) {
           this.filterCount++
         }
+        this.refresh = !this.refresh
         this.currentPrice = {}
         this.filterCriteriaList['pi'].value = this.searchPrice1 + '-' + this.searchPrice2 + '万元'
       }
@@ -889,14 +657,18 @@ export default {
     openMoreBrand () {
       this.moreBrandOpen = !this.moreBrandOpen
     },
+    openMoreSeries () {
+      this.moreSeriesOpen = !this.moreSeriesOpen
+    },
     openMore () {
       this.moreOpen = !this.moreOpen
       this.showMoreListIndex = this.moreOpen ? 11 : 10
     },
     moreItemSelect (item) {
-      var parent = item.parent
-      var realItem = item.item
-      var f = 0
+      let parent = item.parent
+      let realItem = item.item
+      let f = 0
+      let id = ''
       if (realItem.value === '不限') {
         if (this.filterCriteriaList[parent.tag].value) {
           f = -1
@@ -913,11 +685,86 @@ export default {
         }
         this.filterCriteriaList[parent.tag].value = realItem.value
         this.filterCriteriaList[parent.tag].item = realItem
+        id = realItem.id
+      }
+      switch (parent.tag) {
+        case 'ca':
+          this.searchParams.carAge = id
+          break
+        case 'csb':
+          this.searchParams.speed = id
+          break
+        case 'cm':
+          this.searchParams.model = id
+          break
+        case 'cmi':
+          this.searchParams.mileage = id
+          break
+        case 'cd':
+          this.searchParams.displacement = id
+          break
+        case 'ces':
+          this.searchParams.emissionStandards = id
+          break
+        case 'cs':
+          this.searchParams.seating = id
+          break
+        case 'cft':
+          this.searchParams.fuelType = id
+          break
+        case 'cdt':
+          this.searchParams.drivingType = id
+          break
       }
       this.filterCount += f
+      this.refresh = !this.refresh
     },
     closeCriteria (criteria) {
+      switch (criteria.tag) {
+        case 'ca':
+          this.searchParams.carAge = ''
+          break
+        case 'csb':
+          this.searchParams.speed = ''
+          break
+        case 'cm':
+          this.searchParams.model = ''
+          break
+        case 'cmi':
+          this.searchParams.mileage = ''
+          break
+        case 'cd':
+          this.searchParams.displacement = ''
+          break
+        case 'ces':
+          this.searchParams.emissionStandards = ''
+          break
+        case 'cs':
+          this.searchParams.seating = ''
+          break
+        case 'cft':
+          this.searchParams.fuelType = ''
+          break
+        case 'cdt':
+          this.searchParams.drivingType = ''
+          break
+        case 'sv':
+          this.searchParams.searchValue = ''
+          break
+        case 'br':
+          this.searchParams.brandId = ''
+          break
+        case 'se':
+          this.searchParams.seriesId = ''
+          break
+        case 'pi':
+          this.searchParams.price.from = ''
+          this.searchParams.price.to = ''
+          break
+      }
+
       this.filterCount--
+      this.refresh = !this.refresh
       this.filterCriteriaList[criteria.tag].value = ''
       this.filterCriteriaList[criteria.tag].item = ''
       switch (criteria.tag) {
@@ -932,23 +779,41 @@ export default {
           this.currentSeries = { seriesId: -1, seriesName: '不限' }
           return
       }
-      var keys = {'ca': 0, 'csb': 1, 'cm': 2, 'cmi': 3, 'cd': 4, 'ces': 5, 'cs': 6, 'cft': 7, 'cdt': 8, 'cc': 9, 'cco': 10}
+      let keys = {'ca': 0, 'csb': 1, 'cm': 2, 'cmi': 3, 'cd': 4, 'ces': 5, 'cs': 6, 'cft': 7, 'cdt': 8, 'cc': 9, 'cco': 10}
       if (keys[criteria.tag] || keys[criteria.tag] === 0) {
         this.moreList[keys[criteria.tag]].mark = !this.moreList[keys[criteria.tag]].mark
       }
     },
-    resetCriteria () {
+    resetCriteria (refresh) {
+      this.searchParams.searchValue = ''
+      this.searchParams.brandId = ''
+      this.searchParams.seriesId = ''
+      this.searchParams.carAge = ''
+      this.searchParams.speed = ''
+      this.searchParams.model = ''
+      this.searchParams.mileage = ''
+      this.searchParams.displacement = ''
+      this.searchParams.emissionStandards = ''
+      this.searchParams.seating = ''
+      this.searchParams.fuelType = ''
+      this.searchParams.drivingType = ''
+      this.searchParams.price.from = ''
+      this.searchParams.price.to = ''
+
+      if (refresh) {
+        this.refresh = !this.refresh
+      }
       this.filterCount = 0
       this.currentPrice = { priceId: -1, priceName: '不限' }
       this.currentBrand = { brandId: -1, brandName: '不限' }
       this.currentSeries = { seriesId: -1, seriesName: '不限' }
       this.searchPrice1 = this.searchPrice2 = ''
-      for (var k in this.filterCriteriaList) {
+      for (let k in this.filterCriteriaList) {
         this.filterCriteriaList[k].value = ''
         this.filterCriteriaList[k].item = ''
       }
-      var keys = {'ca': 0, 'csb': 1, 'cm': 2, 'cmi': 3, 'cd': 4, 'ces': 5, 'cs': 6, 'cft': 7, 'cdt': 8, 'cc': 9, 'cco': 10}
-      for (var key in keys) {
+      let keys = {'ca': 0, 'csb': 1, 'cm': 2, 'cmi': 3, 'cd': 4, 'ces': 5, 'cs': 6, 'cft': 7, 'cdt': 8}
+      for (let key in keys) {
         this.moreList[keys[key]].mark = !this.moreList[keys[key]].mark
       }
     },
@@ -960,13 +825,19 @@ export default {
         if (type === 'price' || type === 'age' || type === 'mileage') {
           this.activeOrder.sort = (this.activeOrder.sort === 0 ? 1 : 0)
         }
-        return
+      } else {
+        this.activeOrder.sort = 0
       }
-      this.activeOrder.sort = 0
       this.activeOrder.type = type
+      this.searchParams.sort.type = type
+      this.searchParams.sort.value = this.activeOrder.sort
+      this.startSearch()
     },
     pageChange (currentPage) {
       this.scrollToTop()
+      this.searchParams.page = currentPage - 1
+      this.currentPage = currentPage
+      this.startSearch()
     },
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
@@ -978,6 +849,10 @@ export default {
           carId: item.id
         }
       })
+    },
+    isNew (value) {
+      // 一周之内表示最新发布
+      return (moment().unix() * 1000 - parseInt(value) * 1000) / 1000 / 24 / 60 / 60 <= 7
     }
   }
 }
@@ -1125,7 +1000,8 @@ export default {
                 border-radius: 4px
                 text-align: center
                 margin-right: 20px
-              .brand-list
+              .brand-list,
+              .series-list
                 width: 300px
                 span
                   color: $color-dark-grey
@@ -1136,6 +1012,11 @@ export default {
                   &:hover,
                   &.current
                     color: $color-blue
+              .series-list
+                width: 1000px
+                span
+                  color: $color-dark-grey
+                  margin-right: 8px
     #filter-result
       font-size: 14px
       background: $color-white
@@ -1248,17 +1129,20 @@ export default {
               .criteria-value-e
                 color: $color-blue
     #car-result-list
+      min-height: 600px
       .car-list-wrap
         width: 1170px
         display: flex
-        justify-content: space-between
         flex-wrap: wrap
         margin-top: 16px
         .car-list
           width: 280.5px
           height: 314px
           padding: 8px
+          margin-right: 15px
           margin-bottom: 16px
+          &:last-child
+            margin-right: 0px
           &:hover
             cursor: pointer
             box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)

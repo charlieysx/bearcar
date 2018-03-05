@@ -218,5 +218,11 @@ export default {
         newsId: newsId
       }
     })
+  },
+  /**
+   * 获取二手车列表
+   */
+  getCarList (params) {
+    return axios.post('c/car/list', Qs.stringify(params))
   }
 }

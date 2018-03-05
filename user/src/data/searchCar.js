@@ -252,10 +252,6 @@ export const moreSelectList = [
       {
         id: '4',
         value: '油电混合'
-      },
-      {
-        id: '5',
-        value: '其他'
       }
     ]
   },
@@ -279,93 +275,93 @@ export const moreSelectList = [
         value: '四驱'
       }
     ]
-  },
-  {
-    type: 'car-country',
-    title: '国别',
-    tag: 'cc',
-    mark: true,
-    list: [
-      {
-        id: '0',
-        value: '不限',
-        realValue: '国别'
-      },
-      {
-        id: '1',
-        value: '德系'
-      },
-      {
-        id: '2',
-        value: '日系'
-      },
-      {
-        id: '3',
-        value: '美系'
-      },
-      {
-        id: '4',
-        value: '法系'
-      },
-      {
-        id: '5',
-        value: '韩系'
-      },
-      {
-        id: '6',
-        value: '国产'
-      },
-      {
-        id: '7',
-        value: '其他'
-      }
-    ]
-  },
-  {
-    type: 'car-configuration',
-    title: '亮点配置',
-    tag: 'cco',
-    mark: true,
-    list: [
-      {
-        id: '0',
-        value: '不限',
-        realValue: '亮点配置'
-      },
-      {
-        id: '1',
-        value: '全景天窗'
-      },
-      {
-        id: '2',
-        value: '车身稳定控制'
-      },
-      {
-        id: '3',
-        value: '倒车影像系统'
-      },
-      {
-        id: '4',
-        value: '真皮座椅'
-      },
-      {
-        id: '5',
-        value: '无钥匙进入系统'
-      },
-      {
-        id: '6',
-        value: '儿童座椅接口'
-      },
-      {
-        id: '7',
-        value: '倒车雷达'
-      },
-      {
-        id: '8',
-        value: 'GPS导航'
-      }
-    ]
   }
+  // {
+  //   type: 'car-country',
+  //   title: '国别',
+  //   tag: 'cc',
+  //   mark: true,
+  //   list: [
+  //     {
+  //       id: '0',
+  //       value: '不限',
+  //       realValue: '国别'
+  //     },
+  //     {
+  //       id: '1',
+  //       value: '德系'
+  //     },
+  //     {
+  //       id: '2',
+  //       value: '日系'
+  //     },
+  //     {
+  //       id: '3',
+  //       value: '美系'
+  //     },
+  //     {
+  //       id: '4',
+  //       value: '法系'
+  //     },
+  //     {
+  //       id: '5',
+  //       value: '韩系'
+  //     },
+  //     {
+  //       id: '6',
+  //       value: '国产'
+  //     },
+  //     {
+  //       id: '7',
+  //       value: '其他'
+  //     }
+  //   ]
+  // },
+  // {
+  //   type: 'car-configuration',
+  //   title: '亮点配置',
+  //   tag: 'cco',
+  //   mark: true,
+  //   list: [
+  //     {
+  //       id: '0',
+  //       value: '不限',
+  //       realValue: '亮点配置'
+  //     },
+  //     {
+  //       id: '1',
+  //       value: '全景天窗'
+  //     },
+  //     {
+  //       id: '2',
+  //       value: '车身稳定控制'
+  //     },
+  //     {
+  //       id: '3',
+  //       value: '倒车影像系统'
+  //     },
+  //     {
+  //       id: '4',
+  //       value: '真皮座椅'
+  //     },
+  //     {
+  //       id: '5',
+  //       value: '无钥匙进入系统'
+  //     },
+  //     {
+  //       id: '6',
+  //       value: '儿童座椅接口'
+  //     },
+  //     {
+  //       id: '7',
+  //       value: '倒车雷达'
+  //     },
+  //     {
+  //       id: '8',
+  //       value: 'GPS导航'
+  //     }
+    // ]
+  // }
 ]
 
 export const filterCriteriaList = {
@@ -458,21 +454,21 @@ export const filterCriteriaList = {
     tag: 'cdt',
     value: '',
     item: ''
-  },
-  cc: {
-    type: 'car-country',
-    title: '国别',
-    tag: 'cc',
-    value: '',
-    item: ''
-  },
-  cco: {
-    type: 'car-configuration',
-    title: '亮点配置',
-    tag: 'cco',
-    value: '',
-    item: ''
   }
+  // cc: {
+  //   type: 'car-country',
+  //   title: '国别',
+  //   tag: 'cc',
+  //   value: '',
+  //   item: ''
+  // },
+  // cco: {
+  //   type: 'car-configuration',
+  //   title: '亮点配置',
+  //   tag: 'cco',
+  //   value: '',
+  //   item: ''
+  // }
 }
 
 export default {

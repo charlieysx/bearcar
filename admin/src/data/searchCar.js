@@ -252,10 +252,6 @@ export const moreSelectList = [
       {
         id: '4',
         value: '油电混合'
-      },
-      {
-        id: '5',
-        value: '其他'
       }
     ]
   },

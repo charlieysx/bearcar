@@ -2,7 +2,7 @@
   <div id="config-list">
       <p>{{ listData.name }}</p>
       <ul>
-        <li v-for="(config, index) in listData.list" :key="index" :class="{ active: index % 2 }">
+        <li v-for="(config, key, index) in listData.list" :key="index" :class="{ active: index % 2 }">
             <span>{{ config.name }}</span>
             <span>{{ config.value }}</span>
         </li>
@@ -39,7 +39,7 @@ export default {
       border-bottom: 0px
     > span
       display: inline-block
-      width: 50%
+      width: 65%
       height: 38px
       font-size: 12px
       padding: 12px
@@ -47,6 +47,8 @@ export default {
       border-right: 1px solid #dee2e6
       &:last-child
         border-right: 0px
+      &:first-child
+        width: 35%
   .active
     background: #fbfbfb
 

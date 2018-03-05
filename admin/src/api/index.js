@@ -15,10 +15,12 @@ import {
 
 /* eslint-disable */
 const API_ROOT = 'http://bearcarapi.codebear.cn/index.php'
+const API_ROOT_DEV = 'http://127.0.0.1/bearcar/index.php'
 
 
 /* eslint-enable */
 axios.defaults.baseURL = API_ROOT
+// axios.defaults.baseURL = (process.env.NODE_ENV === 'production' ? API_ROOT : API_ROOT_DEV)
 axios.defaults.headers.Accept = 'application/json'
 
 // Add a request interceptor
@@ -139,10 +141,48 @@ export default {
     return axios.get('c/city/sort')
   },
   /**
+   * 根据城市id获取地区
+   */
+  getDistrict (cityId) {
+    return axios.get('c/city/district/by_city', {
+      params: {
+        cityId: cityId
+      }
+    })
+  },
+  /**
    * 获取检测中的二手车的基本信息(客户填写的)
    */
   getFillCarInfo (carId) {
     return axios.get('sysa/fillcar/getfillcarinfo', {
+      params: {
+        carId: carId
+      }
+    })
+  },
+  /**
+   * 提交检测信息-第一步
+   */
+  fillCarFirst (params) {
+    return axios.post('sysa/fillcar/first', Qs.stringify(params))
+  },
+  /**
+   * 提交检测信息-第二步
+   */
+  fillCarSecond (params) {
+    return axios.post('sysa/fillcar/second', Qs.stringify(params))
+  },
+  /**
+   * 提交检测信息-第三步
+   */
+  fillCarThird (params) {
+    return axios.post('sysa/fillcar/third', Qs.stringify(params))
+  },
+  /**
+   * 获取二手车信息
+   */
+  getCarInfo (carId) {
+    return axios.get('c/car/getinfo', {
       params: {
         carId: carId
       }

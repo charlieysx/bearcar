@@ -12,44 +12,9 @@
             </div>
           </div>
         </div>
-        <div class="mycar-info-bottom">
-          <div class="info-item">
-            上牌时间 :
-            <span>
-              {{ car.licensedYear + car.licensedMonth }}
-            </span>
-          </div>
-          <div class="info-item">
-            里程 :
-            <span>
-              {{ car.mileage }}万公里
-            </span>
-          </div>
-          <div class="info-item">
-            牌照地 :
-            <span>
-              {{ car.cityName }}
-            </span>
-          </div>
-        </div>
-        <div class="mycar-info-bottom">
-          <div class="info-item">
-            过户次数 :
-            <span>
-              {{ car.transferTime === '-1' ? '不清楚' : (car.transferTime === '5' ? '4次以上' : car.transferTime) }}
-            </span>
-          </div>
-          <div class="info-item">
-            车况 :
-            <span>
-              {{ car.conditionName }}
-            </span>
-          </div>
-          <div class="info-item">
-            预期售出时间 :
-            <span>
-              {{ car.expireDateName }}
-            </span>
+        <div class="mycar-button">
+          <div class="btn" @click="under(car)">
+            下架
           </div>
         </div>
       </div>
@@ -121,6 +86,12 @@ export default {
         params: {
           carId: carId
         }
+      })
+    },
+    under (car) {
+      this.$toast({
+        message: '预约中的车辆您不能下架，已通知评估师：' + car.appraiserName + '，他将会电话联系您进行下架相关操作',
+        duration: 5000
       })
     }
   }

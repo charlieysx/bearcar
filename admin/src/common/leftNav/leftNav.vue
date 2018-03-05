@@ -32,7 +32,7 @@
             <el-menu-item index="2-1" @click="toCarList('waiting')">待上架列表</el-menu-item>
             <el-menu-item index="2-2" @click="toCarList('checking')">待检测列表</el-menu-item>
             <el-menu-item index="2-3" @click="toCarList('selling')">售卖中列表</el-menu-item>
-            <el-menu-item index="2-4" @click="toCarList('ordering')">预约中列表</el-menu-item>
+            <el-menu-item index="2-4" @click="toCarList('ordering')">交易中列表</el-menu-item>
             <el-menu-item index="2-5" @click="toCarList('under')">已完成列表</el-menu-item>
           </el-submenu>
           <el-submenu index="3">

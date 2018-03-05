@@ -35,7 +35,7 @@
                             ￥10.20万
                         </span>
                         <s class="guide-price">
-                            新车指导价37.12万
+                            新车指导价37.12万(含税)
                         </s>
                         <el-popover
                             ref="guide"
@@ -43,10 +43,7 @@
                             width="270"
                             trigger="hover">
                             <div class="guide-tip">
-                                <p>厂商新车指导价：34.2万</p>
-                                <p>车辆购置税：2.92万</p>
-                                <div></div>
-                                <p class="tip">"新车指导价"是厂商公布的指导价，不是零售价，亦不是该车购入价。</p>
+                                <p class="tip">"新车指导价(含税) = 厂商公布的指导价 + 购置税费，该价格仅供参考。</p>
                             </div>
                         </el-popover>
                         <i class="el-icon-info" v-popover:guide></i>

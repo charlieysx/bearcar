@@ -98,6 +98,9 @@
           </div>
         </div>
         <div class="mycar-button" v-if="userInfo.userId === car.dealUserId">
+          <div class="btn" @click="under(car.carId)">
+            下架
+          </div>
           <div class="btn" @click="fill(car.carId)">
             完善信息
           </div>
@@ -178,6 +181,30 @@ export default {
     },
     scrollToTop () {
       document.body.scrollTop = document.documentElement.scrollTop = 0
+    },
+    under (carId) {
+      this.$prompt('请输入下架理由', '下架', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        if (value === null) {
+          this.error('请填写下架原因')
+          return
+        }
+        this.underMyCar({carId: carId, underReason: value})
+          .then((data) => {
+            this.refresh()
+          })
+          .catch((err) => {
+            this.error(err.data.msg)
+            this.refresh()
+          })
+      })
+    },
+    refresh () {
+      this.params.page = 0
+      this.scrollToTop()
+      this.update()
     },
     fill (carId) {
       this.$router.push({

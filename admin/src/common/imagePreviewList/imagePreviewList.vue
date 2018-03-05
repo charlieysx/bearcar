@@ -5,8 +5,7 @@
           <swiper-slide class="slide-big" 
               v-for="(item, index) in imageData"
               :key="index">
-              <img :src="item.url" alt=""
-                  @click="clickBigImg(index)">
+              <img :src="item" alt="" @click="clickBigImg(index)">
           </swiper-slide>
           <div class="swiper-button-prev" slot="button-prev" v-show="showArrowButton">
               <i class="el-icon-arrow-left"></i>
@@ -21,7 +20,7 @@
         <swiper-slide class="slide-thumb" 
             v-for="(item, index) in imageData"
             :key="index * 1000">
-            <img :src="item.url" alt="">
+            <img :src="item" alt="">
         </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev">
             <i class="el-icon-arrow-left"></i>
@@ -40,6 +39,7 @@ import imageViewer from 'COMMON/imageViewer/imageViewer'
 
 export default {
   name: 'image-preview-list',
+  props: ['imageData', 'isLoad'],
   data () {
     return {
       imageCurrentIndex: 0,
@@ -65,62 +65,29 @@ export default {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
         }
-      },
-      imageData: []
+      }
+    }
+  },
+  watch: {
+    isLoad (data) {
+      if (data) {
+        this.initConfig()
+      }
     }
   },
   components: {
     imageViewer
   },
-  created () {
-    setTimeout(() => {
-      this.load()
-    }, 500)
-  },
-  mounted () {
-  },
   methods: {
     show () {
-      this.showArrowButton = true
+      // this.showArrowButton = true
     },
     hide () {
-      this.showArrowButton = false
+      // this.showArrowButton = false
     },
     clickBigImg (index) {
       this.$refs.imageViewer.$refs.modal.showModal()
       this.imageCurrentIndex = index
-    },
-    load () {
-      this.imageData = [
-        {
-          url: 'https://image1.guazistatic.com/qn180121173829c50906dc12f7d6c816300f4a1e0cbae1.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image1.guazistatic.com/qn180121173831ad118958d0f87ab7b5855df96fad4e7d.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image1.guazistatic.com/qn180121173832033e36c98224ca423b2d317ea3817461.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/2e3d6d6c6675f315d9d63e2a37bb2291.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/db8a11c4b6167c1d7a360ffa1f3f8b98.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/6df1f0201aeff50ad2a7720055f165a8.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/da27ac41bf0e2419a7ad4efb7bfbafae.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/183792784cf5774301017c9328108865.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/9731e623fa6824d3ce1535f1b60383d8.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        }
-      ]
-      this.initConfig()
     },
     initConfig () {
       this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.imageData.length
@@ -163,6 +130,9 @@ export default {
       display: flex
       display: -webkit-flex
       align-items: center
+      &.hide
+        background: #FF000000
+        color: #FF000000
     .swiper-button-next
       height: 100%
       width: 50px
@@ -176,6 +146,9 @@ export default {
       display: flex
       display: -webkit-flex
       align-items: center
+      &.hide
+        background: #FF000000
+        color: #FF000000
   .gallery-thumbs
     margin: 5px
     margin-top: 10px

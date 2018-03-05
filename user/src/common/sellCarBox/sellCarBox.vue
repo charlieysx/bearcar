@@ -61,7 +61,7 @@
             <div class="sell-item-title">行驶里程</div>
             <div class="sell-item-input">
                 <span class="input-border item">
-                    <input v-model="driverMileage" @keyup="changeMileage">
+                    <input v-model="driverMileage" @keyup="verifyMileage">
                     <div class="input-suffix">万公里</div>
                 </span>
             </div>
@@ -498,14 +498,22 @@ export default {
     selectDistrictItem (district) {
       this.selectDistrict = district
     },
-    changeMileage () {
-      var newValue = ''
-      var l = 4
-      var pointPos = -1
-      for (var i = 0; i < this.driverMileage.length; ++i) {
-        var c = this.driverMileage[i]
+    verifyMileage () {
+      let value = this.driverMileage
+      let newValue = ''
+      let l = 4
+      let pointPos = -1
+      for (let i = 0; i < value.length; ++i) {
+        let c = value[i]
         if (newValue.length === l) {
           break
+        }
+        if (c === '0' && i === l - 1 && pointPos !== -1) {
+          continue
+        }
+        if (c === '0' && (value.length - 1 === i || (newValue.length === 0 && i + i < value.length && value[i + 1] === '.'))) {
+          newValue += c
+          continue
         }
         if (c === '0' && newValue.length === 0) {
           continue
@@ -515,10 +523,8 @@ export default {
             newValue += c
             pointPos = i
             l = i + 3
-            continue
-          } else {
-            continue
           }
+          continue
         }
         if (c >= '0' && c <= '9') {
           newValue += c
