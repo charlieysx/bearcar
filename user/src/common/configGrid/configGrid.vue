@@ -11,8 +11,23 @@
         <li 
           v-for="(item, index) in gridData.list"
           :key="index"
-          :class="{dark: !item.value}">
-          <i :class="[item.value ? 'el-icon-check' : 'el-icon-minus', {dark: !item.value}]"></i>
+          :class="{dark: item.value === '无'}">
+          <el-tooltip class="item" effect="dark" placement="top" :disabled="item.value !== '异常'">
+            <div slot="content" >
+              <p 
+                v-for="(value, index) in item.unusual.split('-')" 
+                :key="index"
+                style="max-width: 150px">
+                {{ value }}
+              </p>
+            </div>
+            <i :class="[item.value === '正常' ? 'el-icon-check' : 
+              item.value === '异常' ? 'el-icon-warning' : 'el-icon-minus', 
+              {dark: item.value === '无'}, 
+              {warning: item.value === '异常'}]"
+              @click="item.value === '异常' ? showMessage(item.unusual) : ''">
+            </i>
+          </el-tooltip>
           {{ item.name }}
         </li>
       </ul>
@@ -31,6 +46,14 @@ export default {
   methods: {
     showDetail () {
       this.show = !this.show
+    },
+    showMessage (message) {
+      let list = message.split('-')
+      let tip = list.join('\n')
+      this.$toast({
+        message: tip,
+        duration: 4000
+      })
     }
   }
 }
@@ -92,5 +115,8 @@ export default {
         margin-right: 6px
         &.dark
           color: #b4b9bd
+        &.warning
+          color: #feb400
+          cursor: pointer
 
 </style>

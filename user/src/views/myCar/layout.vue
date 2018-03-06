@@ -7,7 +7,6 @@
           <router-link tag="li" :to="{ name: 'waiting' }" class="nav-item">待上架</router-link>
           <router-link tag="li" :to="{ name: 'checking' }" class="nav-item">待检测</router-link>
           <router-link tag="li" :to="{ name: 'selling' }" class="nav-item">售卖中</router-link>
-          <router-link tag="li" :to="{ name: 'ordering' }" class="nav-item">预约中</router-link>
           <router-link tag="li" :to="{ name: 'under' }" class="nav-item">已完成</router-link>
         </ul>
         <!-- tab 结束 -->
@@ -43,11 +42,7 @@ export default {
           name: '售卖中'
         },
         {
-          id: 23,
-          name: '预约中'
-        },
-        {
-          id: 4,
+          id: 3,
           name: '已完成'
         }
       ]

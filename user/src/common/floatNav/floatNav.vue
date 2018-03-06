@@ -7,7 +7,7 @@
     <div class="nav-middle">
       <ul class="nav-middle-ul">
         <el-tooltip class="item" effect="dark" content="帮助中心" placement="left">
-          <li @click="help" class="nav-middle-li help"></li>
+          <router-link tag="li" :to="{name: 'help'}" class="nav-middle-li help"></router-link>
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="意见反馈" placement="left">
           <li @click="feedBack" class="nav-middle-li opinion"></li>
@@ -37,8 +37,7 @@
         }, 16.7)
       },
       feedBack () {
-      },
-      help () {
+        this.$emit('feedback')
       }
     }
   }

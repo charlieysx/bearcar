@@ -187,5 +187,21 @@ export default {
         carId: carId
       }
     })
+  },
+  /**
+   * 获取用户列表
+   */
+  getUserList (params) {
+    return axios.get('sysa/table/user', {
+      params: params
+    })
+  },
+  /**
+   * 获取管理员列表
+   */
+  getAdminList (params) {
+    return axios.get('sysa/table/admin', {
+      params: params
+    })
   }
 }

@@ -62,6 +62,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '3-1')
     this.update()
   },
   methods: {

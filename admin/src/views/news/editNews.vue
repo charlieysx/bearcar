@@ -73,6 +73,9 @@ export default {
       loading: ''
     }
   },
+  created () {
+    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '3-2')
+  },
   methods: {
     ...mapActions([
       'publishNews'

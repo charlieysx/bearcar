@@ -1,27 +1,26 @@
 <template>
-  <div id="image-preview-list" v-if="loadImageSuccess">
-      <div @mouseover="show" @mouseout="hide">
-        <swiper :options="swiperOptionTop" class="gallery-top" ref="swiperTop">
-          <swiper-slide class="slide-big" 
-              v-for="(item, index) in imageData"
-              :key="index">
-              <img :src="item.url" alt=""
-                  @click="clickBigImg(index)">
-          </swiper-slide>
-          <div class="swiper-button-prev" slot="button-prev" v-show="showArrowButton">
-              <i class="el-icon-arrow-left"></i>
-          </div>
-          <div class="swiper-button-next" slot="button-next" v-show="showArrowButton">
-              <i class="el-icon-arrow-right"></i>
-          </div>
-        </swiper>
-      </div>
-      <!-- swiper2 Thumbs -->
-      <swiper :options="swiperOptionThumbs" class="gallery-thumbs" ref="swiperThumbs">
+  <div id="image-preview-list">
+      <el-carousel 
+        indicator-position="none" 
+        :autoplay="false" 
+        height="390px" 
+        class="gallery-top"
+        ref="carousel"
+        @change="change">
+        <el-carousel-item class="slide-big" v-for="(item, index) in imageData" :key="index">
+          <img :src="item" alt="" @click="clickBigImg(index)">
+        </el-carousel-item>
+      </el-carousel>
+      <!-- swiper Thumbs -->
+      <swiper 
+        :options="swiperOptionThumbs" 
+        class="gallery-thumbs" 
+        ref="swiperThumbs" 
+        v-if="loadImageSuccess">
         <swiper-slide class="slide-thumb" 
             v-for="(item, index) in imageData"
-            :key="index * 1000">
-            <img :src="item.url" alt="">
+            :key="index">
+            <img :src="item" alt="">
         </swiper-slide>
         <div class="swiper-button-prev" slot="button-prev">
             <i class="el-icon-arrow-left"></i>
@@ -40,20 +39,13 @@ import imageViewer from 'COMMON/imageViewer/imageViewer'
 
 export default {
   name: 'image-preview-list',
+  props: ['imageData'],
   data () {
+    const self = this
     return {
       imageCurrentIndex: 0,
       loadImageSuccess: false,
-      showArrowButton: false,
-      swiperOptionTop: {
-        spaceBetween: 10,
-        loop: true,
-        loopedSlides: 0, // looped slides should be the same
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        }
-      },
+      imgIndex: 0,
       swiperOptionThumbs: {
         spaceBetween: 0,
         slidesPerView: 4.5,
@@ -64,76 +56,47 @@ export default {
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev'
+        },
+        on: {
+          slideChange () {
+            self.imgIndex = this.realIndex
+          }
         }
       },
-      imageData: []
+      current: 0
     }
   },
   components: {
     imageViewer
   },
-  created () {
-    setTimeout(() => {
-      this.load()
-    }, 500)
-  },
-  mounted () {
+  watch: {
+    imageData (data) {
+      this.initConfig()
+    },
+    imgIndex (value) {
+      if (this.current !== value) {
+        this.current = value
+        this.$refs['carousel'].setActiveItem(value)
+      }
+    }
   },
   methods: {
-    show () {
-      this.showArrowButton = true
-    },
-    hide () {
-      this.showArrowButton = false
-    },
     clickBigImg (index) {
       this.$refs.imageViewer.$refs.modal.showModal()
       this.imageCurrentIndex = index
     },
-    load () {
-      this.imageData = [
-        {
-          url: 'https://image1.guazistatic.com/qn180121173829c50906dc12f7d6c816300f4a1e0cbae1.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image1.guazistatic.com/qn180121173831ad118958d0f87ab7b5855df96fad4e7d.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image1.guazistatic.com/qn180121173832033e36c98224ca423b2d317ea3817461.jpg?imageView2/1/w/1200/h/800/q/88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/2e3d6d6c6675f315d9d63e2a37bb2291.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/db8a11c4b6167c1d7a360ffa1f3f8b98.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/6df1f0201aeff50ad2a7720055f165a8.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/da27ac41bf0e2419a7ad4efb7bfbafae.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/183792784cf5774301017c9328108865.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        },
-        {
-          url: 'https://image.guazistatic.com/gz01180121/15/28/9731e623fa6824d3ce1535f1b60383d8.jpg@base@tag=imgScale&w=1200&h=800&c=1&m=2&q=88'
-        }
-      ]
-      this.initConfig()
-    },
     initConfig () {
-      this.swiperOptionTop.loopedSlides = this.swiperOptionThumbs.loopedSlides = this.imageData.length
+      this.swiperOptionThumbs.loopedSlides = this.imageData.length
       if (this.imageData.length < 5) {
         this.swiperOptionThumbs.slidesPerView = this.imageData.length
       }
       this.loadImageSuccess = true
-      this.$nextTick(() => {
-        const swiperTop = this.$refs.swiperTop.swiper
-        const swiperThumbs = this.$refs.swiperThumbs.swiper
-        swiperTop.controller.control = swiperThumbs
-        swiperThumbs.controller.control = swiperTop
-      })
+    },
+    change (position) {
+      if (this.current !== position) {
+        this.current = position
+        this.$refs.swiperThumbs.swiper.slideTo(position, 500, false)
+      }
     }
   }
 }
@@ -150,32 +113,6 @@ export default {
       > img
         width: 585px
         height: 390px
-    .swiper-button-prev
-      height: 100%
-      width: 50px
-      top: 0px
-      left: 0px
-      background: #00000033
-      margin-top: -3px
-      text-align: center
-      color: #ffffff99
-      font-size: 48px
-      display: flex
-      display: -webkit-flex
-      align-items: center
-    .swiper-button-next
-      height: 100%
-      width: 50px
-      top: 0px
-      right: 0px
-      background: #00000033
-      margin-top: -3px
-      text-align: center
-      color: #ffffff99
-      font-size: 48px
-      display: flex
-      display: -webkit-flex
-      align-items: center
   .gallery-thumbs
     margin: 5px
     margin-top: 10px

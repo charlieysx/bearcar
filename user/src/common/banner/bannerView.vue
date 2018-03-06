@@ -2,38 +2,40 @@
   <div id="banner-view"
     @mouseenter="inView" 
     @mouseleave="outView">
-    <transition-group name="fade">
-        <li class="banner" 
-          v-for="(banner, index) in banners" 
-          :key="index" 
-          v-show="index === bannerPosition" 
-          @click="clickBanner(banner)"
-          :style="{backgroundImage: 'url(' + banner.imgUrl + ')'}">
-        </li>
-    </transition-group>
+    <el-carousel 
+        class="banner" 
+        indicator-position="none" 
+        arrow="never" 
+        height="416px"
+        @change="change"
+        ref="carousel"
+        :interval="4000"
+        :autoplay="!showArrow">
+        <el-carousel-item
+            class="banner-div"
+            v-for="(banner, index) in banners" 
+            :key="index"
+            @click="clickBanner(banner)"
+            :style="{backgroundImage: 'url(' + banner.imgUrl + ')'}">
+        </el-carousel-item>
+      </el-carousel>
     <div class="points">
       <span
         v-for="(banner, index) in banners" 
         :key="index" 
         :class="{ active: index === bannerPosition }"
-        v-on:click="change(index)"
-        @mouseenter="stop" 
-        @mouseleave="start">
+        v-on:click="myChange(index)">
       </span>
     </div>
     <transition name="fade">
       <div class="arrow" 
         v-show="showArrow">
         <div class="arrow-left" 
-          @click="change(bannerPosition - 1)"
-          @mouseenter="stop" 
-          @mouseleave="start">
+            @click="prev">
             <i class="el-icon-arrow-left"></i>
         </div>
         <div class="arrow-right" 
-          @click="change(bannerPosition + 1)"
-          @mouseenter="stop" 
-          @mouseleave="start">
+            @click="next()">
             <i class="el-icon-arrow-right"></i>
         </div>
       </div>
@@ -43,27 +45,12 @@
 
 <script>
 export default {
-  props: ['banners', 'pageVisibility'],
+  props: ['banners'],
   data () {
     return {
       bannerPosition: 0,
-      timer: '',
       showArrow: false
     }
-  },
-  watch: {
-    pageVisibility (val) {
-      if (val) {
-        this.start()
-      } else {
-        this.stop()
-      }
-    }
-  },
-  created () {
-    this.$nextTick(() => {
-      this.start()
-    })
   },
   methods: {
     clickBanner (banner) {
@@ -72,28 +59,18 @@ export default {
     bannerShow (banner) {
       this.$emit('banner-show', banner)
     },
-    autoPlay () {
-      this.change(this.bannerPosition + 1)
-    },
-    start () {
-      clearInterval(this.timer)
-      this.timer = setInterval(() => {
-        this.autoPlay()
-      }, 3000)
-    },
-    stop () {
-      clearInterval(this.timer)
-      this.timer = null
-    },
     change (position) {
-      if (position < 0) {
-        position = this.banners.length - 1
-      }
-      if (position > this.banners.length - 1) {
-        position = 0
-      }
       this.bannerPosition = position
       this.bannerShow(this.banners[this.bannerPosition])
+    },
+    myChange (position) {
+      this.$refs['carousel'].setActiveItem(position)
+    },
+    prev () {
+      this.$refs['carousel'].prev()
+    },
+    next () {
+      this.$refs['carousel'].next()
     },
     inView () {
       this.showArrow = true
@@ -110,12 +87,14 @@ export default {
   cursor: pointer
   height: 416px
   .banner
+    z-index: 0
+    position: absolute
     width: 100%
     height: 416px
-    position: absolute
-    background-repeat: no-repeat
-    background-position: top
-    background-size: auto 100%
+    .banner-div
+      background-repeat: no-repeat
+      background-position: top
+      background-size: auto 100%
   .points
     position: absolute
     z-index: 0
@@ -145,10 +124,11 @@ export default {
     width: 1170px
     margin: 0 auto
     height: 50px
-    top: 150px
     position: relative
+    top: 150px
     color: $color-grey
     font-size: 28px
+    z-index: 10
     .arrow-left
       display: inline-block
       display: flex

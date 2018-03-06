@@ -224,5 +224,30 @@ export default {
    */
   getCarList (params) {
     return axios.post('c/car/list', Qs.stringify(params))
+  },
+  /**
+   * 获取二手车信息
+   */
+  getCarInfo (carId) {
+    return axios.get('c/car/getinfo', {
+      params: {
+        carId: carId
+      }
+    })
+  },
+  /**
+   * 获取二手车总数量
+   */
+  getCarCount () {
+    return axios.get('c/car/count')
+  },
+  /**
+   * 获取猜你喜欢的车列表
+   */
+  getLikeList (params) {
+    return axios.post('c/car/likelist', Qs.stringify(params))
+  },
+  orderCar (params) {
+    return axios.post('u/car/ordercar', Qs.stringify(params))
   }
 }

@@ -17,7 +17,8 @@
           class="menu" 
           background-color="#545c64"
           text-color="#ffffff"
-          :unique-opened="true">
+          :unique-opened="true"
+          :default-active="leftNavActiveItem">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
@@ -52,8 +53,8 @@
               <i class="el-icon-menu"></i>
               <span slot="title">用户</span>
             </template>
-            <el-menu-item index="4-1">二手车用户</el-menu-item>
-            <el-menu-item index="4-2">管理员</el-menu-item>
+            <el-menu-item index="4-1" @click="toTable('user')">二手车用户</el-menu-item>
+            <el-menu-item index="4-2" @click="toTable('admin')">管理员</el-menu-item>
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">
@@ -91,7 +92,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userInfo'
+      'userInfo',
+      'leftNavActiveItem'
     ])
   },
   methods: {
@@ -110,6 +112,9 @@ export default {
     },
     toNewsList () {
       this.$router.push({name: 'newsList'})
+    },
+    toTable (type) {
+      this.$router.push({name: type})
     }
   }
 }

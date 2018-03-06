@@ -5,7 +5,8 @@ import {
   GET_HOT_CITIES,
   SET_CURRENT_CITY,
   SET_PAGE_VISIBILITY,
-  SET_HEADER_ACTIVE_TAB
+  SET_HEADER_ACTIVE_TAB,
+  SET_LEFT_NAV_ACTIVE_ITEM
 } from '../mutation-types'
 
 import {
@@ -18,7 +19,8 @@ const state = {
   hotCities: [],
   currentCity: cachedCurrentCity.load() || { cityId: '-1', cityName: '全国' },
   pageVisibility: false,
-  headerActiveTab: 0
+  headerActiveTab: 0,
+  leftNavActiveItem: '1'
 }
 
 const getters = {
@@ -39,6 +41,9 @@ const getters = {
   },
   headerActiveTab (state) {
     return state.headerActiveTab
+  },
+  leftNavActiveItem (state) {
+    return state.leftNavActiveItem
   }
 }
 
@@ -61,6 +66,9 @@ const mutations = {
   },
   [SET_HEADER_ACTIVE_TAB] (state, data) {
     state.headerActiveTab = data
+  },
+  [SET_LEFT_NAV_ACTIVE_ITEM] (state, data) {
+    state.leftNavActiveItem = data
   }
 }
 

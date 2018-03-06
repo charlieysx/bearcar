@@ -6,7 +6,7 @@
         <router-link :to="{ name: 'about' }">关于我们</router-link>
         <router-link :to="{ name: 'contact' }">联系我们</router-link>
         <router-link :to="{ name: 'join' }">加入我们</router-link>
-        <p class="footer-copyright">Copyright © 2017 codebear.cn, All Rights Reserved  粤ICP备17139665号-1</p>
+        <p class="footer-copyright">Copyright © 2018 bearcar.codebear.cn, All Rights Reserved  粤ICP备17139665号-1</p>
       </div>
       <div class="footer-tel">
         <div class="footer-tel-text">
@@ -39,8 +39,8 @@
       position: absolute
       width: 165px
       height: 49px
-      background: url('~IMAGES/logo1.png') no-repeat
-      background-size: cover
+      background: url('~IMAGES/bearcar_logo.png') no-repeat
+      background-size: 165px
     .footer-text
       text-align: center
       a

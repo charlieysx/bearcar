@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 import store from 'STORE/index'
 
 import home from './modules/home'
-import searchCar from './modules/searchCar'
 import car from './modules/car'
 import news from './modules/news'
 import carList from './modules/carList'
+import table from './modules/table'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -22,10 +22,10 @@ Vue.use(VueRouter)
 
 const routes = [
   ...home,
-  ...searchCar,
   ...car,
   ...news,
-  ...carList
+  ...carList,
+  ...table
 ]
 
 const router = new VueRouter({

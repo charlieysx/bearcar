@@ -13,7 +13,7 @@
     <!-- footer 结束 -->
     <!-- 返回顶部 -->
     <div class="nav-wrap">
-      <float-nav></float-nav>
+      <float-nav @feedback="$refs.feedback.$refs.modal.showModal()"></float-nav>
     </div>
     <!-- 返回顶部 结束 -->
     <!-- 登录注册 -->
@@ -21,6 +21,7 @@
       <auth-layout v-show="loginMaskShow"></auth-layout>
     </transition>
     <!-- 登录注册 结束 -->
+    <feedback ref="feedback"></feedback>
   </div>
 </template>
 
@@ -29,6 +30,7 @@ import pageHeader from 'COMMON/header/header'
 import pageFooter from 'COMMON/footer/footer'
 import floatNav from 'COMMON/floatNav/floatNav'
 import authLayout from 'VIEWS/auth/layout'
+import feedback from 'COMMON/feedback/feedback'
 
 import {
   SET_PAGE_VISIBILITY,
@@ -50,7 +52,8 @@ export default {
     pageHeader,
     pageFooter,
     floatNav,
-    authLayout
+    authLayout,
+    feedback
   },
   computed: {
     ...mapGetters([

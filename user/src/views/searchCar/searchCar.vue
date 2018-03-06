@@ -216,8 +216,7 @@
         </div>
         <!-- 结果排序 结束 -->
         <!-- 搜索结果 -->
-        <div 
-          id="car-result-list"
+        <div id="car-result-list"
           v-loading="loading"
           v-show="loading || searchResultList.length > 0">
           <ul class="car-list-wrap">
@@ -233,6 +232,9 @@
                 <p class="car-info-price">
                   {{item.price}}
                   <span>万</span>
+                  <s class="new-price">
+                    {{ item.newCarPrice }} 万
+                  </s>
                 </p>
               </div>
             </li>
@@ -434,13 +436,34 @@ export default {
     this.getHotBrand(15)
     this.getHotSeries(10)
     this.getCarBrandSort()
-    this.startSearch()
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 1)
     this.breadCrumbItems[1].text = this.currentCity.cityName + '二手车'
     this.moreList = searchCarData.moreSelectList
     this.filterCriteriaList = searchCarData.filterCriteriaList
     // 先展开，为了计算列表宽度
     this.openMore()
+
+    let searchValue = this.$route.params.searchValue
+    let brand = this.$route.params.brand
+    let price = this.$route.params.price
+    let age = this.$route.params.age
+    let speed = this.$route.params.speed
+    let sort = this.$route.params.sort
+    if (searchValue) {
+      this.toSearch(searchValue)
+    } else if (brand) {
+      this.selectBrand(brand)
+    } else if (price) {
+      this.selectPrice(price)
+    } else if (age) {
+      this.moreItemSelect(age)
+    } else if (speed) {
+      this.moreItemSelect(speed)
+    } else if (sort) {
+      this.sortResult('new')
+    } else {
+      this.startSearch()
+    }
   },
   mounted () {
     // 到这里已经计算完成，就收起
@@ -454,7 +477,7 @@ export default {
       if (list.length > 0) {
         this.innerHotBrands = []
         let i = 1
-        this.innerHotBrands[0] = this.currentBrand
+        this.innerHotBrands[0] = { brandId: -1, brandName: '不限' }
         for (; i < 16 && list.length > i - 1; ++i) {
           this.innerHotBrands[i] = list[i - 1]
         }
@@ -488,6 +511,11 @@ export default {
     },
     refresh (value) {
       this.sortResult('default')
+    },
+    filterCount (value) {
+      if (value === 0) {
+        this.reSetHotSeries()
+      }
     }
   },
   methods: {
@@ -539,6 +567,9 @@ export default {
     selectBrand (brand) {
       this.currentBrand = brand
       let f = 0
+      this.currentSeries = { seriesId: -1, seriesName: '不限' }
+      this.filterCriteriaList['se'].value = ''
+      this.filterCriteriaList['se'].item = ''
       if (brand.brandName === '不限') {
         if (this.filterCriteriaList['br'].value) {
           f = -1
@@ -843,12 +874,13 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     toCarInfo (item) {
-      this.$router.push({
-        name: 'car',
-        params: {
-          carId: item.id
-        }
-      })
+      // this.$router.push({
+      //   name: 'car',
+      //   params: {
+      //     carId: item.carId
+      //   }
+      // })
+      window.open(`${window.location.origin}/car/${item.carId}`)
     },
     isNew (value) {
       // 一周之内表示最新发布
@@ -1141,7 +1173,7 @@ export default {
           padding: 8px
           margin-right: 15px
           margin-bottom: 16px
-          &:last-child
+          &:nth-child(4n)
             margin-right: 0px
           &:hover
             cursor: pointer
@@ -1193,6 +1225,9 @@ export default {
               color: #ff0000cc
               > span
                 font-size: 14px
+              .new-price
+                font-size: 13px
+                color: #999999
     .search-page
       width: 100%
       padding-bottom: 40px

@@ -3,8 +3,7 @@
     <!-- banner -->
     <banner-view
       class="banner-view"
-      :banners="banners"
-      :pageVisibility="pageVisibility">
+      :banners="banners">
     </banner-view>
     <!-- banner 结束 -->
     <div id="home-content">
@@ -50,7 +49,7 @@
                 v-for="price in carPriceList"
                 :key="price.id"
                 @click="searchPrice(price)">
-                {{ price.text }}
+                {{ price.priceName }}
               </span>
             </div>
             <!-- 汽车价格 结束 -->
@@ -127,7 +126,7 @@
       </buy-sell-step-view>
       <!-- 买卖流程 结束 -->
       <!-- 最新上架等二手车列表 -->
-      <div id="car_list_box">
+      <div id="car_list_box" v-loading="loading">
         <!-- tab -->
         <tab-view
           :tabs="carTabList"
@@ -138,16 +137,19 @@
         <ul class="car-list-wrap">
           <li class="car-list" v-for="item in newCarList" :key="item.id" @click="toCarInfo(item)">
             <div class="car-img">
-              <div class="icon-guazi icon-sell" v-if="true">急售</div>
-              <div class="icon-guazi icon-new" v-else-if="false">新上架</div>
-              <img :src="item.carImg" alt="">
+              <div class="icon-guazi icon-sell" v-if="item.expireDateId === '0'">急售</div>
+              <div class="icon-guazi icon-new" v-else-if="isNew(item.time)">新上架</div>
+              <img :src="item.coverImg" alt="">
             </div>
             <div class="car-info">
-              <p class="car-name">{{item.carName}}</p>
-              <p class="car-info-p">{{item.year}}<em>|</em>{{item.mileage}}<em>|</em>{{item.place}}</p>
+              <p class="car-name">{{ item.brandName }} {{ item.modelName ? item.modelName : item.seriesName }}</p>
+              <p class="car-info-p">{{ item.licensedYear }}<em>|</em>{{ item.mileage }}万公里<em>|</em>{{ item.cityName }}</p>
               <p class="car-info-price">
                 {{item.price}}
                 <span>万</span>
+                <s class="new-price">
+                  {{ item.newCarPrice }} 万
+                </s>
               </p>
             </div>
           </li>
@@ -177,13 +179,14 @@ import tabView from 'COMMON/tabView/tabView'
 import {
   SET_HEADER_ACTIVE_TAB
 } from 'STORE/mutation-types'
+import moment from 'moment'
 
 export default {
   name: 'home',
   data () {
     return {
       inputBorder: false,
-      personCount: 26595245,
+      personCount: 0,
       searchValue: '',
       banners: [
         {
@@ -201,32 +204,46 @@ export default {
       ],
       carPriceList: [
         {
-          id: 0,
-          text: '3万以下'
+          priceId: 0,
+          priceName: '3万以下',
+          from: 0,
+          to: 3
         },
         {
-          id: 1,
-          text: '3-6万'
+          priceId: 1,
+          priceName: '3-6万',
+          from: 3,
+          to: 6
         },
         {
-          id: 2,
-          text: '6-9万'
+          priceId: 2,
+          priceName: '6-9万',
+          from: 6,
+          to: 9
         },
         {
-          id: 3,
-          text: '9-12万'
+          priceId: 3,
+          priceName: '9-12万',
+          from: 9,
+          to: 12
         },
         {
-          id: 4,
-          text: '12-16万'
+          priceId: 4,
+          priceName: '12-16万',
+          from: 12,
+          to: 16
         },
         {
-          id: 5,
-          text: '16-20万'
+          priceId: 5,
+          priceName: '16-20万',
+          from: 16,
+          to: 20
         },
         {
-          id: 6,
-          text: '20万以上'
+          priceId: 7,
+          priceName: '20万以上',
+          from: 20,
+          to: 10000
         }
       ],
       hotNewsList: [],
@@ -245,18 +262,9 @@ export default {
         }
       ],
       activeCarTab: {},
-      newCarList: [
-        {
-          id: 0,
-          carName: '大众捷达 2015款 1.6L 手动时尚型',
-          year: '2015年',
-          mileage: '1.4万公里',
-          place: '哈尔滨',
-          price: '5.46',
-          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
-        }
-      ],
-      innerHotBrands: []
+      newCarList: [],
+      innerHotBrands: [],
+      loading: false
     }
   },
   computed: {
@@ -268,12 +276,23 @@ export default {
   },
   created () {
     this.getHotBrand(6)
-    this.getHotNewsList(8)
+    this.getNewsList({
+      page: 0,
+      pageSize: 8
+    })
+    .then((data) => {
+      this.hotNewsList = data.list
+    })
+    .catch(() => {
+      this.hotNewsList = []
+    })
+    this.startSearch(this.carTabList[0])
+    this.getCarCount()
       .then((data) => {
-        this.hotNewsList = data
+        this.personCount = data
       })
       .catch(() => {
-        this.hotNewsList = []
+        this.personCount = 0
       })
     this.$store.commit(SET_HEADER_ACTIVE_TAB, 0)
   },
@@ -296,7 +315,9 @@ export default {
   methods: {
     ...mapActions([
       'getHotBrand',
-      'getHotNewsList'
+      'getNewsList',
+      'getCarList',
+      'getCarCount'
     ]),
     ...mapMutations({
     }),
@@ -308,7 +329,10 @@ export default {
         return false
       }
       this.$router.push({
-        name: 'searchCar'
+        name: 'searchCar',
+        params: {
+          searchValue: this.searchValue
+        }
       })
       this.searchValue = ''
     },
@@ -325,14 +349,24 @@ export default {
         name: 'sellCar'
       })
     },
-    searchCar (car) {
+    searchCar (brand) {
+      let params = {
+        brand: brand
+      }
+      if (brand.brandId === -1) {
+        params = {}
+      }
       this.$router.push({
-        name: 'searchCar'
+        name: 'searchCar',
+        params: params
       })
     },
     searchPrice (price) {
       this.$router.push({
-        name: 'searchCar'
+        name: 'searchCar',
+        params: {
+          price: price
+        }
       })
     },
     freeEstimate () {
@@ -342,23 +376,101 @@ export default {
     },
     clickCarTab (tab) {
       this.activeCarTab = tab
+      this.startSearch(tab)
     },
     clickMoreCar (name) {
+      let params = {}
+      switch (name) {
+        case '最新上架':
+          params = { sort: true }
+          break
+        case '准新车':
+          params = {
+            age: {
+              parent: {
+                type: 'car-age',
+                tag: 'ca',
+                title: '车龄'
+              },
+              item: {
+                id: '2',
+                value: '3年以内'
+              }
+            }
+          }
+          break
+        case '练手车':
+          params = {
+            price: {
+              priceId: 2,
+              priceName: '6-9万',
+              from: 6,
+              to: 9
+            }
+          }
+          break
+      }
       this.$router.push({
-        name: 'searchCar'
+        name: 'searchCar',
+        params: params
       })
     },
     toCarInfo (item) {
-      this.$router.push({
-        name: 'car',
-        params: {
-          carId: item.id
-        }
-      })
+      // this.$router.push({
+      //   name: 'car',
+      //   params: {
+      //     carId: item.carId
+      //   }
+      // })
+      window.open(`${window.location.origin}/car/${item.carId}`)
     },
     searchBox (index) {
+      let params = {}
+      switch (index) {
+        case 0:
+          params = {
+            age: {
+              parent: {
+                type: 'car-age',
+                tag: 'ca',
+                title: '车龄'
+              },
+              item: {
+                id: '2',
+                value: '3年以内'
+              }
+            }
+          }
+          break
+        case 1:
+          params = {
+            price: {
+              priceId: 2,
+              priceName: '6-9万',
+              from: 6,
+              to: 9
+            }
+          }
+          break
+        case 2:
+          params = {
+            speed: {
+              parent: {
+                type: 'car-speed-box',
+                tag: 'csb',
+                title: '变速箱'
+              },
+              item: {
+                id: '1',
+                value: '手动'
+              }
+            }
+          }
+          break
+      }
       this.$router.push({
-        name: 'searchCar'
+        name: 'searchCar',
+        params: params
       })
     },
     previewNews (newsId) {
@@ -368,6 +480,47 @@ export default {
           newsId: newsId
         }
       })
+    },
+    startSearch (tab) {
+      this.loading = true
+      let searchParams = {
+        page: 0,
+        pageSize: 12,
+        price: {
+          from: '',
+          to: ''
+        },
+        carAge: '',
+        sort: {
+          type: 'default',
+          value: ''
+        }
+      }
+      switch (tab.id) {
+        case 0:
+          searchParams.sort.type = 'new'
+          break
+        case 1:
+          searchParams.carAge = '2'
+          break
+        case 2:
+          searchParams.price.from = '6'
+          searchParams.price.to = '9'
+          break
+      }
+      this.getCarList(searchParams)
+        .then((data) => {
+          this.newCarList = data.list
+          this.loading = false
+        })
+        .catch(() => {
+          this.newCarList = []
+          this.loading = false
+        })
+    },
+    isNew (value) {
+      // 一周之内表示最新发布
+      return (moment().unix() * 1000 - parseInt(value) * 1000) / 1000 / 24 / 60 / 60 <= 7
     }
   },
   components: {
@@ -673,13 +826,15 @@ export default {
       .car-list-wrap
         width: 1170px
         display: flex
-        justify-content: space-between
         flex-wrap: wrap
         margin-top: 16px
         .car-list
           width: 280.5px
           height: 314px
+          margin-right: 15px
           margin-bottom: 16px
+          &:nth-child(4n)
+            margin-right: 0px
           &:hover
             cursor: pointer
             box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)
@@ -730,6 +885,9 @@ export default {
               color: #ff0000cc
               > span
                 font-size: 14px
+              .new-price
+                font-size: 13px
+                color: #999999
       .car_more
         display: flex
         display: -webkit-flex

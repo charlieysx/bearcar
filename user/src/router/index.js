@@ -7,6 +7,7 @@ import searchCar from './modules/searchCar'
 import car from './modules/car'
 import news from './modules/news'
 import myCar from './modules/myCar'
+import help from './modules/help'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -25,7 +26,8 @@ const routes = [
   ...searchCar,
   ...car,
   ...news,
-  ...myCar
+  ...myCar,
+  ...help
 ]
 
 const router = new VueRouter({

@@ -112,6 +112,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '2')
     this.carId = this.$route.params.carId
     this.getFillStep(this.carId)
     this.getFillCarInfo(this.carId)

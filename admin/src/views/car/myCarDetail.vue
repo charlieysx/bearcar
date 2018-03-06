@@ -20,7 +20,7 @@
         <!-- 二手车基础信息 -->
         <div id="car-base-info">
             <div class="car-base-image">
-                <image-preview-list :imageData="previewImage.list" :isLoad="previewImage.is">
+                <image-preview-list :imageData="previewImage">
                 </image-preview-list>
             </div>
             <div class="car-info">
@@ -762,48 +762,7 @@ export default {
           list: []
         }
       },
-      searchResultList: [
-        {
-          id: 0,
-          carName: '大众捷达 2015款 1.6L 手动时尚型',
-          year: '2015年',
-          mileage: '1.4万公里',
-          place: '哈尔滨',
-          price: '5.46',
-          carImg: 'https://image1.guazistatic.com/qn180125190559b0e255718fdf226ae1e0cb71d8cea8d8.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 1,
-          carName: '别克凯越 2013款 1.5L 自动经典型',
-          year: '2014年',
-          mileage: '3.4万公里',
-          place: '大连',
-          price: '5.13',
-          carImg: 'https://image1.guazistatic.com/qn180129113256f5bf1b87ff1677d04c16b8a9fd5c2216.jpg?imageView2/1/w/287/h/192/q/88'
-        },
-        {
-          id: 2,
-          carName: '本田锋范经典 2014款 风尚 1.5L 手动精英版',
-          year: '2015年',
-          mileage: '2.3万公里',
-          place: '昆明',
-          price: '6.20',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/03d8925ef2f2478153f64eac8efec106.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        },
-        {
-          id: 3,
-          carName: '丰田卡罗拉 2013款 特装版 1.6L 自动至酷型GL',
-          year: '2013年',
-          mileage: '4.4万公里',
-          place: '曲靖',
-          price: '8.00',
-          carImg: 'https://image.guazistatic.com/gz01180129/13/39/3c8d7b700b8d70fa0fc1a49ecdce9438.jpg@base@tag=imgScale&w=287&h=192&c=1&m=2&q=88'
-        }
-      ],
-      previewImage: {
-        'is': false,
-        'list': []
-      }
+      previewImage: []
     }
   },
   components: {
@@ -814,6 +773,7 @@ export default {
     configGrid
   },
   created () {
+    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '2')
     this.carId = this.$route.params.carId
     this.getCarInfo(this.carId)
       .then((data) => {
@@ -890,9 +850,8 @@ export default {
       this.carImage[1].imgList = this.carInfo.carImage.imgIn
       this.carImage[2].imgList = this.carInfo.carImage.imgEngineChassis
       for (let i = 0, len = this.carImage.length; i < len; ++i) {
-        this.previewImage.list = this.previewImage.list.concat(this.carImage[i].imgList)
+        this.previewImage = this.previewImage.concat(this.carImage[i].imgList)
       }
-      this.previewImage.is = true
     },
     dealCheck () {
       // 专项检测

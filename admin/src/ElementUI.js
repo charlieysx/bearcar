@@ -24,8 +24,8 @@ import {
   // OptionGroup,
   Button,
   // ButtonGroup,
-  // Table,
-  // TableColumn,
+  Table,
+  TableColumn,
   DatePicker,
   // TimeSelect,
   // TimePicker,
@@ -52,9 +52,9 @@ import {
   // Rate,
   Steps,
   Step,
-  // Carousel,
+  Carousel,
   // Scrollbar,
-  // CarouselItem,
+  CarouselItem,
   // Collapse,
   // CollapseItem,
   // Cascader,
@@ -88,8 +88,8 @@ Vue.use(Option)
 // Vue.use(OptionGroup)
 Vue.use(Button)
 // Vue.use(ButtonGroup)
-// Vue.use(Table)
-// Vue.use(TableColumn)
+Vue.use(Table)
+Vue.use(TableColumn)
 Vue.use(DatePicker)
 // Vue.use(TimeSelect)
 // Vue.use(TimePicker)
@@ -116,9 +116,9 @@ Vue.use(Card)
 // Vue.use(Rate)
 Vue.use(Steps)
 Vue.use(Step)
-// Vue.use(Carousel)
+Vue.use(Carousel)
 // Vue.use(Scrollbar)
-// Vue.use(CarouselItem)
+Vue.use(CarouselItem)
 // Vue.use(Collapse)
 // Vue.use(CollapseItem)
 // Vue.use(Cascader)

@@ -184,6 +184,48 @@ const actions = {
       .catch(({response}) => {
         return Promise.reject(response)
       })
+  },
+  getCarInfo (store, carId) {
+    return api.getCarInfo(carId)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 获取二手车总数量
+   */
+  getCarCount (store) {
+    return api.getCarCount()
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  /**
+   * 获取猜你喜欢的车列表
+   */
+  getLikeList (store, params) {
+    return api.getLikeList(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
+  },
+  orderCar (store, params) {
+    return api.orderCar(params)
+      .then((response) => {
+        return Promise.resolve(response.data.data)
+      })
+      .catch(({response}) => {
+        return Promise.reject(response)
+      })
   }
 }
 

@@ -38,7 +38,7 @@ export default {
     this.getNewsInfo(newsId)
       .then((data) => {
         this.news = data
-        this.$refs.content.innerHTML = data.newsContent
+        this.$refs.content.innerHTML = data.newsContent.replace(new RegExp('data-src', 'gm'), 'src')
       })
   },
   methods: {

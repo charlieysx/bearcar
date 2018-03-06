@@ -3,7 +3,7 @@
     <modal-layout ref="modal" width="1170">
       <div class="image">
         <div class="image-btn" @click="prev"><i class="el-icon-arrow-left"></i></div>
-        <div class="image-wrap" :style="{backgroundImage: 'url(' + images[index].url + ')'}">
+        <div class="image-wrap" :style="{backgroundImage: 'url(' + images[index] + ')'}">
         </div>
         <div class="image-btn" @click="next"><i class="el-icon-arrow-right"></i></div>
       </div>

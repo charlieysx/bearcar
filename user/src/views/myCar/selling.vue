@@ -80,12 +80,13 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     toDetail (carId) {
-      this.$router.push({
-        name: 'cardetail',
-        params: {
-          carId: carId
-        }
-      })
+      // this.$router.push({
+      //   name: 'cardetail',
+      //   params: {
+      //     carId: carId
+      //   }
+      // })
+      window.open(`${window.location.origin}/cardetail/${carId}`)
     },
     under (car) {
       this.$toast({

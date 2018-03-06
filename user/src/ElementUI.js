@@ -52,9 +52,9 @@ import {
   // Rate,
   // Steps,
   // Step,
-  // Carousel,
+  Carousel,
   // Scrollbar,
-  // CarouselItem,
+  CarouselItem,
   // Collapse,
   // CollapseItem,
   // Cascader,
@@ -116,9 +116,9 @@ Vue.use(Card)
 // Vue.use(Rate)
 // Vue.use(Steps)
 // Vue.use(Step)
-// Vue.use(Carousel)
+Vue.use(Carousel)
 // Vue.use(Scrollbar)
-// Vue.use(CarouselItem)
+Vue.use(CarouselItem)
 // Vue.use(Collapse)
 // Vue.use(CollapseItem)
 // Vue.use(Cascader)
@@ -130,7 +130,7 @@ Vue.use(Loading.directive)
 // Vue.prototype.$msgbox = MessageBox
 // Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
-// Vue.prototype.$prompt = MessageBox.prompt
+Vue.prototype.$prompt = MessageBox.prompt
 // Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
 export default Vue
