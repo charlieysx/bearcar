@@ -203,5 +203,37 @@ export default {
     return axios.get('sysa/table/admin', {
       params: params
     })
+  },
+  /**
+   * 获取banner列表
+   */
+  getBannerList (params) {
+    return axios.get('sysa/banner/list', {
+      params: params
+    })
+  },
+  /**
+   * 添加banner
+   */
+  addBanner (params) {
+    return axios.post('sysa/banner/add', Qs.stringify(params))
+  },
+  /**
+   * 下架banner
+   */
+  underBanner (id) {
+    return axios.post('sysa/banner/under', Qs.stringify({ id: id }))
+  },
+  /**
+   * 编辑banner
+   */
+  editBanner (params) {
+    return axios.post('sysa/banner/edit', Qs.stringify(params))
+  },
+  /**
+   * 获取统计数据
+   */
+  getStatistics () {
+    return axios.get('sysa/statistics')
   }
 }

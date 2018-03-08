@@ -19,46 +19,47 @@
           text-color="#ffffff"
           :unique-opened="true"
           :default-active="leftNavActiveItem">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">首页</span>
-            </template>
-          </el-submenu>
+          <el-menu-item index="1" @click="toPage('home')">
+            <i class="iconfont icon-home"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-document"></i>
+              <i class="iconfont icon-car_list"></i>
               <span slot="title">二手车</span>
             </template>
-            <el-menu-item index="2-1" @click="toCarList('waiting')">待上架列表</el-menu-item>
-            <el-menu-item index="2-2" @click="toCarList('checking')">待检测列表</el-menu-item>
-            <el-menu-item index="2-3" @click="toCarList('selling')">售卖中列表</el-menu-item>
-            <el-menu-item index="2-4" @click="toCarList('ordering')">交易中列表</el-menu-item>
-            <el-menu-item index="2-5" @click="toCarList('under')">已完成列表</el-menu-item>
+            <el-menu-item index="2-1" @click="toPage('waiting')">待上架列表</el-menu-item>
+            <el-menu-item index="2-2" @click="toPage('checking')">待检测列表</el-menu-item>
+            <el-menu-item index="2-3" @click="toPage('selling')">售卖中列表</el-menu-item>
+            <el-menu-item index="2-4" @click="toPage('ordering')">交易中列表</el-menu-item>
+            <el-menu-item index="2-5" @click="toPage('under')">已完成列表</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-document"></i>
+              <i class="iconfont icon-news"></i>
               <span slot="title">资讯</span>
             </template>
-            <el-menu-item index="3-1" @click="toNewsList">资讯列表</el-menu-item>
-            <el-menu-item index="3-2" @click="toEditNews">发布资讯</el-menu-item>
+            <el-menu-item index="3-1" @click="toPage('newsList')">资讯列表</el-menu-item>
+            <el-menu-item index="3-2" @click="toPage('editNews')">发布资讯</el-menu-item>
           </el-submenu>
-          <!-- <el-menu-item index="4">
-            <i class="el-icon-menu"></i>
-            <span slot="title">用户</span>
-          </el-menu-item> -->
           <el-submenu index="4">
             <template slot="title">
-              <i class="el-icon-menu"></i>
+              <i class="iconfont icon-web_manage"></i>
+              <span slot="title">网站管理</span>
+            </template>
+            <el-menu-item index="4-1" @click="toPage('banner')">首页banner</el-menu-item>
+          </el-submenu>
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="iconfont icon-user"></i>
               <span slot="title">用户</span>
             </template>
-            <el-menu-item index="4-1" @click="toTable('user')">二手车用户</el-menu-item>
-            <el-menu-item index="4-2" @click="toTable('admin')">管理员</el-menu-item>
+            <el-menu-item index="5-1" @click="toPage('user')">二手车用户</el-menu-item>
+            <el-menu-item index="5-2" @click="toPage('admin')">管理员</el-menu-item>
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">
-              <i class="el-icon-setting"></i>
+              <i class="iconfont icon-setting"></i>
               <span slot="title">设置</span>
             </template>
             <el-menu-item index="6-1" @click="signOut">退出</el-menu-item>
@@ -104,17 +105,8 @@ export default {
       this.$store.commit(SET_USER_INFO, {})
       this.$store.commit('SET_LOGIN_MASK_STATUS', { show: true, view: 'login' })
     },
-    toCarList (type) {
-      this.$router.push({name: type})
-    },
-    toEditNews () {
-      this.$router.push({name: 'editNews'})
-    },
-    toNewsList () {
-      this.$router.push({name: 'newsList'})
-    },
-    toTable (type) {
-      this.$router.push({name: type})
+    toPage (pageName) {
+      this.$router.push({name: pageName})
     }
   }
 }
@@ -150,7 +142,7 @@ export default {
       z-index: 1000
       width: 250px
       height: 70px
-      background: $color-white
+      background: #545c64
       .header-logo
         position: fixed
         margin: 23px 74px
@@ -184,5 +176,7 @@ export default {
     .menu
       width: 251px
       flex: 1
+.iconfont
+  font-size: 16px
 </style>
 

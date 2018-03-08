@@ -82,7 +82,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '4-2')
+    this.$store.commit('SET_LEFT_NAV_ACTIVE_ITEM', '5-2')
     this.getList()
   },
   methods: {
@@ -151,7 +151,7 @@ export default {
     padding: 26px
     font-weight: bold
   .table-admin-wrap
-    width: 1180px
+    width: 1170px
     margin: 0 auto
     padding: 20px
     background: $color-white

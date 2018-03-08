@@ -67,6 +67,7 @@ export default {
       this.borderLight = false
     },
     toKey (index) {
+      console.log(this.$refs.letter[index])
       this.$refs.letter[index].scrollIntoView()
     }
   }

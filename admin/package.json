@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "cropperjs": "^1.2.2",
+    "echarts": "^4.0.4",
     "element-ui": "^2.0.11",
     "flex.css": "^1.1.7",
     "moment": "^2.20.1",

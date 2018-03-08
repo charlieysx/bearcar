@@ -1702,14 +1702,16 @@ export default {
       .car-list-wrap
         width: 1170px
         display: flex
-        justify-content: space-between
         flex-wrap: wrap
         margin-top: 16px
         .car-list
           width: 280.5px
           height: 314px
           padding: 8px
+          margin-right: 15px
           margin-bottom: 16px
+          &:nth-child(4n)
+            margin-right: 0px
           &:hover
             cursor: pointer
             box-shadow: 1px 1px 10px 3px rgba(15, 166, 255, .1)

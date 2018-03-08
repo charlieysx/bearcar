@@ -665,7 +665,6 @@ export default {
     .car-list-wrap
         width: 1170px
         display: flex
-        justify-content: space-between
         flex-wrap: wrap
         text-align: left
         margin: 16px auto
@@ -673,7 +672,10 @@ export default {
           width: 280.5px
           height: 314px
           padding: 2px
+          margin-right: 15px
           margin-bottom: 16px
+          &:nth-child(4n)
+            margin-right: 0px
           .car-img
             width: 100%
             height: 174px

@@ -132,7 +132,7 @@ export default {
     padding: 26px
     font-weight: bold
   #news-wrap
-    width: 1180px
+    width: 1170px
     margin: 0 auto
     padding: 20px 0px
     .news-list

@@ -217,7 +217,6 @@
 </template>
 
 <script>
-import searchCarInput from 'COMMON/searchCarInput/searchCarInput'
 import imagePreviewList from 'COMMON/imagePreviewList/imagePreviewList'
 import configList from 'COMMON/configList/configList'
 import carImage from 'COMMON/carImage/carImage'
@@ -766,7 +765,6 @@ export default {
     }
   },
   components: {
-    searchCarInput,
     imagePreviewList,
     configList,
     carImage,

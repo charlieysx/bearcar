@@ -15,11 +15,12 @@
             class="banner-div"
             v-for="(banner, index) in banners" 
             :key="index"
-            @click="clickBanner(banner)"
-            :style="{backgroundImage: 'url(' + banner.imgUrl + ')'}">
+            style="cursor: point"
+            @click.native="clickBanner(banner)"
+            :style="{backgroundImage: 'url(' + banner.banner + ')'}">
         </el-carousel-item>
       </el-carousel>
-    <div class="points">
+    <div class="points" v-if="banners.length > 1">
       <span
         v-for="(banner, index) in banners" 
         :key="index" 
@@ -29,7 +30,7 @@
     </div>
     <transition name="fade">
       <div class="arrow" 
-        v-show="showArrow">
+        v-show="showArrow && banners.length > 1">
         <div class="arrow-left" 
             @click="prev">
             <i class="el-icon-arrow-left"></i>
@@ -54,7 +55,9 @@ export default {
   },
   methods: {
     clickBanner (banner) {
-      this.$emit('banner-click', banner)
+      if (banner.link !== '') {
+        window.open(banner.link)
+      }
     },
     bannerShow (banner) {
       this.$emit('banner-show', banner)

@@ -6,10 +6,12 @@ import common from './modules/common'
 import car from './modules/car'
 import news from './modules/news'
 import table from './modules/table'
+import banner from './modules/banner'
+import statistics from './modules/statistics'
 
 Vue.use(Vuex)
 
-const modules = { user, common, car, news, table }
+const modules = { user, common, car, news, table, banner, statistics }
 
 const store = new Vuex.Store({
   modules

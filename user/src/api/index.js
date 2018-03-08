@@ -249,5 +249,8 @@ export default {
   },
   orderCar (params) {
     return axios.post('u/car/ordercar', Qs.stringify(params))
+  },
+  getBanner () {
+    return axios.get('c/banner')
   }
 }

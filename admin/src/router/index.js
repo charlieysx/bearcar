@@ -7,6 +7,7 @@ import car from './modules/car'
 import news from './modules/news'
 import carList from './modules/carList'
 import table from './modules/table'
+import banner from './modules/banner'
 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -25,7 +26,8 @@ const routes = [
   ...car,
   ...news,
   ...carList,
-  ...table
+  ...table,
+  ...banner
 ]
 
 const router = new VueRouter({

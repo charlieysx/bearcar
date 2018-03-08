@@ -188,20 +188,7 @@ export default {
       inputBorder: false,
       personCount: 0,
       searchValue: '',
-      banners: [
-        {
-          id: 0,
-          imgUrl: 'https://image.guazistatic.com/gz01171128/18/09/9821b23ae5abc8c309dac11cab305a52.jpg@base@tag=imgScale'
-        },
-        {
-          id: 1,
-          imgUrl: 'https://image.guazistatic.com/gz01171128/18/09/5cebdbbdc3088ba927a5745ef0feb55d.jpg@base@tag=imgScale'
-        },
-        {
-          id: 2,
-          imgUrl: 'https://image.guazistatic.com/gz01180117/17/52/4985094adcba37aa0854ce02bf8d4695.jpg@base@tag=imgScale'
-        }
-      ],
+      banners: [],
       carPriceList: [
         {
           priceId: 0,
@@ -264,7 +251,11 @@ export default {
       activeCarTab: {},
       newCarList: [],
       innerHotBrands: [],
-      loading: false
+      loading: false,
+      defaultBanner: {
+        banner: 'http://bearcarimg.codebear.cn/1bb69aedc93cc4bea65af42b17dc75bd3fKwdVCj8n5xJ7XHlSlqAM!gradual.show',
+        link: ''
+      }
     }
   },
   computed: {
@@ -275,6 +266,16 @@ export default {
     ])
   },
   created () {
+    this.getBanner()
+      .then((data) => {
+        this.banners = data
+        if (this.banners.length === 0) {
+          this.banners = [this.defaultBanner]
+        }
+      })
+      .catch(() => {
+        this.banners = [this.defaultBanner]
+      })
     this.getHotBrand(6)
     this.getNewsList({
       page: 0,
@@ -317,7 +318,8 @@ export default {
       'getHotBrand',
       'getNewsList',
       'getCarList',
-      'getCarCount'
+      'getCarCount',
+      'getBanner'
     ]),
     ...mapMutations({
     }),

@@ -1,5 +1,5 @@
 <template>
-  <div id="step-one-city-picker" @mouseover="showList" @mouseout="hideList">
+  <div id="step-one-city-picker" @mouseover="showList" @mouseout="hideList" ref="picker">
     <div 
         class="select-list-value" 
         :class="{'borderLight': borderLight}"
@@ -9,7 +9,7 @@
         </span>
         <i :class="[borderLight ? 'el-icon-arrow-up' : 'el-icon-arrow-down']"></i>
     </div>
-    <div :style="{width: width}" style="position: absolute" v-show="borderLight">
+    <div :style="{width: width}" style="position: relative" v-show="borderLight">
       <div class="city-inner" :style="{width: width}">
         <!-- 全部城市-->
         <div class="chose-city-wrap">
@@ -121,7 +121,7 @@ export default {
     font-size: 14px
     height: 286px
     z-index: 101
-    overflow: auto
+    overflow: scroll
     cursor: default
     overflow-x: hidden
     border-radius: 3px
