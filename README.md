@@ -5,6 +5,8 @@
 
 #### 效果演示：<http://bearcar.codebear.cn>
 
+!!! 毕业设计，勿乱搞，谢谢
+
 #### 部分截图：
 ![1](/img/user/1.png)
 ![2](/img/user/2.png)
