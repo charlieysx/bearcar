@@ -125,7 +125,7 @@
                 <p>259项专业检测</p>
                 小熊要求二手车源必须达到以下标准
               </div>
-              <ul class="three-type">
+              <ul class="three-type"> 
                 <li>
                   <span class="icon icon-save"></span>
                   无重大事故

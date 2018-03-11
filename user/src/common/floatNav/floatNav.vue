@@ -12,6 +12,9 @@
         <el-tooltip class="item" effect="dark" content="意见反馈" placement="left">
           <li @click="feedBack" class="nav-middle-li opinion"></li>
         </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="联系客服" placement="left">
+          <li @click="toChat" class="nav-middle-li service"></li>
+        </el-tooltip>
       </ul>
     </div>
   </div>
@@ -38,6 +41,9 @@
       },
       feedBack () {
         this.$emit('feedback')
+      },
+      toChat () {
+        window.open('http://wpa.qq.com/msgrd?v=3&uin=249900679&site=qq&menu=yes')
       }
     }
   }
@@ -81,4 +87,12 @@
         display inline-block
         height: 40px
         width: 40px
+    .qq
+      background: url('~IMAGES/ic_qq.png') no-repeat
+      background-size: 22px 22px
+      background-position: 50% 50%
+    .service
+      background: url('~IMAGES/ic_service.png') no-repeat
+      background-size: 22px 22px
+      background-position: 50% 50%
 </style>

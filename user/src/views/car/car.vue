@@ -61,7 +61,7 @@
                             ￥{{ info.price }}万
                         </span>
                         <s class="guide-price">
-                            新车指导价{{ info.newCarPrice }}(含税)
+                            新车指导价{{ info.newCarPrice }}万(含税)
                         </s>
                         <el-popover
                             ref="guide"

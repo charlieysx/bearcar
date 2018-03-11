@@ -32,9 +32,8 @@
 </template>
 
 <script>
-import 'STATIC/china.js'
 import { mapActions } from 'vuex'
-const echarts = require('echarts/lib/echarts')
+let echarts = require('echarts/lib/echarts')
 
 export default {
   name: 'home',
