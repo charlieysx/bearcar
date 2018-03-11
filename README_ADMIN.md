@@ -5,6 +5,7 @@
 
 #### 效果演示：<http://admin.bearcar.codebear.cn>
 
+#### 账号
 * 普通管理员
 
 账号：13000000000
