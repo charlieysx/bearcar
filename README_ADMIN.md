@@ -5,6 +5,8 @@
 
 #### 效果演示：<http://admin.bearcar.codebear.cn>
 
+!!! 毕业设计，勿乱搞，谢谢
+
 #### 账号
 * 普通管理员
 
